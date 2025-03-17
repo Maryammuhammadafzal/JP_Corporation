@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+.bgImage{
+        background-image: url("../src/assets/Images/hero_background.jpg");
+        background-size: contain ;
+
+}
+
+ul.custom-bullet li {
+        position: relative;
+        padding-left: 1.5rem; /* leave space for the bullet */
+        list-style: none;     /* remove default bullet */
+      }
+      
+      ul.custom-bullet li::before {
+        content: "";
+        position: absolute;
+        top: 0.6rem;            /* adjust this for vertical alignment */
+        left: 0;                
+        width: 0.6rem;          /* size of the bullet */
+        height: 0.6rem;         
+        border-radius: 50%;     /* make it round (remove this for a square) */
+        background-color: #000; /* fill color */
+        border: 2px solid #e46922; /* border color */
+      }
