@@ -49,7 +49,7 @@ const CarListings = () => {
 
 
   return (
-    <div className="w-full mx-auto border rounded-md ">
+    <div className="w-full mx-auto border rounded-md py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
         <h1 className="text-3xl font-bold">Car Listings</h1>
         <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowAddListingForm}>Add Listing</button>

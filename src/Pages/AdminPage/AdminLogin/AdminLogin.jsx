@@ -27,6 +27,8 @@ const AdminDashboard = () => {
     }
 
     try {
+      console.log("try chala");
+      
       const response = await fetch("http://localhost:5000/api/admin", {
         method: "POST",
         headers: {

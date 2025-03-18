@@ -78,7 +78,7 @@ const AddListing = () => {
         <div className="body gap-3 w-full h-auto flex">
   
   <div className="left w-[16%]">
-  <div className="side w-[25%]  max-[1000px]:hidden">
+  <div className="side w-[25%]  max-[1300px]:hidden">
     
           
     {isOpen ? (
@@ -138,7 +138,7 @@ const AddListing = () => {
     </div>
     <div
               id="sideNavIcon"
-              className=" w-[10%] p-3 min-[1000px]:hidden rounded-2xl h-screen fixed shadow-xl"
+              className=" w-[10%] p-3 min-[1300px]:hidden rounded-2xl h-screen fixed shadow-xl"
             >
               <div className="tabs w-full h-auto flex p-1 gap-3 flex-col ">
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
@@ -160,7 +160,7 @@ const AddListing = () => {
               </div>
   </div>
   
-  <div className="right p-3 w-[83%] ">
+  <div className="right p-3 w-[83%] max-[1300px]:w-full ">
   <AddListingForm/>
   </div>
         </div>

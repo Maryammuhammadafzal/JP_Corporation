@@ -80,12 +80,13 @@ const AdminDashboard = () => {
       {/* Main Body */}
       <div className="body gap-3 w-full h-auto flex">
 
-<div className="left w-[16%]">
-<div className="side w-[25%]  max-[1000px]:hidden">
+<div className="w-full h-auto flex justify-between">
+<div className="left w-[18%]">
+<div className="side w-full fixed max-[1300px]:hidden">
   
         
   {isOpen ? (
-          <div id="sideNav" className="left w-[250px] p-3 rounded-2xl h-screen fixed shadow-xl">
+          <div id="sideNav" className="left w-[250px] p-3 rounded-2xl h-screen  shadow-xl">
             <div className="w-full h-auto p-3">
               <p className="text-orange-500 text-xl">Main Menu </p>
             </div>
@@ -116,7 +117,7 @@ const AdminDashboard = () => {
   
           <div
             id="sideNavIcon"
-            className="left w-[80px] p-3 rounded-2xl h-screen fixed shadow-xl"
+            className="left w-[80px] p-3 rounded-2xl h-screen  shadow-xl"
           >
             <div className="tabs w-full h-auto flex p-1 gap-3 flex-col ">
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
@@ -141,7 +142,7 @@ const AdminDashboard = () => {
   </div>
   <div
             id="sideNavIcon"
-            className=" w-[10%] p-3 min-[1000px]:hidden rounded-2xl h-screen fixed shadow-xl"
+            className=" w-[10%] p-3 min-[1300px]:hidden rounded-2xl h-screen fixed shadow-xl"
           >
             <div className="tabs w-full h-auto flex p-1 gap-3 flex-col ">
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
@@ -163,9 +164,15 @@ const AdminDashboard = () => {
             </div>
 </div>
 
-<div className="right p-3 w-[83%] ">
+<div className="right  w-[82%] max-[1300px]:w-full flex flex-col gap-3 justify-end ">
 <CarListing/>
+<div className="copyright w-full h-[80px] border-t border-gray-400 flex justify-center items-center">
+  <p>Copyright  <a href="" className="text-orange-500">JP Corporation</a> © 2024. All rights reserved.</p>
+
 </div>
+</div>
+</div>
+
       </div>
     </div>
   );
