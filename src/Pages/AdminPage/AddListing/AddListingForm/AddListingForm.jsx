@@ -1,7 +1,134 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Button from "../../../../Components/Button/Button";
+import axios from "axios";
 
 const AddListingForm = () => {
+  const [featuredImage, setFeaturedImage] = useState(null);
+  const [attachmentImage, setAttachmentImage] = useState(null);
+  const [galleryImages, setGalleryImages] = useState([]);
+
+  const detailsArray = [];
+  const [details, setDetails] = useState(detailsArray);
+  const titleRef = useRef(null);
+  const conditionRef = useRef(null);
+  const typeRef = useRef(null);
+  const makeRef = useRef(null);
+  const modelRef = useRef(null);
+  const priceRef = useRef(null);
+  const yearRef = useRef(null);
+  const driveTypeRef = useRef(null);
+  const transmissionRef = useRef(null);
+  const fuelTypeRef = useRef(null);
+  const mileageRef = useRef(null);
+  const engineSizeRef = useRef(null);
+  const cylinderRef = useRef(null);
+  const colorRef = useRef(null);
+  const doorRef = useRef(null);
+  const vinRef = useRef(null);
+  const availabilityRef = useRef(null);
+  const descriptionRef = useRef(null);
+
+  const handleFeaturedChange = (e) => {
+    setFeaturedImage(e.target.files[0]);
+  };
+
+  const handleAttachmentChange = (e) => {
+    setAttachmentImage(e.target.files[0]);
+  };
+
+  const handleGalleryChange = (e) => {
+    setGalleryImages([...e.target.files]);
+  };
+
+  const validateDetails = (details) => {
+    const errors = [];
+
+    if (!details.title) errors.push("Title is required.");
+    else if (!details.condition) errors.push("Price is required.");
+    else if (!details.year) errors.push("Year is required.");
+
+    // Add more validations as needed...
+
+    return errors;
+  };
+
+  const SubmitDetail = async () => {
+    
+    const formData = new FormData();
+
+    formData.append("carTitle", titleRef.current.value);
+    formData.append("carCondition", conditionRef.current.value);
+    formData.append("CarType", typeRef.current.value);
+    formData.append("carMake", makeRef.current.value);
+    formData.append("carModel", modelRef.current.value);
+    formData.append("carPrice", priceRef.current.value);
+    formData.append("carYear", yearRef.current.value);
+    formData.append("carDriveType", driveTypeRef.current.value);
+    formData.append("carTransmission", transmissionRef.current.value);
+    formData.append("carFuelType", fuelTypeRef.current.value);
+    formData.append("carMileage", mileageRef.current.value);
+    formData.append("carEngineSize", engineSizeRef.current.value);
+    formData.append("carCylinder", cylinderRef.current.value);
+    formData.append("carColour", colorRef.current.value);
+    formData.append("carDoor", doorRef.current.value);
+    formData.append("carVin", vinRef.current.value);
+    formData.append("carAvailability", availabilityRef.current.value);
+    formData.append("description", descriptionRef.current.value);
+
+    // Images
+    if (featuredImage) formData.append("featuredImage", featuredImage);
+    if (attachmentImage) formData.append("attachmentImage", attachmentImage);
+
+    galleryImages.forEach((image, index) => {
+      formData.append("galleryImages", image); // Don't use index here if you use upload.fields
+    });
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await axios.post(
+        "http://localhost:5000/api/cards/add", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', 
+            'Authorization': `Bearer ${token}`      
+          },
+        }
+      );
+      console.log("Success" + JSON.stringify(response.data));
+      alert("Added Succesfully");
+
+      // ✅ Reset refs (text inputs + selects)
+      titleRef.current.value = "";
+      typeRef.current.value = "";
+      availabilityRef.current.value = "";
+      descriptionRef.current.value = "";
+      vinRef.current.value = "";
+      doorRef.current.value = "";
+      colorRef.current.value = "";
+      cylinderRef.current.value = "";
+      engineSizeRef.current.value = "";
+      mileageRef.current.value = "";
+      fuelTypeRef.current.value = "";
+      transmissionRef.current.value = "";
+      driveTypeRef.current.value = "";
+      yearRef.current.value = "";
+      priceRef.current.value = "";
+      modelRef.current.value = "";
+      makeRef.current.value = "";
+
+  
+      // ✅ Reset file inputs (if using IDs)
+      document.getElementById("image").value = "";
+  
+      // ✅ Reset checkboxes
+      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Error");
+    }
+
+  };
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">
       <div className="flex justify-between items-center p-6 mb-4">
@@ -17,6 +144,7 @@ const AddListingForm = () => {
               <input
                 type="text"
                 id="title"
+                ref={titleRef}
                 className="mt-2 w-full border rounded-md p-2"
                 placeholder="Enter Title Here"
               />
@@ -26,21 +154,39 @@ const AddListingForm = () => {
             <div className="w-[370px] my-3">
               <label htmlFor="title" className="w-full">
                 <p>
-                 Condition <sup className="text-orange-700">*</sup>
+                  Condition <sup className="text-orange-700">*</sup>
                 </p>
                 <select
                   id="condition"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Condition"
+                  ref={conditionRef}
                 >
-                  <option value="Select Condition" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Condition</option>
-                  <option value="Select Condition" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">New</option>
-                  <option value="Select Condition"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Used</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Condition
+                  </option>
+                  <option
+                    value="New"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    New
+                  </option>
+                  <option
+                    value="Old"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Used
+                  </option>
                 </select>
               </label>
             </div>
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
+              <label htmlFor="type" className="w-full">
                 <p>
                   Type <sup className="text-orange-700">*</sup>
                 </p>
@@ -48,53 +194,220 @@ const AddListingForm = () => {
                   id="condition"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Type"
+                  ref={typeRef}
                 >
-                  <option value="Select Type" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Condition</option>
-                  <option value="BUS" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">BUS</option>
-                  <option value="CONVERTIBLE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">CONVERTIBLE</option>
-                  <option value="COUPE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">COUPE</option>
-                  <option value="DUMP-TRUCK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">DUMP-TRUCK</option>
-                  <option value="FLAT BODY TRUCK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">FLAT BODY TRUCK</option>
-                  <option value="FREEZER BOX"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">FREEZER BOX</option>
-                  <option value="HATCHBACK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">HATCHBACK</option>
-                  <option value="MIN VAN"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">MIN VAN</option>
-                  <option value="MUV"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">MUV</option>
-                  <option value="PICKUP TRUCK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">PICK UP TRUCK</option>
-                  <option value="SEDAN"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">SEDAN</option>
-                  <option value="STATION WAGON"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">STATION WAGON</option>
-                  <option value="SUV"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">SUV</option>
-                  <option value="VAN"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">VAN</option>
-                  <option value="WAGON"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">WAGON</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Condition
+                  </option>
+                  <option
+                    value="BUS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BUS
+                  </option>
+                  <option
+                    value="CONVERTIBLE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CONVERTIBLE
+                  </option>
+                  <option
+                    value="COUPE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    COUPE
+                  </option>
+                  <option
+                    value="DUMP-TRUCK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    DUMP-TRUCK
+                  </option>
+                  <option
+                    value="FLAT BODY TRUCK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FLAT BODY TRUCK
+                  </option>
+                  <option
+                    value="FREEZER BOX"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FREEZER BOX
+                  </option>
+                  <option
+                    value="HATCHBACK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HATCHBACK
+                  </option>
+                  <option
+                    value="MIN VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MIN VAN
+                  </option>
+                  <option
+                    value="MUV"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MUV
+                  </option>
+                  <option
+                    value="PICKUP TRUCK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PICK UP TRUCK
+                  </option>
+                  <option
+                    value="SEDAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SEDAN
+                  </option>
+                  <option
+                    value="STATION WAGON"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    STATION WAGON
+                  </option>
+                  <option
+                    value="SUV"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUV
+                  </option>
+                  <option
+                    value="VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VAN
+                  </option>
+                  <option
+                    value="WAGON"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    WAGON
+                  </option>
                 </select>
               </label>
             </div>
 
+            {/* Make Input */}
             <div className="w-[370px] my-3">
-            <select
-                  id="Type"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
-                  placeholder="Select Type"
+              <select
+                id="make"
+                className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
+                placeholder="Select make"
+                ref={makeRef}
+              >
+                <option
+                  value=""
+                  selected
+                  disabled
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
                 >
-                  <option value="Select Type" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Condition</option>
-                  <option value="BUS" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">BUS</option>
-                  <option value="CONVERTIBLE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">CONVERTIBLE</option>
-                  <option value="COUPE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">COUPE</option>
-                  <option value="DUMP-TRUCK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">DUMP-TRUCK</option>
-                  <option value="FLAT BODY TRUCK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">FLAT BODY TRUCK</option>
-                  <option value="FREEZER BOX"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">FREEZER BOX</option>
-                  <option value="HATCHBACK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">HATCHBACK</option>
-                  <option value="MIN VAN"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">MIN VAN</option>
-                  <option value="MUV"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">MUV</option>
-                  <option value="PICKUP TRUCK"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">PICK UP TRUCK</option>
-                  <option value="SEDAN"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">SEDAN</option>
-                  <option value="STATION WAGON"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">STATION WAGON</option>
-                  <option value="SUV"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">SUV</option>
-                  <option value="VAN"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">VAN</option>
-                  <option value="WAGON"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">WAGON</option>
-                </select>
+                  Select Make
+                </option>
+                <option
+                  value="BUS"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  BUS
+                </option>
+                <option
+                  value="CONVERTIBLE"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  CONVERTIBLE
+                </option>
+                <option
+                  value="COUPE"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  COUPE
+                </option>
+                <option
+                  value="DUMP-TRUCK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  DUMP-TRUCK
+                </option>
+                <option
+                  value="FLAT BODY TRUCK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  FLAT BODY TRUCK
+                </option>
+                <option
+                  value="FREEZER BOX"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  FREEZER BOX
+                </option>
+                <option
+                  value="HATCHBACK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  HATCHBACK
+                </option>
+                <option
+                  value="MIN VAN"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  MIN VAN
+                </option>
+                <option
+                  value="MUV"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  MUV
+                </option>
+                <option
+                  value="PICKUP TRUCK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  PICK UP TRUCK
+                </option>
+                <option
+                  value="SEDAN"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  SEDAN
+                </option>
+                <option
+                  value="STATION WAGON"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  STATION WAGON
+                </option>
+                <option
+                  value="SUV"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  SUV
+                </option>
+                <option
+                  value="VAN"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  VAN
+                </option>
+                <option
+                  value="WAGON"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  WAGON
+                </option>
+              </select>
             </div>
 
-{/* Model Input */}
+            {/* Model Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="title" className="w-full">
                 <p>
@@ -103,26 +416,59 @@ const AddListingForm = () => {
                 <select
                   id="condition"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
-                  placeholder="Select Make"
+                  placeholder="Select Model"
+                  ref={modelRef}
                 >
-                  <option value="Select Model" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Model</option>
-                  <option value="ATS" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">ATS</option>
-                  <option value="CT6"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">CT6</option>
-                  <option value="CTS"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">CTS</option>
-                  <option value="Escalade"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Escalade</option>
-                  <option value="xt5"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">xt5</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Model
+                  </option>
+                  <option
+                    value="ATS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    ATS
+                  </option>
+                  <option
+                    value="CT6"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CT6
+                  </option>
+                  <option
+                    value="CTS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CTS
+                  </option>
+                  <option
+                    value="Escalade"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Escalade
+                  </option>
+                  <option
+                    value="xt5"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    xt5
+                  </option>
                 </select>
               </label>
             </div>
-          
+
+            {/*Price Input  */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
-                <p>
-                  Price (USD)
-                </p>
+              <label htmlFor="price" className="w-full">
+                <p>Price (USD)</p>
                 <input
                   type="number"
                   id="price"
+                  ref={priceRef}
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
@@ -135,173 +481,445 @@ const AddListingForm = () => {
                 <input
                   type="number"
                   id="year"
+                  ref={yearRef}
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
             </div>
+
+            {/* Drive Type Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="type" className="w-full">
-                <p>
-                 Drive Type 
-                </p>
+              <label htmlFor="driveType" className="w-full">
+                <p>Drive Type</p>
                 <select
-                  id="type"
+                  id="driveType"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
-                  placeholder="Select type"
+                  placeholder="Select drive Type"
+                  ref={driveTypeRef}
                 >
-                  <option value="Select Type" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Model</option>
-                  <option value="2WD" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">2WD</option>
-                  <option value="4WD"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">4WD</option>
-                  <option value="AW TS PW TV Airbag Navigation"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">AW TS PW TV Airbag Navigation</option>
-                  <option value="AWD/4WD"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">AWD/4WD</option>
-                  <option value="FRONT WHEEL DRIVE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">FRONT WHEEL DRIVE</option>
-                  <option value="REAR WHEEL DRIVE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">REAR WHEEL DRIVE</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Drive Type
+                  </option>
+                  <option
+                    value="2WD"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    2WD
+                  </option>
+                  <option
+                    value="4WD"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    4WD
+                  </option>
+                  <option
+                    value="AW TS PW TV Airbag Navigation"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AW TS PW TV Airbag Navigation
+                  </option>
+                  <option
+                    value="AWD/4WD"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AWD/4WD
+                  </option>
+                  <option
+                    value="FRONT WHEEL DRIVE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FRONT WHEEL DRIVE
+                  </option>
+                  <option
+                    value="REAR WHEEL DRIVE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    REAR WHEEL DRIVE
+                  </option>
                 </select>
               </label>
             </div>
+
+            {/* Transmission Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="transmission" className="w-full">
-                <p>
-                  Select Transmission <sup className="text-orange-700">*</sup>
-                </p>
+                <p>Select Transmission</p>
                 <select
                   id="transmission"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select transmission"
+                  ref={transmissionRef}
                 >
-                  <option value="Select Transmission" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Transmission</option>
-                  <option value="AT" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">AT</option>
-                  <option value="AUTOMATIC"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">AUTOMATIC</option>
-                  <option value="MANUAL"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">AW TS PW TV Airbag Navigation</option>
-                  <option value="MT"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">MT</option>
-                  <option value="SEMI-AUTOMATIC"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">FRONT WHEEL DRIVE</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Transmission
+                  </option>
+                  <option
+                    value="AT"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AT
+                  </option>
+                  <option
+                    value="AUTOMATIC"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AUTOMATIC
+                  </option>
+                  <option
+                    value="MANUAL"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AW TS PW TV Airbag Navigation
+                  </option>
+                  <option
+                    value="MT"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MT
+                  </option>
+                  <option
+                    value="SEMI-AUTOMATIC"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FRONT WHEEL DRIVE
+                  </option>
                 </select>
               </label>
             </div>
+
+            {/* Fuel Type Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
-                <p>
-                  Fuel Type <sup className="text-orange-700">*</sup>
-                </p>
+              <label htmlFor="fuelType" className="w-full">
+                <p>Fuel Type</p>
                 <select
                   id="fuelType"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select fuelType"
+                  ref={fuelTypeRef}
                 >
-                  <option value="Select Fuel Type" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Fuel Type</option>
-                  <option value="DEISEL" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">DEISEL</option>
-                  <option value="ELECTRIC"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">ELECTRIC</option>
-                  <option value="GAS"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">GAS</option>
-                  <option value="GASOLINE"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">GASOLINE</option>
-                  <option value="HYBRID"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">PETROL</option>
-                  <option value="PETROL"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">PETROL</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Fuel Type
+                  </option>
+                  <option
+                    value="DEISEL"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    DEISEL
+                  </option>
+                  <option
+                    value="ELECTRIC"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    ELECTRIC
+                  </option>
+                  <option
+                    value="GAS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    GAS
+                  </option>
+                  <option
+                    value="GASOLINE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    GASOLINE
+                  </option>
+                  <option
+                    value="HYBRID"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PETROL
+                  </option>
+                  <option
+                    value="PETROL"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PETROL
+                  </option>
                 </select>
               </label>
             </div>
+
+            {/* Mileage Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="mileage" className="w-full">
-                <p>
-                  Mileage <sup className="text-orange-700">*</sup>
-                </p>
+                <p>Mileage</p>
                 <input
                   type="number"
                   id="mileage"
+                  ref={mileageRef}
                   placeholder="Enter Mileage Here"
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
             </div>
+
+            {/* Engine Size Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="engineSize" className="w-full">
-                <p>
-                  Enter Engine Size <sup className="text-orange-700">*</sup>
-                </p>
+                <p>Enter Engine Size</p>
                 <input
                   type="number"
                   id="engineSize"
+                  ref={engineSizeRef}
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
             </div>
+
+            {/* Cylinder Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
-                <p>
-                  Select Cylinders <sup className="text-orange-700">*</sup>
-                </p>
+              <label htmlFor="cylinder" className="w-full">
+                <p>Select Cylinders</p>
                 <select
                   id="cylinder"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select cylinder"
+                  ref={cylinderRef}
                 >
-                  <option value="Select Cylinders" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Fuel Type</option>
-                  <option value="4" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">4</option>
-                  <option value="6"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">6</option>
-                  <option value="8"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">8</option>
-                     </select>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Fuel Type
+                  </option>
+                  <option
+                    value="4"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    4
+                  </option>
+                  <option
+                    value="6"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    6
+                  </option>
+                  <option
+                    value="8"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    8
+                  </option>
+                </select>
               </label>
             </div>
+
+            {/* Colours Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="colours" className="w-full">
-                <p>
-                  Select Colours <sup className="text-orange-700">*</sup>
-                </p>
+                <p>Select Colours</p>
                 <select
                   id="colours"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select colours"
+                  ref={colorRef}
                 >
-                  <option value="Select Colours" selected disabled className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2">Select Colours</option>
-                  <option value="Black" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Black</option>
-                  <option value="Blue"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Blue</option>
-                  <option value="Brown"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Brown</option>
-                  <option value="Gold"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Gold</option>
-                  <option value="Grey"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Grey</option>
-                  <option value="Green"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Green</option>
-                
-                  <option value="Orange" className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Orange</option>
-                  <option value="Pearl white"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Pearl white</option>
-                  <option value="Red"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Red</option>
-                  <option value="Silver"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Silver</option>
-                  <option value="White"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">White</option>
-                  <option value="Wine"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Wine</option>
-                  <option value="Yellow"  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2">Yellow</option>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Colours
+                  </option>
+                  <option
+                    value="Black"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Black
+                  </option>
+                  <option
+                    value="Blue"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Blue
+                  </option>
+                  <option
+                    value="Brown"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Brown
+                  </option>
+                  <option
+                    value="Gold"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Gold
+                  </option>
+                  <option
+                    value="Grey"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Grey
+                  </option>
+                  <option
+                    value="Green"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Green
+                  </option>
+
+                  <option
+                    value="Orange"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Orange
+                  </option>
+                  <option
+                    value="Pearl white"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Pearl white
+                  </option>
+                  <option
+                    value="Red"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Red
+                  </option>
+                  <option
+                    value="Silver"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Silver
+                  </option>
+                  <option
+                    value="White"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    White
+                  </option>
+                  <option
+                    value="Wine"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Wine
+                  </option>
+                  <option
+                    value="Yellow"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Yellow
+                  </option>
                 </select>
               </label>
             </div>
+
+            {/* Door Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
-                <p>
-                  Listing Title <sup className="text-orange-700">*</sup>
-                </p>
+              <label htmlFor="door" className="w-full">
+                <p>Doors</p>
+                <select
+                  id="door"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
+                  placeholder="Select Doors"
+                  ref={doorRef}
+                >
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Doors
+                  </option>
+                  <option
+                    value="2 Doors"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    2 Doors
+                  </option>
+                  <option
+                    value="3-Door"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    3-Door
+                  </option>
+                  <option
+                    value="4-Door"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    4-Door
+                  </option>
+                  <option
+                    value="5-Door"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    5-Door
+                  </option>
+                  <option
+                    value="5D"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    5D
+                  </option>
+                </select>
+              </label>
+            </div>
+
+            {/* Vin Input */}
+            <div className="w-[370px] my-3">
+              <label htmlFor="vin" className="w-full">
+                <p>Vin</p>
                 <input
                   type="text"
-                  id="title"
+                  id="vin"
+                  ref={vinRef}
                   className="mt-2 w-full border rounded-md p-2"
+                  placeholder="Enter Vin Here"
                 />
               </label>
             </div>
+
+            {/* Availabilty Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
-                <p>
-                  Listing Title <sup className="text-orange-700">*</sup>
-                </p>
-                <input
-                  type="text"
-                  id="title"
-                  className="mt-2 w-full border rounded-md p-2"
-                />
-              </label>
-            </div>
-            <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
-                <p>
-                  Listing Title <sup className="text-orange-700">*</sup>
-                </p>
-                <input
-                  type="text"
-                  id="title"
-                  className="mt-2 w-full border rounded-md p-2"
-                />
+              <label htmlFor="avaialability" className="w-full">
+                <p>Availability</p>
+                <select
+                  id="availability"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
+                  placeholder="Select Availability"
+                  ref={availabilityRef}
+                >
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Availability
+                  </option>
+                  <option
+                    value="Available"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Available
+                  </option>
+                  <option
+                    value="Sold"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Sold
+                  </option>
+                </select>
               </label>
             </div>
           </div>
@@ -311,6 +929,7 @@ const AddListingForm = () => {
               <p>Description </p>
               <textarea
                 id="description"
+                ref={descriptionRef}
                 className="mt-2 w-full h-[250px] border rounded-md p-2"
               />
             </label>
@@ -329,7 +948,6 @@ const AddListingForm = () => {
             {/* Custom Button */}
             <button
               type="button"
-              //  onClick={handleButtonClick}
               className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
             >
               Upload File
@@ -338,17 +956,11 @@ const AddListingForm = () => {
             {/* Hidden Input */}
             <input
               type="file"
+              id="image"
               //  ref={fileInputRef}
-              //  onChange={handleFileChange}
+              onChange={handleFeaturedChange}
               className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
             />
-
-            {/* Display File Name */}
-            {/* {selectedFile && (
-        <div className="text-gray-700">
-          Selected file: <strong>{selectedFile.name}</strong>
-        </div>
-      )} */}
           </label>
         </div>
       </div>
@@ -358,32 +970,23 @@ const AddListingForm = () => {
 
       <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
         <div className="flex flex-col gap-2 space-y-4">
-          Upload Featured Image
+          Upload Gallery Image
           <label htmlFor="" className="w-full h-auto flex">
-            {/* Custom Button */}
             <button
-              type="button"
+              type="file"
               //  onClick={handleButtonClick}
               className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
             >
               Upload File
             </button>
 
-            {/* Hidden Input */}
             <input
               type="file"
+              id="image"
               multiple
-              //  ref={fileInputRef}
-              //  onChange={handleFileChange}
+              onChange={handleGalleryChange}
               className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
             />
-
-            {/* Display File Name */}
-            {/* {selectedFile && (
-        <div className="text-gray-700">
-          Selected file: <strong>{selectedFile.name}</strong>
-        </div>
-      )} */}
           </label>
         </div>
       </div>
@@ -396,30 +999,19 @@ const AddListingForm = () => {
         <div className="flex flex-col gap-2 space-y-4">
           Upload Attachement
           <label htmlFor="" className="w-full h-auto flex">
-            {/* Custom Button */}
             <button
               type="button"
-              //  onClick={handleButtonClick}
               className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
             >
               Upload File
             </button>
 
-            {/* Hidden Input */}
             <input
               type="file"
-              multiple
-              //  ref={fileInputRef}
-              //  onChange={handleFileChange}
+              id="image"
+              onChange={handleAttachmentChange}
               className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
             />
-
-            {/* Display File Name */}
-            {/* {selectedFile && (
-        <div className="text-gray-700">
-          Selected file: <strong>{selectedFile.name}</strong>
-        </div>
-      )} */}
           </label>
         </div>
       </div>
@@ -1397,7 +1989,7 @@ const AddListingForm = () => {
 
       <div class="card p-6 flex  border rounded-md ">
         <div class="row flex flex-wrap m-2">
-          <div class="card-body p-4"> 
+          <div class="card-body p-4">
             <div class="row flex flex-wrap m-2">
               <div class="col-md-4 mb-3 w-[360px] px-3 py-1">
                 <div class="form-check">
@@ -1429,7 +2021,7 @@ const AddListingForm = () => {
                     class="form-check-label"
                     onclick="toggleCheckbox('feature-37')"
                   >
-                   Automatic High Beam
+                    Automatic High Beam
                   </label>
                 </div>
               </div>
@@ -1499,7 +2091,7 @@ const AddListingForm = () => {
                     class="form-check-label"
                     onclick="toggleCheckbox('feature-41')"
                   >
-                   Clearance Sonar
+                    Clearance Sonar
                   </label>
                 </div>
               </div>
@@ -1588,7 +2180,7 @@ const AddListingForm = () => {
                     class="form-check-label"
                     onclick="toggleCheckbox('feature-46')"
                   >
-                   ESC (Electronic Stability Control)
+                    ESC (Electronic Stability Control)
                   </label>
                 </div>
               </div>
@@ -1624,7 +2216,8 @@ const AddListingForm = () => {
                     class="form-check-label"
                     onclick="toggleCheckbox('feature-48')"
                   >
-                    ESC (Electronic Stability Control) Collision Safety Body Collision Damage Reduction System
+                    ESC (Electronic Stability Control) Collision Safety Body
+                    Collision Damage Reduction System
                   </label>
                 </div>
               </div>
@@ -1677,7 +2270,7 @@ const AddListingForm = () => {
                     class="form-check-label"
                     onclick="toggleCheckbox('feature-51')"
                   >
-                   Parking assist systems
+                    Parking assist systems
                   </label>
                 </div>
               </div>
@@ -1721,7 +2314,7 @@ const AddListingForm = () => {
       </div>
 
       <div className="button w-full flex justify-start items-center p-6">
-       <Button text="Add Listing"/>
+        <Button text="Add Listing" onClick={SubmitDetail} />
       </div>
     </div>
   );

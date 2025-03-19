@@ -1,5 +1,5 @@
 import express from 'express';
-import Car from '../models/CardModel.js'; 
+import Car from '../models/CarModel.js';
 import verifyToken from '../middlewares/tokenVerify.js';
 
 const router = express.Router();
@@ -9,19 +9,8 @@ router.get('/', verifyToken, (req, res) => {
     res.json({ message: "Welcome to the dashboard", data: [] });
 });
 
-// Add New Car
-router.post('/add', verifyToken, async (req, res) => {
-    const { name, password } = req.body;
 
-    try {
-        const car = new Car({ name, password });
-        const savedCar = await car.save();
 
-        res.json({ message: "Car added successfully", data: savedCar });
-    } catch (err) {
-        res.status(400).json({ message: "Failed to add car", error: err.message });
-    }
-});
 
 // Update Car
 router.put('/update/:id', verifyToken, async (req, res) => {
