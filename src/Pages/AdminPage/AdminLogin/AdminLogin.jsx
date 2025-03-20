@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Logo from "../../../assets/Images/jplogo.png";
 import Button from "../../../Components/Button/Button";
 import { FaEye } from "react-icons/fa";
@@ -13,7 +13,14 @@ const AdminDashboard = () => {
     setShowPassword(!showPassword);
   };
 
-  // Handle Form Submission
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      // User already logged in
+      window.location.replace("/dashboard");
+    }
+  }, []);
+ 
   // Handle Form Submission
   const handleForm = async (event) => {
     event.preventDefault();
@@ -43,8 +50,10 @@ const AdminDashboard = () => {
         // Save token in localStorage
         localStorage.setItem("adminToken", data.token);
         alert("Login successful!");
+        username = ""
+        password = ""
         // Redirect to Dashboard or wherever
-        window.location.href = "/dashboard";
+        window.location.replace = "/dashboard";
       } else {
         alert(data.message);
       }
@@ -53,6 +62,7 @@ const AdminDashboard = () => {
       alert("Something went wrong. Please try again.");
     }
   };
+
 
   return (
     <div className="w-full h-auto flex relative">

@@ -14,6 +14,12 @@ const AdminDashboard = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    alert("admin Logout Successfully")
+    window.location.href = "/admin";
+    }
+
   return (
     <div className="w-full h-auto">
 
@@ -69,7 +75,7 @@ const AdminDashboard = () => {
 
 {/* Logout Button */}
           <div className="w-auto p-3 h-auto flex justify-center items-center">
-            <button className="w-fit max-[600px]:w-full h-fit py-3 px-5 font-semibold text-lg text-white bg-orange-600 rounded-xl cursor-pointer">
+            <button className="w-fit max-[600px]:w-full h-fit py-3 px-5 font-semibold text-lg text-white bg-orange-600 rounded-xl cursor-pointer" onClick={handleLogout}>
               Logout
             </button>
           </div>

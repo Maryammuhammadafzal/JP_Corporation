@@ -4,7 +4,7 @@ import verifyToken from "../middlewares/tokenVerify.js";
 // Get All Car
 export const getCars =  async (req, res) => {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 100;
 
         const getCar = await Car.find()
                 .skip((page - 1) * limit)
@@ -14,27 +14,28 @@ export const getCars =  async (req, res) => {
 };
 
 
-// Update Car
-export const updateCar = async (req, res) => {
+// Get Car by id
+export const getCarById = async (req, res) => {
         const id = req.params.id;
-        const { name, password } = req.body;
-    
         try {
-            const updatedCar = await Car.findByIdAndUpdate(id, { name, password }, { new: true });
-    
-            if (!updatedCar) {
-                return res.status(404).json({ message: "Car not found" });
+            const car = await Car.findById(id);
+        
+            if (!car) {
+              return res.status(404).json({ message: "Car not found" });
             }
-    
-            res.json({ message: "Car updated successfully", data: updatedCar });
-        } catch (err) {
-            res.status(400).json({ message: "Failed to update car", error: err.message });
-        }
+        
+            res.status(200).json(car);
+          } catch (error) {
+            console.error("Error fetching car by ID:", error);
+            res.status(500).json({ message: "Server error" });
+          }
     };
     
     // Delete Car
 export const deleteCar =  async (req, res) => {
         const id = req.params.id;
+        console.log(id);
+        
     
         try {
             const deletedCar = await Car.findByIdAndDelete(id);

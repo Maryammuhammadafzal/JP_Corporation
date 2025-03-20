@@ -12,6 +12,7 @@ import CardPage from "./Pages/CardPage/CardPage";
 import AdminLogin from "./Pages/AdminPage/AdminLogin/AdminLogin";
 import AdminDashboard from "./Pages/AdminPage/AdminDashboard/AdminDashboard";
 import AddListing from "./Pages/AdminPage/AddListing/AddListing";
+import EditListing from "./Pages/AdminPage/EditListing/EditListing";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/listing/add-listing" element={<AddListing />} />
+          <Route path="/listing/edit-listing/get/:id" element={<EditListing />} />
         </Routes>
       </BrowserRouter>
     </div>

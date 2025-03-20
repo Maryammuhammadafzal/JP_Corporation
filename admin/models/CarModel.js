@@ -18,6 +18,7 @@ const CarSchema = new mongoose.Schema({
   carDoor: { type: String },
   carVin: { type: String },
   carAvailability: { type: String },
+  carDescription: { type: String },
   featuredImage: { type: String },          
   attachmentImage: { type: String },        
   galleryImages: [{ type: String }]

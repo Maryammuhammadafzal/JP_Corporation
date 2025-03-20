@@ -10,14 +10,15 @@ import Button from "../../Components/Button/Button"
 import CardCarousel from "../CardCarousel/CardCarousel";
 import { FaEnvelope } from "react-icons/fa";
 const ProductPreview = () => {
-  const location = useLocation();
-  const { title, image, miles, price, transition, model } = location.state;
+  // const location = useLocation();
+  // const { title, image, miles, price, transition, model } = location.state;
   return (
     <div className="bg-white w-full">
       <div className=" pt-3 max-[1200px]:flex-col flex w-full rounded-lg">
       <div className="min-[1200px]:hidden p-3">
               <h1 className="text-5xl font-semibold tracking-wide text-gray-900  max-[500px]:text-3xl  max-[360px]:text-2xl">
-                {title}
+                {/* {title} */}
+                Carfax Report
               </h1>
             </div>
 
@@ -25,13 +26,13 @@ const ProductPreview = () => {
             <div className="min-[1200px]:hidden  max-[500px]:my-0 p-3   border-b border-gray-400 ">
               <div className="flex my-4  max-[500px]:my-1 gap-5">
                 <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px] marker:text-orange-600  tracking-tight text-gray-400">
-                  {model}
+                  {/* {model} */}
                 </li>
                 <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px]  marker:text-orange-600 tracking-tight text-gray-400">
-                  {miles}
+                  {/* {miles} */}
                 </li>
                 <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px]  marker:text-orange-600 tracking-tight text-gray-400">
-                  {transition}
+                  {/* {transition} */}
                 </li>
               </div>
             </div>
@@ -40,7 +41,8 @@ const ProductPreview = () => {
         
         <div className="w-[60%]  max-[1200px]:w-full h-auto  rounded-lg flex flex-col  p-3 ">
           <img
-            src={image}
+            // src={image}
+            src={SideCarImage}
             alt="Two each of gray, white, and black shirts laying flat."
             className=" w-full h-full rounded-lg"
           />
@@ -78,7 +80,7 @@ const ProductPreview = () => {
           <div className="w-auto max-[700px]:w-full h-auto p-3 max-[500px]:p-2 gap-3 flex flex-col min-[1200px]:items-start items-center ">
             <div className="max-[1200px]:hidden" >
               <h1 className="text-5xl font-semibold tracking-wide text-gray-900 ">
-                {title}
+                {/* {title} */}
               </h1>
             </div>
 
@@ -86,13 +88,13 @@ const ProductPreview = () => {
             <div className="my-4 max-[1200px]:hidden  border-b border-gray-400 ">
               <div className="flex my-4 gap-5">
                 <li className="text-lg marker:text-orange-600  tracking-tight text-gray-400">
-                  {model}
+                  {/* {model} */}
                 </li>
                 <li className="text-lg  marker:text-orange-600 tracking-tight text-gray-400">
-                  {miles}
+                  {/* {miles} */}
                 </li>
                 <li className="text-lg  marker:text-orange-600 tracking-tight text-gray-400">
-                  {transition}
+                  {/* {transition} */}
                 </li>
               </div>
             </div>
@@ -100,7 +102,7 @@ const ProductPreview = () => {
             <form className="w-full">
               <div className="price w-full">
                 <h3 className="carPrice font-extrabold text-4xl text-orange-600">
-                  {price}
+                  {/* {price} */}
                 </h3>
               </div>
               <div className="features w-full mt-5  rounded-2xl bg-blue-50 max-[700px]:p-1 p-3 flex-col flex">

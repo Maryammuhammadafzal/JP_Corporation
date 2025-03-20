@@ -21,17 +21,24 @@ const  fetchCarData = async () => {
   
   }
 }
-fetchCarData()
 
-  // Dummy car data (add more items to test)
-  const allCars = Array.from({ length: entriesPerPage }, (_, index) => carData);
-
-  console.log(allCars);
+useEffect(()=> {
   
-  // Filter search
-  const filteredCars = allCars.filter((car) =>
-    car?.carTitle?.toLowerCase().includes(search.toLowerCase())
-  );
+fetchCarData()
+} , [])
+
+ // allCars array
+ const allCars = carData;
+console.log(allCars);
+
+
+ // Filter search
+ const filteredCars = allCars.map((car) =>
+ {
+  car?.carTitle?.toLowerCase()?.includes(search?.toLowerCase())
+ } 
+  
+ );
 
   // Pagination Logic
   const indexOfLastCar = currentPage * entriesPerPage;
@@ -39,9 +46,18 @@ fetchCarData()
   const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
   const totalPages = Math.ceil(filteredCars.length / entriesPerPage);
 
-  const handleDelete = (id) => {
-    console.log(`Delete car with id: ${id}`);
-    // Normally you'd update your DB or state here
+  const handleDelete = async(id , title) => {
+const response = await axios.delete(`http://localhost:5000/api/dashboard/delete/${id}`)
+if(response.status === 200){
+  alert(`${title} deleted`); 
+  fetchCarData()
+  } else {
+    alert("error")
+    }
+  };
+  const handleEdit = async(id ) => {
+    localStorage.setItem("EditId" , id);
+    window.location.href = `/listing/edit-listing/get/${id}`;
   };
 
   const handleEntriesChange = (e) => {
@@ -68,17 +84,17 @@ fetchCarData()
           {/* Controls */}
           <div className="flex flex-col md:flex-row justify-between items-center px-6 py-2 mb-4 gap-4">
         <div>
-          Show{" "}
+          Show
           <select
             value={entriesPerPage}
             onChange={handleEntriesChange}
             className="border p-1 rounded"
           >
             <option value={15}>15</option>
-            <option value={30}>30</option>
+            <option value={30}>30</option> 
             <option value={50}>50</option>
             <option value={100}>100</option>
-          </select>{" "}
+          </select>
           entries
         </div>
 
@@ -107,25 +123,26 @@ fetchCarData()
             </tr>
           </thead>
           <tbody>
-            {allCars
-              .filter((car) => car.title.toLowerCase().includes(search.toLowerCase()))
-              .map((car, index) => (
+            {carData
+              .filter((car) => car.carTitle.toLowerCase().includes(search.toLowerCase()))
+              .map((car, index) => ( 
                 <tr key={car.id} className="border-b">
                   <td className="p-2 text-center">{index + 1}</td>
                   <td className="p-2 text-center">
-                    <img src={car.image} alt="Car" className="w-10 h-10 object-cover" />
+                    <img src={`../../../../admin/uploads/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
                   </td>
-                  <td className="p-2 text-center">{car.title}</td>
-                  <td className="p-2 text-center">{car.type}</td>
-                  <td className="p-2 text-center">{car.make}</td>
-                  <td className="p-2 text-center">{car.year}</td>
-                  <td className="p-2 text-center">{car.uploadedAt}</td>
-                  <td className="p-2 text-center">{car.uploadedBy}</td>
+                  
+                  <td className="p-2 text-center">{car.carTitle}</td>
+                  <td className="p-2 text-center">{car.carType}</td>
+                  <td className="p-2 text-center">{car.carMake}</td>
+                  <td className="p-2 text-center">{car.carYear}</td>
+                  <td className="p-2 text-center">{car.createdAt.slice(0,10)}</td>
+                  <td className="p-2 text-center">admin</td>
                   <td className="p-2 justify-center flex space-x-2">
-                    <button className="text-blue-500">
+                    <button className="text-orange-500" onClick={() => handleEdit(car._id , car.carTitle)}>
                       <FaEdit />
                     </button>
-                    <button className="text-red-500" onClick={() => handleDelete(car.id)}>
+                    <button className="text-red-500" onClick={() => handleDelete(car._id , car.carTitle)}>
                       <FaTrash />
                     </button>
                   </td>
