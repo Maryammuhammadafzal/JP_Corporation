@@ -1,11 +1,11 @@
 import express from "express";
-import { getCards, postCar } from '../controllers/cardController.js';
+import { getCars, postCar } from '../controllers/cardController.js';
 import verifyToken from '../middlewares/tokenVerify.js';
 import upload from '../middlewares/upload.js';
 
 const router = express.Router();
 
-router.get("/", getCards);
+router.get("/", getCars);
 router.post("/add", upload.fields([
         { name: 'featuredImage', maxCount: 1 },
         { name: 'attachmentImage', maxCount: 1 },

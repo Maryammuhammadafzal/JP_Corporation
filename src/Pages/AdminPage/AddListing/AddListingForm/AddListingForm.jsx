@@ -53,7 +53,6 @@ const AddListingForm = () => {
   };
 
   const SubmitDetail = async () => {
-    
     const formData = new FormData();
 
     formData.append("carTitle", titleRef.current.value);
@@ -86,17 +85,19 @@ const AddListingForm = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.post(
-        "http://localhost:5000/api/cards/add", formData, {
+        "http://localhost:5000/api/cards/add",
+        formData,
+        {
           headers: {
-            'Content-Type': 'multipart/form-data', 
-            'Authorization': `Bearer ${token}`      
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
       console.log("Success" + JSON.stringify(response.data));
       alert("Added Succesfully");
 
-      // ✅ Reset refs (text inputs + selects)
+      // Reset refs 
       titleRef.current.value = "";
       typeRef.current.value = "";
       availabilityRef.current.value = "";
@@ -115,19 +116,19 @@ const AddListingForm = () => {
       modelRef.current.value = "";
       makeRef.current.value = "";
 
-  
-      // ✅ Reset file inputs (if using IDs)
+      // Reset file inputs
       document.getElementById("image").value = "";
-  
-      // ✅ Reset checkboxes
-      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-        checkbox.checked = false;
-      });
+
+      // Reset checkboxes
+      document
+        .querySelectorAll("input[type='checkbox']")
+        .forEach((checkbox) => {
+          checkbox.checked = false;
+        });
     } catch (error) {
       console.error(error);
       alert("Error");
     }
-
   };
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">

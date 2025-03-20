@@ -1,26 +1,36 @@
-import { useState } from "react";
+import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import axios from "axios"
 
 const CarListings = () => {
   const [search, setSearch] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
+  const [carData , setCarData] = useState([]);
+
+const  fetchCarData = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/dashboard")
+    const data = await res.data;
+    console.log(data);
+    setCarData(data);
+    
+    
+  }catch (error) {
+  console.log("error" ,error.message);
+  
+  }
+}
+fetchCarData()
 
   // Dummy car data (add more items to test)
-  const allCars = Array.from({ length: entriesPerPage }, (_, index) => ({
-    id: index + 1,
-    image: "https://via.placeholder.com/50",
-    title: `Car Model ${index + 1}`,
-    type: "SEDAN",
-    make: "TOYOTA",
-    year: 2000 + (index % 20),
-    uploadedAt: "10-03-2025 03:17 AM",
-    uploadedBy: "Admin",
-  }));
+  const allCars = Array.from({ length: entriesPerPage }, (_, index) => carData);
 
+  console.log(allCars);
+  
   // Filter search
   const filteredCars = allCars.filter((car) =>
-    car.title.toLowerCase().includes(search.toLowerCase())
+    car?.carTitle?.toLowerCase().includes(search.toLowerCase())
   );
 
   // Pagination Logic

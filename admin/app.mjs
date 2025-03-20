@@ -21,7 +21,7 @@ app.use(express.json())
 app.use("/uploads", express.static("public/uploads"));
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/cards", carRoutes);
-app.use("api/dashboard" , dashboardRoutes)
+app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
 
 // MongoDB Connection

@@ -2,15 +2,15 @@ import Car from '../models/CarModel.js';
 import upload from '../middlewares/upload.js'
 
 // GET all cards
-export const getCards = async (req, res) => {
+export const getCars = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
-        const cards = await Car.find()
+        const getCar = await Car.find()
                 .skip((page - 1) * limit)
                 .limit(limit);
 
-        res.json(cards);
+        res.json(getCar);
 };
 
 export const postCar = async (req, res) => {
@@ -87,66 +87,3 @@ export const postCar = async (req, res) => {
           });
         }
       };
-      
-// Add New Car
-// router.post('/add', verifyToken, async (req, res) => {
-//         const {
-//           carTitle,
-//           carCondition,
-//           CarType,
-//           carMake,
-//           carModel,
-//           carPrice,
-//           carYear,
-//           carDriveType,
-//           carTransmission,
-//           carFuelType,
-//           carMileage,
-//           carEngineSize,
-//           carCylinder,
-//           carColour,
-//           carDoor,
-//           carVin,
-//           carAvailability,
-//           // image, // Uncomment if needed
-//           // miles, // Uncomment if needed
-//           // transition // Uncomment if needed
-//         } = req.body;
-      
-//         try {
-//           const newCar = new Car({
-//             carTitle,
-//             carCondition,
-//             CarType,
-//             carMake,
-//             carModel,
-//             carPrice,
-//             carYear,
-//             carDriveType,
-//             carTransmission,
-//             carFuelType,
-//             carMileage,
-//             carEngineSize,
-//             carCylinder,
-//             carColour,
-//             carDoor,
-//             carVin,
-//             carAvailability,
-//             // image,
-//             // miles,
-//             // transition
-//           });
-      
-//           const savedCar = await newCar.save();
-      
-//           res.status(201).json({
-//             message: "Car added successfully",
-//             data: savedCar
-//           });
-//         } catch (err) {
-//           res.status(400).json({
-//             message: "Failed to add car",
-//             error: err.message
-//           });
-//         }
-//       });
