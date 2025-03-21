@@ -5,6 +5,7 @@ import SocialIcons from "../../Components/SocialIcons/SocialIcons";
 import Button from "../../Components/Button/Button";
 
 const FeaturedSection = () => {
+
   return (
     <div className="w-full  min-h-screen bg-white flex  justify-center flex-col items-center">
       <div className="w-[95%] max-[900px]:w-[98%] min-h-screen bg-white flex justify-center items-center flex-col ">

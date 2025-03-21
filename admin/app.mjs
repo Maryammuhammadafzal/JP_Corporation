@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import carRoutes from "./routes/carRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js"
+import modelRoutes from "./routes/modelRoutes.js"
 import multer from "multer";
 
 dotenv.config();
@@ -18,11 +19,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json())
-app.use("/uploads", express.static("public/uploads"));
+app.use("/uploads", express.static("uploads"));
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/cards", carRoutes);
 app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
+app.use("/api/model" , modelRoutes)
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)

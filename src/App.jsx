@@ -13,6 +13,9 @@ import AdminLogin from "./Pages/AdminPage/AdminLogin/AdminLogin";
 import AdminDashboard from "./Pages/AdminPage/AdminDashboard/AdminDashboard";
 import AddListing from "./Pages/AdminPage/AddListing/AddListing";
 import EditListing from "./Pages/AdminPage/EditListing/EditListing";
+import ManageModal from "./Pages/AdminPage/ManageModal/ManageModal";
+import ModalForm from "./Pages/AdminPage/ManageModal/ModalForm/ModalForm";
+import ModalListing from "./Pages/AdminPage/ManageModal/ModalListing/ModalListing";
 
 function App() {
   return (
@@ -29,6 +32,8 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/listing/add-listing" element={<AddListing />} />
           <Route path="/listing/edit-listing/get/:id" element={<EditListing />} />
+          <Route path="/dashboard/manage-modal" element={<ManageModal />} />
+          <Route path="/model-listing/add-model-listing" element={<ModalListing />} />
         </Routes>
       </BrowserRouter>
     </div>

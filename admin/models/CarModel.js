@@ -21,6 +21,8 @@ const CarSchema = new mongoose.Schema({
   carDescription: { type: String },
   featuredImage: { type: String },          
   attachmentImage: { type: String },        
-  galleryImages: [{ type: String }]
+  galleryImages: [{ type: String }],
+  carAllFeatures : [{ type: String }],
+  carSafetyFeatures: [{ type: String }],
 }, { timestamps: true });
 export default mongoose.model("Car", CarSchema);

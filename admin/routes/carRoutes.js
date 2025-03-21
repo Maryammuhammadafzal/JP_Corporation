@@ -18,3 +18,6 @@ router.put('/update/:id', upload.fields([
   { name: 'galleryImages', maxCount: 10 }
 ]), updateCar);
 export default router;
+
+
+

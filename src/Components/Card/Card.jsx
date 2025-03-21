@@ -11,14 +11,21 @@ import axios from "axios";
 const Card = () => {
   const [cards, setCards] = useState([]);
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    axios.get("http://localhost:5000/api/cards?page=1&limit=5")
-      .then((res) => setCards(res.data))
-      .catch((err) => console.error(err));
+
+  const fetchCarData = async()=> {
+   let res = await axios.get("http://localhost:5000/api/dashboard?page=1&limit=5")
+    .then((res) => setCards(res.data))
+    .catch((err) => console.error(err));
+  }
+  useEffect( () => {
+fetchCarData()
   }, []);
   
-  // let cardData = [
+  console.log(cards);
+  
+  
+
+
   //   {
   //     id: 1,
   //     title: "NISSAN NOTE X-DIG-S 2016",
@@ -57,18 +64,10 @@ const Card = () => {
   //   },
   // ];
 
-  const handleCardClick = ({ id, title, image, miles, price, transition, model })=>{
-    navigate(`/listing/${id}`, {
-      state: {
-        title,
-        image,
-        miles,
-        price,
-        transition,
-        model,
-        },
-        });
-    console.log({ id, title, image, miles, price, transition, model })
+  const handleCardClick = (id)=>{
+    localStorage.setItem("cardId" , id);
+    navigate(`/listing/${id}`)
+    
   }
   // Function to truncate text
   const truncateText = (text, maxLength) => {
@@ -80,37 +79,37 @@ const Card = () => {
 
   return (
     <>
-      {cards.map(({ id, title, image, miles, price, transition, model }) => (
+      {cards.map(({ _id, CarTitle, featuredImage, carAvailability, carYear , carPrice, carTransmission, carModel }) => (
         <div
-          key={id}
-          onClick={() =>
-            handleCardClick({ id, title, image, miles, price, transition, model })}
+          key={_id}
+          onClick={() => handleCardClick(_id)}
           className="card w-[24%] max-[1160px]:w-[32%] max-[900px]:w-[49%] max-[600px]:w-[95%] max-[360px]:w-full h-auto bg-gray-800 rounded-2xl text-white flex flex-col"
         >
           <div className="carImage relative overflow-hidden w-auto h-auto">
             <img
-              src={image}
+              loading="lazy"
+              src={`http://localhost:5000/uploads/${featuredImage}`}
               className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[160px] rounded-2xl"
               alt="Card image"
             />
             <span className="absolute top-[15px] -left-[30px] -rotate-45 w-[130px] text-center z-50 bg-green-600 py-[1vh] px-[1vw] text-white text-[12px]" >
-              Available
+              {carAvailability}
             </span>
           </div>
           <div className="cardContent w-full p-3 h-auto flex flex-col">
             <div className="cardbody w-full h-auto flex px-2 py-2 flex-col border-b border-b-gray-600 justify-center">
               <h3 id="carName" className="carName text-lg ">
                 
-                {truncateText(title, 22)}
+                {truncateText(CarTitle, 22)}
               </h3>
-              <p className="carPrice font-extrabold text-xl">{price}</p>
+              <p className="carPrice font-extrabold text-xl">{carPrice}</p>
             </div>
             <div className="cardfooter w-full h-auto flex p-2  items-center gap-5">
               <button className="w-fit h-fit py-1 px-2 font-semibold text-md text-white bg-orange-600 rounded-lg">
-                {model}
+                {carYear}
               </button>
-              <p className="miles text-gray-500">{miles}</p>
-              <p className="transmission text-gray-500">{transition}</p>
+              <p className="miles text-gray-500">car</p>
+              <p className="transmission text-gray-500">{carTransmission}</p>
             </div>
           </div>
         </div>

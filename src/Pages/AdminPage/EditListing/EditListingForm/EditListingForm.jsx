@@ -8,17 +8,23 @@ const EditListingForm = ({ carId }) => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [attachmentImage, setAttachmentImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [carAllFeatures, setCarAllFeatures] = useState([]);
+  const [carSafetyFeatures, setCarSafetyFeatures] = useState([]);
   const [carData, setCarData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // details stores in an Array
+  const detailsArray = [];
+  const [details, setDetails] = useState(detailsArray);
 
   // Fetch car data on mount
   useEffect(() => {
     const fetchCar = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/dashboard/get/${carId}`
-        );
-        const car = res.data; // assuming you return single item or adjust accordingly
+        const res = await axios.get(`http://localhost:5000/api/dashboard/get/${carId}`);
+        const car = res.data;
+        console.log(car);
+        
         setCarData(car);
         setLoading(false);
       } catch (err) {
@@ -28,11 +34,32 @@ const EditListingForm = ({ carId }) => {
     fetchCar();
   }, [carId]);
 
-  console.log(carData);
+  useEffect(() => {
+    if (carData) {  
+      let featuresArray = [];
+
+      // If carData.carAllFeatures exists
+      if (Array.isArray(carData?.carAllFeatures)) {
+        featuresArray = carData?.carAllFeatures;
+      } else if (typeof carData?.carAllFeatures === 'string') {
+        featuresArray = carData?.carAllFeatures.split(',');
+      } else {
+        featuresArray = []; // Default fallback if null or unexpected type
+      }
+  
+      setCarAllFeatures(featuresArray);
+    }
+  }, [carData]);
+
+  console.log(carAllFeatures);
   
 
-  const detailsArray = [];
-  const [details, setDetails] = useState(detailsArray);
+  useEffect(() => {
+    if (carData) {
+      setCarSafetyFeatures(carData.carSafetyFeatures || []);
+    }
+  }, [carData]);
+ 
   const titleRef = useRef(null);
   const conditionRef = useRef(null);
   const typeRef = useRef(null);
@@ -64,11 +91,23 @@ const EditListingForm = ({ carId }) => {
     setGalleryImages([...e.target.files]);
   };
 
-  const cancelImage = () => {
-   let image = document.getElementsById("showImage")
-   image.display = none
+  const hiddenFeaturedImage = () => {
+    let image = document.getElementById("showFeaturedImage");
+    image.classList.add("hidden");
+    console.log(image);
+  };
+  const hiddenGalleryImage = () => {
+    let image = document.getElementById("showGalleryImage");
+    image.classList.add("hidden");
+    console.log(image);
+  };
+  const hiddenAttachmentImage = () => {
+    let image = document.getElementById("showAttachmentImage");
+    image.classList.add("hidden");
+    console.log(image);
   };
 
+  // Error Validation
   const validateDetails = (details) => {
     const errors = [];
 
@@ -79,9 +118,50 @@ const EditListingForm = ({ carId }) => {
     return errors;
   };
 
+  // //  Handle Features 
+  // const handleFeatureChange = (e, type) => {
+  //   const { value, checked } = e.target;
+
+  //   if (type === 'allFeatures') {
+  //     if (checked) {
+  //       setCarAllFeatures((prev) => [...prev, value]);
+  //     } else {
+  //       setCarAllFeatures((prev) => prev.filter((item) => item !== value));
+  //     }
+  //   }
+  
+  //   if (type === 'safetyFeatures') {
+  //     if (checked) {
+  //       setCarSafetyFeatures([...carSafetyFeatures, value]);
+  //     } else {
+  //       setCarSafetyFeatures(carSafetyFeatures.filter((item) => item !== value));
+  //     }
+  //   }
+  // };
+
+  const handleFeatureChange = (e, type) => {
+    const { value, checked } = e.target;
+  
+    if (type === "allFeatures") {
+      setCarAllFeatures((prevFeatures) => {
+        if (checked) {
+          // Agar checked hai, to add karo
+          return [...prevFeatures, value];
+        } else {
+          // Agar unchecked hai, to remove karo
+          return prevFeatures.filter((item) => item !== value);
+        }
+      });
+    }
+  
+    // Tum aur bhi types handle kar rahe ho to wo yahan likh sakti ho...
+  };
+  
+
+
   const updateDetail = async () => {
     const formData = new FormData();
-
+  
     formData.append("carTitle", titleRef.current.value);
     formData.append("carCondition", conditionRef.current.value);
     formData.append("CarType", typeRef.current.value);
@@ -100,17 +180,22 @@ const EditListingForm = ({ carId }) => {
     formData.append("carVin", vinRef.current.value);
     formData.append("carAvailability", availabilityRef.current.value);
     formData.append("description", descriptionRef.current.value);
-
+  
+    // Add features arrays as JSON strings
+    formData.append("carAllFeatures", JSON.stringify(carAllFeatures));
+    formData.append("carSafetyFeatures", JSON.stringify(carSafetyFeatures));
+  
     // Images
     if (featuredImage) formData.append("featuredImage", featuredImage);
     if (attachmentImage) formData.append("attachmentImage", attachmentImage);
-
-    galleryImages.forEach((image, index) => {
-      formData.append("galleryImages", image); // Don't use index here if you use upload.fields
+  
+    galleryImages.forEach((image) => {
+      formData.append("galleryImages", image);
     });
-
+  
     try {
       const token = localStorage.getItem("adminToken");
+  
       const response = await axios.put(
         `http://localhost:5000/api/cards/update/${carId}`,
         formData,
@@ -121,45 +206,25 @@ const EditListingForm = ({ carId }) => {
           },
         }
       );
+  
       console.log("Success" + JSON.stringify(response.data));
       alert("Updated Succesfully");
-
-      // Reset refs
-      titleRef.current.value = "";
-      typeRef.current.value = "";
-      availabilityRef.current.value = "";
-      descriptionRef.current.value = "";
-      vinRef.current.value = "";
-      doorRef.current.value = "";
-      colorRef.current.value = "";
-      cylinderRef.current.value = "";
-      engineSizeRef.current.value = "";
-      mileageRef.current.value = "";
-      fuelTypeRef.current.value = "";
-      transmissionRef.current.value = "";
-      driveTypeRef.current.value = "";
-      yearRef.current.value = "";
-      priceRef.current.value = "";
-      modelRef.current.value = "";
-      makeRef.current.value = "";
-
-      // Reset file inputs
-      document.getElementById("image").value = "";
-
-      // Reset checkboxes
-      document
-        .querySelectorAll("input[type='checkbox']")
-        .forEach((checkbox) => {
-          checkbox.checked = false;
-        });
-
+  
+// reset car features
+      setCarAllFeatures([]);
+      setCarSafetyFeatures([]);
+  
+      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+  
       window.location.href = "/dashboard";
     } catch (error) {
       console.error(error);
       alert("Error");
     }
   };
-
+  
 
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">
@@ -344,119 +409,119 @@ const EditListingForm = ({ carId }) => {
 
             {/* Make Input */}
             <div className="w-[370px] my-3">
-            <label htmlFor="make" className="w-full">
+              <label htmlFor="make" className="w-full">
                 <p>
                   Make <sup className="text-orange-700">*</sup>
                 </p>
-              <select
-                id="make"
-                className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
-                placeholder="Select make"
-                ref={makeRef}
-                value={carData.carMake || ""}
-                onChange={(e) =>
-                  setCarData({ ...carData, caeMake: e.target.value })
-                }
-              >
-                <option
-                  value=""
-                  selected
-                  disabled
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                <select
+                  id="make"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  placeholder="Select make"
+                  ref={makeRef}
+                  value={carData.carMake || ""}
+                  onChange={(e) =>
+                    setCarData({ ...carData, caeMake: e.target.value })
+                  }
                 >
-                  Select Make
-                </option>
-                <option
-                  value="BUS"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  BUS
-                </option>
-                <option
-                  value="CONVERTIBLE"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  CONVERTIBLE
-                </option>
-                <option
-                  value="COUPE"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  COUPE
-                </option>
-                <option
-                  value="DUMP-TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  DUMP-TRUCK
-                </option>
-                <option
-                  value="FLAT BODY TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  FLAT BODY TRUCK
-                </option>
-                <option
-                  value="FREEZER BOX"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  FREEZER BOX
-                </option>
-                <option
-                  value="HATCHBACK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  HATCHBACK
-                </option>
-                <option
-                  value="MIN VAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  MIN VAN
-                </option>
-                <option
-                  value="MUV"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  MUV
-                </option>
-                <option
-                  value="PICKUP TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  PICK UP TRUCK
-                </option>
-                <option
-                  value="SEDAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  SEDAN
-                </option>
-                <option
-                  value="STATION WAGON"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  STATION WAGON
-                </option>
-                <option
-                  value="SUV"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  SUV
-                </option>
-                <option
-                  value="VAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  VAN
-                </option>
-                <option
-                  value="WAGON"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  WAGON
-                </option>
-              </select>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Make
+                  </option>
+                  <option
+                    value="BUS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BUS
+                  </option>
+                  <option
+                    value="CONVERTIBLE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CONVERTIBLE
+                  </option>
+                  <option
+                    value="COUPE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    COUPE
+                  </option>
+                  <option
+                    value="DUMP-TRUCK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    DUMP-TRUCK
+                  </option>
+                  <option
+                    value="FLAT BODY TRUCK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FLAT BODY TRUCK
+                  </option>
+                  <option
+                    value="FREEZER BOX"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FREEZER BOX
+                  </option>
+                  <option
+                    value="HATCHBACK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HATCHBACK
+                  </option>
+                  <option
+                    value="MIN VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MIN VAN
+                  </option>
+                  <option
+                    value="MUV"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MUV
+                  </option>
+                  <option
+                    value="PICKUP TRUCK"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PICK UP TRUCK
+                  </option>
+                  <option
+                    value="SEDAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SEDAN
+                  </option>
+                  <option
+                    value="STATION WAGON"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    STATION WAGON
+                  </option>
+                  <option
+                    value="SUV"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUV
+                  </option>
+                  <option
+                    value="VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VAN
+                  </option>
+                  <option
+                    value="WAGON"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    WAGON
+                  </option>
+                </select>
               </label>
             </div>
 
@@ -561,10 +626,10 @@ const EditListingForm = ({ carId }) => {
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
                   placeholder="Select drive Type"
                   ref={driveTypeRef}
-                value={carData.carDriveType || ""}
-                 onChange={(e) =>
-                   setCarData({ ...carData, carDriveType: e.target.value })
-                 }
+                  value={carData.carDriveType || ""}
+                  onChange={(e) =>
+                    setCarData({ ...carData, carDriveType: e.target.value })
+                  }
                 >
                   <option
                     value=""
@@ -1066,6 +1131,7 @@ const EditListingForm = ({ carId }) => {
               <input
                 type="file"
                 id="image"
+                files={carData.featuredImage || ""}
                 onChange={(e) =>
                   setCarData({ ...carData, featuredImage: e.target.files[0] })
                 }
@@ -1074,9 +1140,23 @@ const EditListingForm = ({ carId }) => {
             </label>
           </div>
 
-          <div id="showImage" className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative">
-            <div className="crossBtn  text-xl py-[2px] px-[10px] h-auto w-auto rounded-full bg-red-500 text-white absolute top-0 right-0 z-10" onClick={cancelImage}>x</div>
-            <img src={`../../../../../admin/uploads/${carData.featuredImage}`} alt="image" className="w-[160px] h-[160px]"/> 
+          <div
+            id="showFeaturedImage"
+            className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
+          >
+            <div
+              className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
+              onClick={hiddenFeaturedImage}
+            >
+              {" "}
+              ❌
+            </div>
+            <img
+              loading="lazy"
+              src={`http://localhost:5000/uploads/${carData.featuredImage}`}
+              alt="image"
+              className="w-[160px] h-[160px]"
+            />
           </div>
         </div>
         <div className="flex justify-between items-center p-6 mb-4">
@@ -1109,6 +1189,30 @@ const EditListingForm = ({ carId }) => {
               />
             </label>
           </div>
+          <div className="flex w-auto h-auto p-3">
+            <div
+              id="showGalleryImage"
+              className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
+            >
+              <div
+                className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
+                onClick={hiddenGalleryImage}
+              >
+                {" "}
+                ❌
+              </div>
+              {carData?.galleryImages?.map((galleryImage, index) => (
+      <img
+        key={index}
+        loading="lazy"
+        src={`http://localhost:5000/uploads/${galleryImage}`}
+        alt={`gallery-image-${index}`}
+        className="w-[160px] h-[160px] object-cover"
+      />
+    ))}
+
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-between items-center p-6 mb-4">
@@ -1136,16 +1240,35 @@ const EditListingForm = ({ carId }) => {
               />
             </label>
           </div>
+
+          <div
+            id="showAttachmentImage"
+            className="showImage p-3 w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
+          >
+            <div
+              className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
+              onClick={hiddenAttachmentImage}
+            >
+              {" "}
+              ❌
+            </div>
+            <img
+              loading="lazy"
+              src={`http://localhost:5000/uploads/${carData.attachmentImage}`}
+              alt="image"
+              className="w-[160px] h-[160px]"
+            />
+          </div>
         </div>
 
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Features</h1>
         </div>
 
-        <div class="card p-6 flex  border rounded-md ">
-          <div class="row flex flex-wrap m-2">
-          <div class="card-body p-4 flex flex-wrap">
-              {AllFeatures.map((feature) => (
+        <div className="card p-6 flex  border rounded-md ">
+          <div className="row flex flex-wrap m-2">
+            <div className="card-body p-4 flex flex-wrap">
+              {AllFeatures.map((feature  ) => (
                 <div
                   key={feature.id}
                   className="col-md-4 mb-3 w-[360px] px-3 py-1"
@@ -1157,11 +1280,13 @@ const EditListingForm = ({ carId }) => {
                       name="selectedFeatures[]"
                       value={feature.value}
                       id={feature.id}
+                      onChange={(e) => handleFeatureChange(e, "allFeatures")}
+                      checked={carAllFeatures.map((item) => item).includes(feature.value) }
+                      
                     />
                     <label
                       className="form-check-label"
                       htmlFor={feature.id}
-                      onClick={() => toggleCheckbox(feature.id)}
                     >
                       {feature.label}
                     </label>
@@ -1177,9 +1302,9 @@ const EditListingForm = ({ carId }) => {
           <h1 className="text-3xl font-bold">Safety Features</h1>
         </div>
 
-        <div class="card p-6 flex  border rounded-md ">
-          <div class="row flex flex-wrap m-2">
-            <div class="card-body p-4 flex flex-wrap">
+        <div className="card p-6 flex  border rounded-md ">
+          <div className="row flex flex-wrap m-2">
+            <div className="card-body p-4 flex flex-wrap">
               {safetyFeatures.map((feature) => (
                 <div
                   key={feature.id}
@@ -1192,11 +1317,12 @@ const EditListingForm = ({ carId }) => {
                       name="selectedFeatures[]"
                       value={feature.value}
                       id={feature.id}
+                      checked={carSafetyFeatures.map((item) => item == feature.value) }
+                      onChange={(e) => handleFeatureChange(e, "safetyFeatures")}
                     />
                     <label
                       className="form-check-label"
                       htmlFor={feature.id}
-                      onClick={() => toggleCheckbox(feature.id)}
                     >
                       {feature.label}
                     </label>

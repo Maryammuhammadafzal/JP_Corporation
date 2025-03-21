@@ -1,4 +1,4 @@
-import React , {useRef} from "react";
+import React , {useRef , useState , useEffect} from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,63 +9,95 @@ import CardImage4 from "../../assets/Images/card_image4.jpg";
 import PrevArrow from "../PrevArrow/PrevArrow";
 import NextArrow from "../NextArrow/NextArrow";
 import Button from "../Button/Button";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CardCarousel = () => {
+
         const sliderRef = useRef(null);
-  const cardData = [
-    {
-      id: 1,
-      title: "NISSAN NOTE X-DIG-S 2016",
-      image: CardImage1,
-      miles: "80,000 miles",
-      price: "$2,260",
-      transition: "AT",
-      model: "2016",
-      fuel: "petrol",
-    },
-    {
-      id: 2,
-      title: "TOYOTA VITZ F 2010",
-      image: CardImage2,
-      miles: "87,428 miles",
-      price: "$1,230",
-      transition: "AT",
-      model: "2010",
-      fuel: "petrol",
-    },
-    {
-      id: 3,
-      title: "MAZDA FAMILIA 2002",
-      image: CardImage3,
-      miles: "83,318 miles",
-      price: "$3,130",
-      transition: "AT",
-      model: "2002",
-      fuel: "petrol",
-    },
-    {
-      id: 4,
-      title: "MAZDA FAMILIA 2002",
-      image: CardImage4,
-      miles: "83,318 miles",
-      price: "$3,130",
-      transition: "AT",
-      model: "2002",
-      fuel: "petrol",
-    },
-    {
-      id: 5,
-      title: "MAZDA FAMILIA 2002",
-      image: CardImage2,
-      miles: "83,318 miles",
-      price: "$3,130",
-      transition: "AT",
-      model: "2002",
-      fuel: "petrol",
-    },
-  ];
+  // const cardData = [
+  //   {
+  //     id: 1,
+  //     title: "NISSAN NOTE X-DIG-S 2016",
+  //     image: CardImage1,
+  //     miles: "80,000 miles",
+  //     price: "$2,260",
+  //     transition: "AT",
+  //     model: "2016",
+  //     fuel: "petrol",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "TOYOTA VITZ F 2010",
+  //     image: CardImage2,
+  //     miles: "87,428 miles",
+  //     price: "$1,230",
+  //     transition: "AT",
+  //     model: "2010",
+  //     fuel: "petrol",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "MAZDA FAMILIA 2002",
+  //     image: CardImage3,
+  //     miles: "83,318 miles",
+  //     price: "$3,130",
+  //     transition: "AT",
+  //     model: "2002",
+  //     fuel: "petrol",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "MAZDA FAMILIA 2002",
+  //     image: CardImage4,
+  //     miles: "83,318 miles",
+  //     price: "$3,130",
+  //     transition: "AT",
+  //     model: "2002",
+  //     fuel: "petrol",
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "MAZDA FAMILIA 2002",
+  //     image: CardImage2,
+  //     miles: "83,318 miles",
+  //     price: "$3,130",
+  //     transition: "AT",
+  //     model: "2002",
+  //     fuel: "petrol",
+  //   },
+  // ];
 
   // Slick settings
+
+ 
+  const [cardData, setCardData] = useState([]);
+  const navigate = useNavigate();
+
+  const fetchCarData = async()=> {
+   let res = await axios.get("http://localhost:5000/api/dashboard?page=1&limit=10")
+    .then((res) => setCardData(res.data))
+    .catch((err) => console.error(err));
+  }
+  useEffect( () => {
+fetchCarData()
+  }, []);
+
+  
+  const handleCardClick = (id)=>{
+    localStorage.setItem("cardId" , id);
+    navigate(`/listing/${id}`)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+   
+    fetchCarData()
+
+    setTimeout(()=>{
+      window.location.reload()
+    },1500)
+    
+}
+  
+  
   const settings = {
     infinite: true,
     speed: 500,
@@ -96,35 +128,36 @@ const CardCarousel = () => {
       },
     ],
   };
-
   return (
     <div className="w-full p-3 max-[500px]:p-0 flex flex-col gap-3">
       <Slider ref={sliderRef} {...settings}>
-        {cardData.map(
-          ({ id, title, image, miles, price, transition, model , fuel}) => (
-            <div key={id} className="px-3 max-[360px]:px-1">
+          {cardData.map(({ _id, CarTitle, featuredImage, carAvailability, carFuelType , carMileage, carYear , carPrice, carTransmission, carModel }) => (
+            <div key={_id} 
+            onClick={() => handleCardClick(_id)} 
+             className="px-3 max-[360px]:px-1">
               <div className="card w-full h-auto bg-gray-800 rounded-2xl shadow-lg text-black flex flex-col overflow-hidden">
                 <div className="relative">
                   <img
-                    src={image}
-                    alt={title}
+                    loading="lazy"
+                    src={`http://localhost:5000/uploads/${featuredImage}`}
+                    alt={CarTitle}
                     className="w-full h-[200px] object-cover"
                   />
                   <div className="absolute inset-0 bg-black opacity-20"></div>
                   {/* Light black overlay */}
                   <div className="absolute bottom-4 left-4 text-white text-lg font-bold">
-                    {title}
+                    {CarTitle}
                   </div>
                 </div>
                 <div className="p-4">
                   <p className="text-2xl font-extrabold text-orange-600">
-                    {price}
+                    {carPrice}
                   </p>
                   <div className="flex justify-start gap-5 text-gray-400 text-sm mt-2">
-                    <span>{miles}</span>
-                    <span>{transition}</span>
-                    <span>{model}</span>
-                    <span>{fuel}</span>
+                    <span>{carMileage}</span>
+                    <span>{carTransmission}</span>
+                    <span>{carModel}</span>
+                    <span>{carFuelType}</span>
                   </div>
                 </div>
               </div>

@@ -4,10 +4,29 @@ import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 
+
 const AddListingForm = () => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [attachmentImage, setAttachmentImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [selectedAllFeatures, setSelectedAllFeatures] = useState([]);
+  const [selectedSafetyFeatures, setselectedSafetyFeatures] = useState([]);
+
+  const toggleCheckbox = (featureId) => {
+    if (selectedAllFeatures.includes(featureId)) {
+      setSelectedAllFeatures(selectedAllFeatures.filter((id) => id !== featureId));
+    } else {
+      setSelectedAllFeatures([...selectedAllFeatures, featureId]);
+    }
+  };
+
+  const toggleSafetyCheckbox = (featureId) => {
+    if (selectedSafetyFeatures.includes(featureId)) {
+      setselectedSafetyFeatures(selectedSafetyFeatures.filter((id) => id !== featureId));
+    } else {
+      setselectedSafetyFeatures([...selectedSafetyFeatures, featureId]);
+    }
+  };
 
   const detailsArray = [];
   const [details, setDetails] = useState(detailsArray);
@@ -39,7 +58,10 @@ const AddListingForm = () => {
   };
 
   const handleGalleryChange = (e) => {
-    setGalleryImages([...e.target.files]);
+    const files = Array.from(e.target.files); 
+    setGalleryImages(files); 
+    
+    console.log("Selected images: ", files);
   };
 
   const validateDetails = (details) => {
@@ -74,7 +96,9 @@ const AddListingForm = () => {
     formData.append("carDoor", doorRef.current.value);
     formData.append("carVin", vinRef.current.value);
     formData.append("carAvailability", availabilityRef.current.value);
-    formData.append("description", descriptionRef.current.value);
+    formData.append("carDescription", descriptionRef.current.value);
+    formData.append("carAllFeatures", JSON.stringify(selectedAllFeatures));
+    formData.append("carSafetyFeatures", JSON.stringify(selectedSafetyFeatures));
 
     // Images
     if (featuredImage) formData.append("featuredImage", featuredImage);
@@ -117,6 +141,7 @@ const AddListingForm = () => {
       priceRef.current.value = "";
       modelRef.current.value = "";
       makeRef.current.value = "";
+      
 
       // Reset file inputs
       document.getElementById("image").value = "";
@@ -140,8 +165,8 @@ const AddListingForm = () => {
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Add Details</h1>
       </div>
-      <form action="" className="form border w-full h-auto p-3 rounded-md flex flex-col gap-5">
-        <div className="p-6 text-sm text-gray-600 w-full h-auto">
+      <form action="" className="form  w-full h-auto p-3  flex flex-col gap-5">
+        <div className="p-6 border rounded-md text-sm text-gray-600 w-full h-auto">
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>
@@ -969,6 +994,7 @@ const AddListingForm = () => {
             />
           </label>
         </div>
+
       </div>
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Gallery</h1>
@@ -995,6 +1021,7 @@ const AddListingForm = () => {
             />
           </label>
         </div>
+
       </div>
 
       <div className="flex justify-between items-center p-6 mb-4">
@@ -1020,7 +1047,7 @@ const AddListingForm = () => {
             />
           </label>
         </div>
-      </div>
+            </div>
 
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Features</h1>
@@ -1036,11 +1063,13 @@ const AddListingForm = () => {
                 >
                   <div className="form-check">
                     <input
-                      className="form-check-input mx-2"
-                      type="checkbox"
-                      name="selectedFeatures[]"
-                      value={feature.value}
-                      id={feature.id}
+                       className="form-check-input mx-2"
+                       type="checkbox"
+                       name="selectedAllFeatures[]"
+                       value={feature.value}
+                       id={feature.id}
+                       checked={selectedAllFeatures.includes(feature.id)}  
+                       onChange={() => toggleCheckbox(feature.id)}
                     />
                     <label
                       className="form-check-label"
@@ -1073,14 +1102,16 @@ const AddListingForm = () => {
                     <input
                       className="form-check-input mx-2"
                       type="checkbox"
-                      name="selectedFeatures[]"
+                      name="selectedSafetyFeatures[]"
                       value={feature.value}
                       id={feature.id}
+                      checked={selectedAllFeatures.includes(feature.id)}  
+                       onChange={() => toggleSafetyCheckbox(feature.id)}
                     />
                     <label
                       className="form-check-label"
                       htmlFor={feature.id}
-                      onClick={() => toggleCheckbox(feature.id)}
+                      onClick={() => toggleSafetyCheckbox(feature.id)}
                     >
                       {feature.label}
                     </label>

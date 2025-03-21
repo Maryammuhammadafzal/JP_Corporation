@@ -6,9 +6,10 @@ import Logo from "../../../assets/Images/jplogo.png";
 import SideMenu from "../../../Components/SideMenu/SideMenu";
 import CarListing from "../CarListing/CarListing";
 import { Link } from "react-router-dom";
+import ManageListing from "./ManageListing/ManageListing";
 
 
-const AdminDashboard = () => {
+const ManageModal = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleAdminMenu = () => {
@@ -172,7 +173,7 @@ const AdminDashboard = () => {
 </div>
 
 <div className="right  w-[82%] max-[1300px]:w-full flex flex-col gap-3 justify-end ">
-<CarListing/>
+<ManageListing/>
 <div className="copyright w-full h-[80px] border-t border-gray-400 flex justify-center items-center">
   <p>Copyright  <a href="" className="text-orange-500">JP Corporation</a> © 2024. All rights reserved.</p>
 
@@ -185,4 +186,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default ManageModal;
