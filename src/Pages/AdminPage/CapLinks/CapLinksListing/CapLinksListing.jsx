@@ -2,60 +2,62 @@ import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios"
 
-const ManageListing = () => {
+const CapLinksListing = () => {
   const [search, setSearch] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
-  const [modalData , setModalData] = useState([]);
+  const [carData , setCarData] = useState([]);
 
-const  fetchModalData = async () => {
+const  fetchCarData = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/model")
+    const res = await axios.get("http://localhost:5000/api/dashboard")
     const data = await res.data;
     console.log(data);
-    setModalData(data);
+    setCarData(data);
     
     
-  }
-  catch (error) {
-  console.log("error" , error.message);
+  }catch (error) {
+  console.log("error" ,error.message);
+  
   }
 }
 
 useEffect(()=> {
-fetchModalData()
+  
+fetchCarData()
 } , [])
 
- // allModals array
- const allModals = modalData;
-console.log(allModals);
+ // allCars array
+ const allCars = carData;
+console.log(allCars);
 
 
  // Filter search
- const filteredModals = allModals.map((car) => {
+ const filteredCars = allCars.map((car) =>
+ {
   car?.carTitle?.toLowerCase()?.includes(search?.toLowerCase())
  } 
   
  );
 
   // Pagination Logic
-  const indexOfLastModal = currentPage * entriesPerPage;
-  const indexOfFirstModal = indexOfLastModal - entriesPerPage;
-  const currentModal = filteredModals.slice(indexOfFirstModal, indexOfLastModal);
-  const totalPages = Math.ceil(filteredModals.length / entriesPerPage);
+  const indexOfLastCar = currentPage * entriesPerPage;
+  const indexOfFirstCar = indexOfLastCar - entriesPerPage;
+  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
+  const totalPages = Math.ceil(filteredCars.length / entriesPerPage);
 
   const handleDelete = async(id , title) => {
-const response = await axios.delete(`http://localhost:5000/api/model/delete/${id}`)
+const response = await axios.delete(`http://localhost:5000/api/dashboard/delete/${id}`)
 if(response.status === 200){
   alert(`${title} deleted`); 
-  fetchModalData()
+  fetchCarData()
   } else {
     alert("error")
     }
   };
   const handleEdit = async(id ) => {
     localStorage.setItem("EditId" , id);
-    window.location.href = `/modal-listing/edit-modal-listing/get/${id}`;
+    window.location.href = `/listing/edit-listing/get/${id}`;
   };
 
   const handleEntriesChange = (e) => {
@@ -67,8 +69,8 @@ if(response.status === 200){
     setCurrentPage(page);
   };
 
-  const showModelListingForm = () => {
-    window.location.href = "/model-listing/add-model-listing"
+  const ShowAddListingForm = () => {
+    window.location.href = "/listing/add-listing"
   }
 
   const goToPage = (pageNumber) => {
@@ -88,8 +90,8 @@ if(response.status === 200){
   return (
     <div className="w-full mx-auto border rounded-md py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
-        <h1 className="text-3xl font-bold">Manage Modal</h1>
-        <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={showModelListingForm}>Add Modal</button>
+        <h1 className="text-3xl font-bold">Car Listings</h1>
+        <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowAddListingForm}>Add Listing</button>
       </div>
 
           {/* Controls */}
@@ -122,30 +124,39 @@ if(response.status === 200){
         <table className="min-w-full p-3 bg-white  rounded-lg shadow-md">
           <thead className="p-3 border-b">
             <tr >
-              <th className="w-[10%] text-center p-3">S.No</th>
-              <th className="w-[20%] text-start">Modal</th>
-              <th className="w-[20%] text-start p-3">Make</th>
-              <th className="w-[20%] text-center p-3">Actions</th>
+              <th className="p-5">S.No</th>
+              <th className="p-5">Image</th>
+              <th className="p-5">Title</th>
+              <th className="p-5">Type</th>
+              <th className="p-5">Make</th>
+              <th className="p-5">Year</th>
+              <th className="p-5">Uploaded At</th>
+              <th className="p-5">Uploaded By</th>
+              <th className="p-5">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {modalData 
-              .filter((modal) => modal.modalTitle.toLowerCase().includes(search.toLowerCase()))
+            {carData 
+              .filter((car) => car.carTitle.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
-              .map((modal, index) => ( 
-                <tr key={modal._id} className="border-b">
-                  <td className="p-2 text-center">{indexOfFirstModal + index + 1}</td>
-                  {/* <td className="p-2 text-center">
+              .map((car, index) => ( 
+                <tr key={car.id} className="border-b">
+                  <td className="p-2 text-center">{indexOfFirstCar + index + 1}</td>
+                  <td className="p-2 text-center">
                     <img src={`../../../../admin/uploads/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
                   </td>
-                   */}
-                  <td className="p-2 text-start">{modal.modalTitle}</td>
-                  <td className="p-2 text-start">{modal.modalMake}</td>  
+                  
+                  <td className="p-2 text-center">{car.carTitle}</td>
+                  <td className="p-2 text-center">{car.carType}</td>
+                  <td className="p-2 text-center">{car.carMake}</td>
+                  <td className="p-2 text-center">{car.carYear}</td>
+                  <td className="p-2 text-center">{car.createdAt.slice(0,10)}</td>
+                  <td className="p-2 text-center">admin</td>
                   <td className="p-2 justify-center flex space-x-2">
-                    <button className="text-orange-500" onClick={() => handleEdit(modal._id , modal.modalTitle)}>
+                    <button className="text-orange-500" onClick={() => handleEdit(car._id , car.carTitle)}>
                       <FaEdit />
                     </button>
-                    <button className="text-red-500" onClick={() => handleDelete(modal._id , modal.modalTitle)}>
+                    <button className="text-red-500" onClick={() => handleDelete(car._id , car.carTitle)}>
                       <FaTrash />
                     </button>
                   </td>
@@ -191,5 +202,5 @@ if(response.status === 200){
   );
 };
 
-export default ManageListing;
+export default CapLinksListing;
 

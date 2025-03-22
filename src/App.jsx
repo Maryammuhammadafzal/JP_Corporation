@@ -16,6 +16,11 @@ import EditListing from "./Pages/AdminPage/EditListing/EditListing";
 import ManageModal from "./Pages/AdminPage/ManageModal/ManageModal";
 import ModalForm from "./Pages/AdminPage/ManageModal/ModalForm/ModalForm";
 import ModalListing from "./Pages/AdminPage/ManageModal/ModalListing/ModalListing";
+import EditModalForm from "./Pages/AdminPage/ManageModal/EditModal/EditModalForm/EditModalForm";
+import EditModal from "./Pages/AdminPage/ManageModal/EditModal/EditModal";
+import CapLinks from "./Pages/AdminPage/CapLinks/CapLinks";
+import CapLinksListing from "./Pages/AdminPage/CapLinks/CapLinksListing/CapLinksListing";
+import EditCapLinks from "./Pages/AdminPage/CapLinks/EditCapLinks/EditCapLinks";
 
 function App() {
   return (
@@ -34,6 +39,10 @@ function App() {
           <Route path="/listing/edit-listing/get/:id" element={<EditListing />} />
           <Route path="/dashboard/manage-modal" element={<ManageModal />} />
           <Route path="/model-listing/add-model-listing" element={<ModalListing />} />
+          <Route path="/modal-listing/edit-modal-listing/get/:id" element={<EditModal />} />
+          <Route path="/dashboard/cap-links" element={<CapLinks />} />
+          <Route path="/cap-links-listing/add-cap-links-listing" element={<CapLinksListing />} />
+          <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<EditCapLinks />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 
-const EditListingForm = ({ carId }) => {
+const EditCapLinksForm = ({ carId }) => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [attachmentImage, setAttachmentImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
@@ -1340,4 +1340,4 @@ const EditListingForm = ({ carId }) => {
   );
 };
 
-export default EditListingForm;
+export default EditCapLinksForm;

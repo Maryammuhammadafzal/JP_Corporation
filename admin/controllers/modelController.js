@@ -1,54 +1,56 @@
 import Modal from "../models/ModalModel.js";
 import verifyToken from "../middlewares/tokenVerify.js";
 
-// // Get All Car
-// export const getModal =  async (req, res) => {
-//         const page = parseInt(req.query.page) || 1;
-//         const limit = parseInt(req.query.limit) || 100;
+// Get All Car
+export const getModal =  async (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 100;
 
-//         const getModal = await Modal.find()
-//                 .skip((page - 1) * limit)
-//                 .limit(limit);
+        const getModal = await Modal.find()
+                .skip((page - 1) * limit)
+                .limit(limit);
 
-//         res.json(getModal);
-// };
+        res.json(getModal);
+};
 
 
-// // Get Car by id
-// export const getModalById = async (req, res) => {
-//         const id = req.params.id;
-//         try {
-//             const modal = await Modal.findById(id);     
+// Get Modal by id
+export const getModalById = async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
         
-//             if (!modal) {
-//               return res.status(404).json({ message: "modal not found" });
-//             }
+        try {
+            const modal = await Modal.findById(id);     
         
-//             res.status(200).json(modal);
-//           } catch (error) {
-//             console.error("Error fetching modal by ID:", error);
-//             res.status(500).json({ message: "Server error" });
-//           }
-//     };
+            if (!modal) {
+              return res.status(404).json({ message: "modal not found" });
+            }
+        
+            res.status(200).json(modal);
+          } catch (error) {
+            console.error("Error fetching modal by ID:", error);
+            res.status(500).json({ message: "Server error" });
+          }
+    };
     
-//     // Delete Car
-// export const deleteModal =  async (req, res) => {
-//         const id = req.params.id;
-//         console.log(id);
+    // Delete Modal
+export const deleteModal =  async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
         
     
-//         try {
-//             const deletedModal = await Modal.findByIdAndDelete(id);
+        try {
+            const deletedModal = await Modal.findByIdAndDelete(id);
     
-//             if (!deletedModal) {
-//                 return res.status(404).json({ message: "Car not found" });
-//             }
+            if (!deletedModal) {
+                return res.status(404).json({ message: "Car not found" });
+            }
     
-//             res.json({ message: "Car deleted successfully", data: deletedModal });
-//         } catch (err) {
-//             res.status(400).json({ message: "Failed to delete car", error: err.message });
-//         }
-//     };
+            res.json({ message: "Car deleted successfully", data: deletedModal });
+        } catch (err) {
+            res.status(400).json({ message: "Failed to delete car", error: err.message });
+        }
+    };
 
     export const addModal = async (req, res) => {
         try {
@@ -71,4 +73,29 @@ import verifyToken from "../middlewares/tokenVerify.js";
           res.status(500).json({ message: "Server Error" });
         }
       };
-    
+
+
+      export const updateModal = async (req, res) => {
+        const id = req.params.id;
+        console.log("ID:", id);
+        try {
+  
+          let { modalTitle , modalMake } = req.body
+          console.log(modalMake , modalTitle);
+
+          const updateModal = await Modal.findByIdAndUpdate(id, { modalTitle , modalMake }, { new: true });
+
+          if (!updateModal) {
+            return res.status(404).json({ message: 'Modal not found' });
+          }
+          
+          res.status(200).json({
+            message: 'Modal updated successfully',
+            car: updateModal,
+          });
+          
+        }  catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Server error' });
+          }
+      };

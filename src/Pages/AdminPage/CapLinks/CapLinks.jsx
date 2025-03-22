@@ -4,11 +4,11 @@ import { BsLink } from "react-icons/bs";
 import { BsCarFrontFill } from "react-icons/bs";
 import Logo from "../../../assets/Images/jplogo.png";
 import SideMenu from "../../../Components/SideMenu/SideMenu";
-import CarListing from "../CarListing/CarListing";
 import { Link } from "react-router-dom";
+import CapLinksListing from "./CapLinksListing/CapLinksListing";
 
 
-const AdminDashboard = () => {
+const CapLinks = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleAdminMenu = () => {
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                <Link  className="flex gap-3 items-center">
+                <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
                   <BsLink />{" "}
                   <p className="hover:text-white text-md">Cap Links List</p>
                 </Link>
@@ -172,7 +172,7 @@ const AdminDashboard = () => {
 </div>
 
 <div className="right  w-[82%] max-[1300px]:w-full flex flex-col gap-3 justify-end ">
-<CarListing/>
+<CapLinksListing/>
 <div className="copyright w-full h-[80px] border-t border-gray-400 flex justify-center items-center">
   <p>Copyright  <a href="" className="text-orange-500">JP Corporation</a> © 2024. All rights reserved.</p>
 
@@ -185,4 +185,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default CapLinks;

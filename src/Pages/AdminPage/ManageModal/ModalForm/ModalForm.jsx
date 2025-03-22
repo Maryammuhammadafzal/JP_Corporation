@@ -17,10 +17,6 @@ const ModalForm = () => {
 
   const submitModal = async () => {
     const formData = new FormData();
- 
-//     formData.append("modalMake", makeRef.current.value);
-//     formData.append("modalTitle", titleRef.current.value); 
-//   console.log(formData);
   
   const payload = {
         modalMake: makeRef.current.value,
@@ -35,7 +31,7 @@ const ModalForm = () => {
         payload,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -81,7 +77,7 @@ const ModalForm = () => {
            <div className="w-1/2 my-3">
            <label htmlFor="title" className="w-full">
               <p>
-                Modal Title <sup className="text-orange-700">*</sup>
+                Modal Make <sup className="text-orange-700">*</sup>
               </p>
               <select
                 id="make"

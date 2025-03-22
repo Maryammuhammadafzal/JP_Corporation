@@ -112,7 +112,7 @@ if (req.body.carSafetyFeatures) {
       // UPDATE car
 export const updateCar = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params.id;
 
     console.log('Updating car with ID:', id);
     console.log('BODY:', req.body);

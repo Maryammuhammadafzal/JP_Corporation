@@ -1,65 +1,35 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Button from "../../../../Components/Button/Button";
 import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 
-const EditListingForm = ({ carId }) => {
+
+const AddListingForm = () => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [attachmentImage, setAttachmentImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
-  const [carAllFeatures, setCarAllFeatures] = useState([]);
-  const [carSafetyFeatures, setCarSafetyFeatures] = useState([]);
-  const [carData, setCarData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedAllFeatures, setSelectedAllFeatures] = useState([]);
+  const [selectedSafetyFeatures, setselectedSafetyFeatures] = useState([]);
 
-  // details stores in an Array
+  const toggleCheckbox = (featureId) => {
+    if (selectedAllFeatures.includes(featureId)) {
+      setSelectedAllFeatures(selectedAllFeatures.filter((id) => id !== featureId));
+    } else {
+      setSelectedAllFeatures([...selectedAllFeatures, featureId]);
+    }
+  };
+
+  const toggleSafetyCheckbox = (featureId) => {
+    if (selectedSafetyFeatures.includes(featureId)) {
+      setselectedSafetyFeatures(selectedSafetyFeatures.filter((id) => id !== featureId));
+    } else {
+      setselectedSafetyFeatures([...selectedSafetyFeatures, featureId]);
+    }
+  };
+
   const detailsArray = [];
   const [details, setDetails] = useState(detailsArray);
-
-  // Fetch car data on mount
-  useEffect(() => {
-    const fetchCar = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/dashboard/get/${carId}`);
-        const car = res.data;
-        console.log(car);
-        
-        setCarData(car);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchCar();
-  }, [carId]);
-
-  useEffect(() => {
-    if (carData) {  
-      let featuresArray = [];
-
-      // If carData.carAllFeatures exists
-      if (Array.isArray(carData?.carAllFeatures)) {
-        featuresArray = carData?.carAllFeatures;
-      } else if (typeof carData?.carAllFeatures === 'string') {
-        featuresArray = carData?.carAllFeatures.split(',');
-      } else {
-        featuresArray = []; // Default fallback if null or unexpected type
-      }
-  
-      setCarAllFeatures(featuresArray);
-    }
-  }, [carData]);
-
-  console.log(carAllFeatures);
-  
-
-  useEffect(() => {
-    if (carData) {
-      setCarSafetyFeatures(carData.carSafetyFeatures || []);
-    }
-  }, [carData]);
- 
   const titleRef = useRef(null);
   const conditionRef = useRef(null);
   const typeRef = useRef(null);
@@ -88,26 +58,12 @@ const EditListingForm = ({ carId }) => {
   };
 
   const handleGalleryChange = (e) => {
-    setGalleryImages([...e.target.files]);
+    const files = Array.from(e.target.files); 
+    setGalleryImages(files); 
+    
+    console.log("Selected images: ", files);
   };
 
-  const hiddenFeaturedImage = () => {
-    let image = document.getElementById("showFeaturedImage");
-    image.classList.add("hidden");
-    console.log(image);
-  };
-  const hiddenGalleryImage = () => {
-    let image = document.getElementById("showGalleryImage");
-    image.classList.add("hidden");
-    console.log(image);
-  };
-  const hiddenAttachmentImage = () => {
-    let image = document.getElementById("showAttachmentImage");
-    image.classList.add("hidden");
-    console.log(image);
-  };
-
-  // Error Validation
   const validateDetails = (details) => {
     const errors = [];
 
@@ -115,52 +71,14 @@ const EditListingForm = ({ carId }) => {
     else if (!details.condition) errors.push("Price is required.");
     else if (!details.year) errors.push("Year is required.");
 
+    // Add more validations as needed...
+
     return errors;
   };
 
-  // //  Handle Features 
-  // const handleFeatureChange = (e, type) => {
-  //   const { value, checked } = e.target;
-
-  //   if (type === 'allFeatures') {
-  //     if (checked) {
-  //       setCarAllFeatures((prev) => [...prev, value]);
-  //     } else {
-  //       setCarAllFeatures((prev) => prev.filter((item) => item !== value));
-  //     }
-  //   }
-  
-  //   if (type === 'safetyFeatures') {
-  //     if (checked) {
-  //       setCarSafetyFeatures([...carSafetyFeatures, value]);
-  //     } else {
-  //       setCarSafetyFeatures(carSafetyFeatures.filter((item) => item !== value));
-  //     }
-  //   }
-  // };
-
-  const handleFeatureChange = (e, type) => {
-    const { value, checked } = e.target;
-  
-    if (type === "allFeatures") {
-      setCarAllFeatures((prevFeatures) => {
-        if (checked) {
-          // Agar checked hai, to add karo
-          return [...prevFeatures, value];
-        } else {
-          // Agar unchecked hai, to remove karo
-          return prevFeatures.filter((item) => item !== value);
-        }
-      });
-    }
-
-  };
-  
-
-
-  const updateDetail = async () => {
+  const SubmitDetail = async () => {
     const formData = new FormData();
-  
+
     formData.append("carTitle", titleRef.current.value);
     formData.append("carCondition", conditionRef.current.value);
     formData.append("CarType", typeRef.current.value);
@@ -178,25 +96,22 @@ const EditListingForm = ({ carId }) => {
     formData.append("carDoor", doorRef.current.value);
     formData.append("carVin", vinRef.current.value);
     formData.append("carAvailability", availabilityRef.current.value);
-    formData.append("description", descriptionRef.current.value);
-  
-    // Add features arrays as JSON strings
-    formData.append("carAllFeatures", JSON.stringify(carAllFeatures));
-    formData.append("carSafetyFeatures", JSON.stringify(carSafetyFeatures));
-  
+    formData.append("carDescription", descriptionRef.current.value);
+    formData.append("carAllFeatures", JSON.stringify(selectedAllFeatures));
+    formData.append("carSafetyFeatures", JSON.stringify(selectedSafetyFeatures));
+
     // Images
     if (featuredImage) formData.append("featuredImage", featuredImage);
     if (attachmentImage) formData.append("attachmentImage", attachmentImage);
-  
-    galleryImages.forEach((image) => {
-      formData.append("galleryImages", image);
+
+    galleryImages.forEach((image, index) => {
+      formData.append("galleryImages", image); // Don't use index here if you use upload.fields
     });
-  
+
     try {
       const token = localStorage.getItem("adminToken");
-  
-      const response = await axios.put(
-        `http://localhost:5000/api/cards/update/${carId}`,
+      const response = await axios.post(
+        "http://localhost:5000/api/cards/add",
         formData,
         {
           headers: {
@@ -205,33 +120,53 @@ const EditListingForm = ({ carId }) => {
           },
         }
       );
-  
       console.log("Success" + JSON.stringify(response.data));
-      alert("Updated Succesfully");
-  
-// reset car features
-      setCarAllFeatures([]);
-      setCarSafetyFeatures([]);
-  
-      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-        checkbox.checked = false;
-      });
-  
-      window.location.href = "/dashboard";
+      alert("Added Succesfully");
+
+      // Reset refs 
+      titleRef.current.value = "";
+      typeRef.current.value = "";
+      availabilityRef.current.value = "";
+      descriptionRef.current.value = "";
+      vinRef.current.value = "";
+      doorRef.current.value = "";
+      colorRef.current.value = "";
+      cylinderRef.current.value = "";
+      engineSizeRef.current.value = "";
+      mileageRef.current.value = "";
+      fuelTypeRef.current.value = "";
+      transmissionRef.current.value = "";
+      driveTypeRef.current.value = "";
+      yearRef.current.value = "";
+      priceRef.current.value = "";
+      modelRef.current.value = "";
+      makeRef.current.value = "";
+      
+
+      // Reset file inputs
+      document.getElementById("image").value = "";
+
+      // Reset checkboxes
+      document
+        .querySelectorAll("input[type='checkbox']")
+        .forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+       
+          window.location.href = "/dashboard"
+        
     } catch (error) {
       console.error(error);
       alert("Error");
     }
   };
-  
-
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">
       <div className="flex justify-between items-center p-6 mb-4">
-        <h1 className="text-3xl font-bold">Edit Listing</h1>
+        <h1 className="text-3xl font-bold">Add Details</h1>
       </div>
-      <form action="" className="form  w-full h-auto p-3 flex-col  flex gap-5">
-        <div className="p-6 text-sm border text-gray-600 rounded-md w-full h-auto">
+      <form action="" className="form  w-full h-auto p-3  flex flex-col gap-5">
+        <div className="p-6 border rounded-md text-sm text-gray-600 w-full h-auto">
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>
@@ -239,10 +174,6 @@ const EditListingForm = ({ carId }) => {
               </p>
               <input
                 type="text"
-                value={carData.carTitle || ""}
-                onChange={(e) =>
-                  setCarData({ ...carData, carTitle: e.target.value })
-                }
                 id="title"
                 ref={titleRef}
                 className="mt-2 w-full border rounded-md p-2"
@@ -258,13 +189,9 @@ const EditListingForm = ({ carId }) => {
                 </p>
                 <select
                   id="condition"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Condition"
                   ref={conditionRef}
-                  value={carData.carCondition || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carCondition: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -295,14 +222,10 @@ const EditListingForm = ({ carId }) => {
                   Type <sup className="text-orange-700">*</sup>
                 </p>
                 <select
-                  id="type"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  id="condition"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Type"
                   ref={typeRef}
-                  value={carData.carType || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carType: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -310,7 +233,7 @@ const EditListingForm = ({ carId }) => {
                     disabled
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
                   >
-                    Select Type
+                    Select Condition
                   </option>
                   <option
                     value="BUS"
@@ -408,137 +331,124 @@ const EditListingForm = ({ carId }) => {
 
             {/* Make Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="make" className="w-full">
-                <p>
-                  Make <sup className="text-orange-700">*</sup>
-                </p>
-                <select
-                  id="make"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
-                  placeholder="Select make"
-                  ref={makeRef}
-                  value={carData.carMake || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, caeMake: e.target.value })
-                  }
+              <select
+                id="make"
+                className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
+                placeholder="Select make"
+                ref={makeRef}
+              >
+                <option
+                  value=""
+                  selected
+                  disabled
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
                 >
-                  <option
-                    value=""
-                    selected
-                    disabled
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
-                  >
-                    Select Make
-                  </option>
-                  <option
-                    value="BUS"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    BUS
-                  </option>
-                  <option
-                    value="CONVERTIBLE"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    CONVERTIBLE
-                  </option>
-                  <option
-                    value="COUPE"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    COUPE
-                  </option>
-                  <option
-                    value="DUMP-TRUCK"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    DUMP-TRUCK
-                  </option>
-                  <option
-                    value="FLAT BODY TRUCK"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    FLAT BODY TRUCK
-                  </option>
-                  <option
-                    value="FREEZER BOX"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    FREEZER BOX
-                  </option>
-                  <option
-                    value="HATCHBACK"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    HATCHBACK
-                  </option>
-                  <option
-                    value="MIN VAN"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    MIN VAN
-                  </option>
-                  <option
-                    value="MUV"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    MUV
-                  </option>
-                  <option
-                    value="PICKUP TRUCK"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    PICK UP TRUCK
-                  </option>
-                  <option
-                    value="SEDAN"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    SEDAN
-                  </option>
-                  <option
-                    value="STATION WAGON"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    STATION WAGON
-                  </option>
-                  <option
-                    value="SUV"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    SUV
-                  </option>
-                  <option
-                    value="VAN"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    VAN
-                  </option>
-                  <option
-                    value="WAGON"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    WAGON
-                  </option>
-                </select>
-              </label>
+                  Select Make
+                </option>
+                <option
+                  value="BUS"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  BUS
+                </option>
+                <option
+                  value="CONVERTIBLE"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  CONVERTIBLE
+                </option>
+                <option
+                  value="COUPE"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  COUPE
+                </option>
+                <option
+                  value="DUMP-TRUCK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  DUMP-TRUCK
+                </option>
+                <option
+                  value="FLAT BODY TRUCK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  FLAT BODY TRUCK
+                </option>
+                <option
+                  value="FREEZER BOX"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  FREEZER BOX
+                </option>
+                <option
+                  value="HATCHBACK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  HATCHBACK
+                </option>
+                <option
+                  value="MIN VAN"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  MIN VAN
+                </option>
+                <option
+                  value="MUV"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  MUV
+                </option>
+                <option
+                  value="PICKUP TRUCK"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  PICK UP TRUCK
+                </option>
+                <option
+                  value="SEDAN"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  SEDAN
+                </option>
+                <option
+                  value="STATION WAGON"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  STATION WAGON
+                </option>
+                <option
+                  value="SUV"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  SUV
+                </option>
+                <option
+                  value="VAN"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  VAN
+                </option>
+                <option
+                  value="WAGON"
+                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                >
+                  WAGON
+                </option>
+              </select>
             </div>
 
             {/* Model Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="model" className="w-full">
+              <label htmlFor="title" className="w-full">
                 <p>
                   Model <sup className="text-orange-700">*</sup>
                 </p>
                 <select
-                  id="model"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  id="condition"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Model"
                   ref={modelRef}
-                  value={carData.carModel || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carModel: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -587,13 +497,9 @@ const EditListingForm = ({ carId }) => {
               <label htmlFor="price" className="w-full">
                 <p>Price (USD)</p>
                 <input
-                  type="text"
+                  type="number"
                   id="price"
                   ref={priceRef}
-                  value={carData.carPrice || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carPrice: e.target.value })
-                  }
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
@@ -607,10 +513,6 @@ const EditListingForm = ({ carId }) => {
                   type="number"
                   id="year"
                   ref={yearRef}
-                  value={carData.carYear || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carYear: e.target.value })
-                  }
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
@@ -622,13 +524,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Drive Type</p>
                 <select
                   id="driveType"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select drive Type"
                   ref={driveTypeRef}
-                  value={carData.carDriveType || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carDriveType: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -684,13 +582,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Select Transmission</p>
                 <select
                   id="transmission"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select transmission"
                   ref={transmissionRef}
-                  value={carData.carTransmission || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carTransmission: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -740,13 +634,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Fuel Type</p>
                 <select
                   id="fuelType"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select fuelType"
                   ref={fuelTypeRef}
-                  value={carData.carFuelType || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carFuelType: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -804,10 +694,6 @@ const EditListingForm = ({ carId }) => {
                   type="number"
                   id="mileage"
                   ref={mileageRef}
-                  value={carData.carMileage || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carMileage: e.target.value })
-                  }
                   placeholder="Enter Mileage Here"
                   className="mt-2 w-full border rounded-md p-2"
                 />
@@ -822,10 +708,6 @@ const EditListingForm = ({ carId }) => {
                   type="number"
                   id="engineSize"
                   ref={engineSizeRef}
-                  value={carData.carEngineSize || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carEngineSize: e.target.value })
-                  }
                   className="mt-2 w-full border rounded-md p-2"
                 />
               </label>
@@ -837,13 +719,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Select Cylinders</p>
                 <select
                   id="cylinder"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select cylinder"
                   ref={cylinderRef}
-                  value={carData.carCylinder === ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carCylinder: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -851,7 +729,7 @@ const EditListingForm = ({ carId }) => {
                     disabled
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
                   >
-                    Select Cylinders
+                    Select Fuel Type
                   </option>
                   <option
                     value="4"
@@ -881,13 +759,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Select Colours</p>
                 <select
                   id="colours"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select colours"
                   ref={colorRef}
-                  value={carData.carColour === "new"}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carColour: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -986,13 +860,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Doors</p>
                 <select
                   id="door"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Doors"
                   ref={doorRef}
-                  value={carData.carDoor === "new"}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carDoor: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -1046,10 +916,6 @@ const EditListingForm = ({ carId }) => {
                   ref={vinRef}
                   className="mt-2 w-full border rounded-md p-2"
                   placeholder="Enter Vin Here"
-                  value={carData.carVin || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carVin: e.target.value })
-                  }
                 />
               </label>
             </div>
@@ -1060,13 +926,9 @@ const EditListingForm = ({ carId }) => {
                 <p>Availability</p>
                 <select
                   id="availability"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Availability"
                   ref={availabilityRef}
-                  value={carData.carAvailability === "new"}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carAvailability: e.target.value })
-                  }
                 >
                   <option
                     value=""
@@ -1093,7 +955,6 @@ const EditListingForm = ({ carId }) => {
             </div>
           </div>
 
-          {/* Description textArea  */}
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>Description </p>
@@ -1101,191 +962,119 @@ const EditListingForm = ({ carId }) => {
                 id="description"
                 ref={descriptionRef}
                 className="mt-2 w-full h-[250px] border rounded-md p-2"
-                value={carData.carDescription || ""}
-                onChange={(e) =>
-                  setCarData({ ...carData, carDescription: e.target.value })
-                }
               />
             </label>
           </div>
         </div>
+     
 
-        <div className="flex justify-between items-center p-6 mb-4">
-          <h1 className="text-3xl font-bold">Feature Image</h1>
-        </div>
+      <div className="flex justify-between items-center p-6 mb-4">
+        <h1 className="text-3xl font-bold">Feature Image</h1>
+      </div>
 
-        <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-          <div className="flex flex-col gap-2 space-y-4">
-            Upload Featured Image
-            <label htmlFor="" className="w-full h-auto flex">
-              {/* Custom Button */}
-              <button
-                type="button"
-                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-              >
-                Upload File
-              </button>
-
-              {/* Hidden Input */}
-              <input
-                type="file"
-                id="image"
-                files={carData.featuredImage || ""}
-                onChange={(e) =>
-                  setCarData({ ...carData, featuredImage: e.target.files[0] })
-                }
-                className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-              />
-            </label>
-          </div>
-
-          <div
-            id="showFeaturedImage"
-            className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
-          >
-            <div
-              className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
-              onClick={hiddenFeaturedImage}
+      <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
+        <div className="flex flex-col gap-2 space-y-4">
+          Upload Featured Image
+          <label htmlFor="" className="w-full h-auto flex">
+            {/* Custom Button */}
+            <button
+              type="button"
+              className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
             >
-              {" "}
-              ❌
-            </div>
-            <img
-              loading="lazy"
-              src={`http://localhost:5000/uploads/${carData.featuredImage}`}
-              alt="image"
-              className="w-[160px] h-[160px]"
+              Upload File
+            </button>
+
+            {/* Hidden Input */}
+            <input
+              type="file"
+              id="image"
+              //  ref={fileInputRef}
+              onChange={handleFeaturedChange}
+              className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
             />
-          </div>
-        </div>
-        <div className="flex justify-between items-center p-6 mb-4">
-          <h1 className="text-3xl font-bold">Gallery</h1>
+          </label>
         </div>
 
-        <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-          <div className="flex flex-col gap-2 space-y-4">
-            Upload Gallery Image
-            <label htmlFor="" className="w-full h-auto flex">
-              <button
-                type="file"
-                //  onClick={handleButtonClick}
-                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-              >
-                Upload File
-              </button>
+      </div>
+      <div className="flex justify-between items-center p-6 mb-4">
+        <h1 className="text-3xl font-bold">Gallery</h1>
+      </div>
 
-              <input
-                type="file"
-                id="image"
-                multiple
-                onChange={(e) =>
-                  setCarData({
-                    ...carData,
-                    galleryImages: Array.from(e.target.files),
-                  })
-                }
-                className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-              />
-            </label>
-          </div>
-          <div className="flex w-auto h-auto p-3">
-            <div
-              id="showGalleryImage"
-              className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
+      <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
+        <div className="flex flex-col gap-2 space-y-4">
+          Upload Gallery Image
+          <label htmlFor="" className="w-full h-auto flex">
+            <button
+              type="file"
+              //  onClick={handleButtonClick}
+              className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
             >
-              <div
-                className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
-                onClick={hiddenGalleryImage}
-              >
-                {" "}
-                ❌
-              </div>
-              {carData?.galleryImages?.map((galleryImage, index) => (
-      <img
-        key={index}
-        loading="lazy"
-        src={`http://localhost:5000/uploads/${galleryImage}`}
-        alt={`gallery-image-${index}`}
-        className="w-[160px] h-[160px] object-cover"
-      />
-    ))}
+              Upload File
+            </button>
 
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center p-6 mb-4">
-          <h1 className="text-3xl font-bold">Attachements</h1>
-        </div>
-
-        <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-          <div className="flex flex-col gap-2 space-y-4">
-            Upload Attachement
-            <label htmlFor="" className="w-full h-auto flex">
-              <button
-                type="button"
-                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-              >
-                Upload File
-              </button>
-
-              <input
-                type="file"
-                id="image"
-                onChange={(e) =>
-                  setCarData({ ...carData, attachmentImage: e.target.files[0] })
-                }
-                className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-              />
-            </label>
-          </div>
-
-          <div
-            id="showAttachmentImage"
-            className="showImage p-3 w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
-          >
-            <div
-              className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
-              onClick={hiddenAttachmentImage}
-            >
-              {" "}
-              ❌
-            </div>
-            <img
-              loading="lazy"
-              src={`http://localhost:5000/uploads/${carData.attachmentImage}`}
-              alt="image"
-              className="w-[160px] h-[160px]"
+            <input
+              type="file"
+              id="image"
+              multiple
+              onChange={handleGalleryChange}
+              className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
             />
-          </div>
+          </label>
         </div>
 
-        <div className="flex justify-between items-center p-6 mb-4">
-          <h1 className="text-3xl font-bold">Features</h1>
-        </div>
+      </div>
 
-        <div className="card p-6 flex  border rounded-md ">
+      <div className="flex justify-between items-center p-6 mb-4">
+        <h1 className="text-3xl font-bold">Attachements</h1>
+      </div>
+
+      <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
+        <div className="flex flex-col gap-2 space-y-4">
+          Upload Attachement
+          <label htmlFor="" className="w-full h-auto flex">
+            <button
+              type="button"
+              className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+            >
+              Upload File
+            </button>
+
+            <input
+              type="file"
+              id="image"
+              onChange={handleAttachmentChange}
+              className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
+            />
+          </label>
+        </div>
+            </div>
+
+      <div className="flex justify-between items-center p-6 mb-4">
+        <h1 className="text-3xl font-bold">Features</h1>
+      </div>
+
+      <div className="card p-6 flex  border rounded-md ">
           <div className="row flex flex-wrap m-2">
-            <div className="card-body p-4 flex flex-wrap">
-              {AllFeatures.map((feature  ) => (
+          <div className="card-body p-4 flex flex-wrap">
+              {AllFeatures.map((feature) => (
                 <div
                   key={feature.id}
                   className="col-md-4 mb-3 w-[360px] px-3 py-1"
                 >
                   <div className="form-check">
                     <input
-                      className="form-check-input mx-2"
-                      type="checkbox"
-                      name="selectedFeatures[]"
-                      value={feature.value}
-                      id={feature.id}
-                      onChange={(e) => handleFeatureChange(e, "allFeatures")}
-                      checked={carAllFeatures.map((item) => item).includes(feature.value) }
-                      
+                       className="form-check-input mx-2"
+                       type="checkbox"
+                       name="selectedAllFeatures[]"
+                       value={feature.value}
+                       id={feature.id}
+                       checked={selectedAllFeatures.includes(feature.id)}  
+                       onChange={() => toggleCheckbox(feature.id)}
                     />
                     <label
                       className="form-check-label"
                       htmlFor={feature.id}
+                      onClick={() => toggleCheckbox(feature.id)}
                     >
                       {feature.label}
                     </label>
@@ -1313,15 +1102,16 @@ const EditListingForm = ({ carId }) => {
                     <input
                       className="form-check-input mx-2"
                       type="checkbox"
-                      name="selectedFeatures[]"
+                      name="selectedSafetyFeatures[]"
                       value={feature.value}
                       id={feature.id}
-                      checked={carSafetyFeatures.map((item) => item == feature.value) }
-                      onChange={(e) => handleFeatureChange(e, "safetyFeatures")}
+                      checked={selectedAllFeatures.includes(feature.id)}  
+                       onChange={() => toggleSafetyCheckbox(feature.id)}
                     />
                     <label
                       className="form-check-label"
                       htmlFor={feature.id}
+                      onClick={() => toggleSafetyCheckbox(feature.id)}
                     >
                       {feature.label}
                     </label>
@@ -1331,13 +1121,13 @@ const EditListingForm = ({ carId }) => {
             </div>
           </div>
         </div>
-      </form>
+        </form>
 
       <div className="button w-full flex justify-start items-center p-6">
-        <Button text="Update Listing" onClick={updateDetail} />
+        <Button text="Add Listing" onClick={SubmitDetail} />
       </div>
     </div>
   );
 };
 
-export default EditListingForm;
+export default AddListingForm;

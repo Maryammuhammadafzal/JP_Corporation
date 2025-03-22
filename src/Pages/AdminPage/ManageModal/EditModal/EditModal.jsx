@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { BsList } from "react-icons/bs";
 import { BsLink } from "react-icons/bs";
 import { BsCarFrontFill } from "react-icons/bs";
-import Logo from "../../../assets/Images/jplogo.png";
-import SideMenu from "../../../Components/SideMenu/SideMenu";
-import CarListing from "../CarListing/CarListing";
+import Logo from "../../../../assets/Images/jplogo.png";
+import SideMenu from "../../../../Components/SideMenu/SideMenu";
 import { Link } from "react-router-dom";
+import EditModalForm from "./EditModalForm/EditModalForm";
+import { useParams } from "react-router-dom";
 
 
-const AdminDashboard = () => {
+const EditModal = () => {
+        const {id} = useParams();
+        console.log(id);
+        
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleAdminMenu = () => {
@@ -112,7 +116,7 @@ const AdminDashboard = () => {
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
                 <Link to="/dashboard/manage-modal" className="flex gap-3 items-center">
                   <BsCarFrontFill />{" "}
-                  <p className="hover:text-white text-md">Manage Model</p>
+                  <p className="hover:text-white text-md">Update Model</p>
                 </Link>
               </div>
   
@@ -164,7 +168,7 @@ const AdminDashboard = () => {
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
                 <Link to="/dashboard/manage-modal" className="flex gap-3 items-center">
-                  <BsCarFrontFill size={30}/>
+                  <BsCarFrontFill f  size={30}/>
                 </Link>
               </div>
             </div>
@@ -172,7 +176,7 @@ const AdminDashboard = () => {
 </div>
 
 <div className="right  w-[82%] max-[1300px]:w-full flex flex-col gap-3 justify-end ">
-<CarListing/>
+<EditModalForm modalId={id}/>
 <div className="copyright w-full h-[80px] border-t border-gray-400 flex justify-center items-center">
   <p>Copyright  <a href="" className="text-orange-500">JP Corporation</a> © 2024. All rights reserved.</p>
 
@@ -185,4 +189,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default EditModal;
