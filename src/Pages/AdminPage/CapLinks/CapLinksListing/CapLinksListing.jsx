@@ -1,20 +1,20 @@
 import React ,{ useState , useEffect} from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash , FaEye} from "react-icons/fa";
+
 import axios from "axios"
 
 const CapLinksListing = () => {
   const [search, setSearch] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
-  const [carData , setCarData] = useState([]);
+  const [capLinksData , setCapLinksData] = useState([]);
 
-const  fetchCarData = async () => {
+const  fetchCapLinks = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/dashboard")
+    const res = await axios.get("http://localhost:5000/api/caplinks")
     const data = await res.data;
     console.log(data);
     setCarData(data);
-    
     
   }catch (error) {
   console.log("error" ,error.message);
@@ -24,40 +24,40 @@ const  fetchCarData = async () => {
 
 useEffect(()=> {
   
-fetchCarData()
+fetchCapLinks()
 } , [])
 
- // allCars array
- const allCars = carData;
-console.log(allCars);
+ // allCapLinks array
+ const allCapLinks = capLinksData;
+console.log(allCapLinks);
 
 
  // Filter search
- const filteredCars = allCars.map((car) =>
+ const filteredCapLinks = allCapLinks.map((capLinks) =>
  {
-  car?.carTitle?.toLowerCase()?.includes(search?.toLowerCase())
+  capLinks?.capLinksName?.toLowerCase()?.includes(search?.toLowerCase())
  } 
   
  );
 
   // Pagination Logic
-  const indexOfLastCar = currentPage * entriesPerPage;
-  const indexOfFirstCar = indexOfLastCar - entriesPerPage;
-  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
-  const totalPages = Math.ceil(filteredCars.length / entriesPerPage);
+  const indexOfLastCapLinks = currentPage * entriesPerPage;
+  const indexOfFirstCapLinks = indexOfLastCapLinks - entriesPerPage;
+  const currentCars = filteredCapLinks.slice(indexOfFirstCapLinks, indexOfLastCapLinks);
+  const totalPages = Math.ceil(filteredCapLinks.length / entriesPerPage);
 
   const handleDelete = async(id , title) => {
-const response = await axios.delete(`http://localhost:5000/api/dashboard/delete/${id}`)
+const response = await axios.delete(`http://localhost:5000/api/capLinks/delete/${id}`)
 if(response.status === 200){
   alert(`${title} deleted`); 
-  fetchCarData()
+  fetchCapLinks()
   } else {
     alert("error")
     }
   };
   const handleEdit = async(id ) => {
     localStorage.setItem("EditId" , id);
-    window.location.href = `/listing/edit-listing/get/${id}`;
+    window.location.href = `/cap-links-listing/edit-cap-links-listing/get/${id}`;
   };
 
   const handleEntriesChange = (e) => {
@@ -69,8 +69,8 @@ if(response.status === 200){
     setCurrentPage(page);
   };
 
-  const ShowAddListingForm = () => {
-    window.location.href = "/listing/add-listing"
+  const ShowCapLinksListingForm = () => {
+    window.location.href = "/cap-links-listing/add-cap-links-listing"
   }
 
   const goToPage = (pageNumber) => {
@@ -90,18 +90,18 @@ if(response.status === 200){
   return (
     <div className="w-full mx-auto border rounded-md py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
-        <h1 className="text-3xl font-bold">Car Listings</h1>
-        <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowAddListingForm}>Add Listing</button>
+        <h1 className="text-3xl font-bold">Cap Links</h1>
+        <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowCapLinksListingForm}>Generate Cap Links</button>
       </div>
 
           {/* Controls */}
-          <div className="flex flex-col md:flex-row justify-between items-center px-6 py-2 mb-4 gap-4">
+          <div className="flex flex-col  md:flex-row justify-between items-center px-6 py-2 mb-4 gap-4">
         <div>
           Show
           <select
             value={entriesPerPage}
             onChange={handleEntriesChange}
-            className="border p-1 rounded"
+            className="border p-1 mx-3 rounded border-neutral-500"
           >
             <option value={15}>15</option>
             <option value={30}>30</option> 
@@ -126,37 +126,38 @@ if(response.status === 200){
             <tr >
               <th className="p-5">S.No</th>
               <th className="p-5">Image</th>
-              <th className="p-5">Title</th>
-              <th className="p-5">Type</th>
-              <th className="p-5">Make</th>
-              <th className="p-5">Year</th>
+              <th className="p-5">Name</th>
+              <th className="p-5">Comp Name</th>
+              <th className="p-5">Forwarder Name</th>
+              <th className="p-5">Manufacture Year/Month</th>
               <th className="p-5">Uploaded At</th>
-              <th className="p-5">Uploaded By</th>
               <th className="p-5">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {carData 
-              .filter((car) => car.carTitle.toLowerCase().includes(search.toLowerCase()))
+            {capLinksData 
+              .filter((capLinks) => capLinks.capLinksName.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
-              .map((car, index) => ( 
-                <tr key={car.id} className="border-b">
-                  <td className="p-2 text-center">{indexOfFirstCar + index + 1}</td>
+              .map((capLinks, index) => ( 
+                <tr key={capLinks.id} className="border-b">
+                  <td className="p-2 text-center">{indexOfFirstCapLinks + index + 1}</td>
                   <td className="p-2 text-center">
-                    <img src={`../../../../admin/uploads/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
+                    <img src={`../../../../admin/uploads/${capLinks.featuredImage}`} alt="capLinks" className="w-10 h-10 object-cover" />
                   </td>
                   
-                  <td className="p-2 text-center">{car.carTitle}</td>
-                  <td className="p-2 text-center">{car.carType}</td>
-                  <td className="p-2 text-center">{car.carMake}</td>
-                  <td className="p-2 text-center">{car.carYear}</td>
-                  <td className="p-2 text-center">{car.createdAt.slice(0,10)}</td>
-                  <td className="p-2 text-center">admin</td>
+                  <td className="p-2 text-center">{capLinks.capLinksName}</td>
+                  <td className="p-2 text-center">{capLinks.capLinksCompanyName}</td>
+                  <td className="p-2 text-center">{capLinks.capLinksForwarderName}</td>
+                  <td className="p-2 text-center">{capLinks.capLinksYear}</td>
+                  <td className="p-2 text-center">{capLinks.createdAt.slice(0,10)}</td>
                   <td className="p-2 justify-center flex space-x-2">
-                    <button className="text-orange-500" onClick={() => handleEdit(car._id , car.carTitle)}>
+                    <button className="text-white p-2 bg-emerald-500 " onClick={() => handleEdit(capLinks._id , capLinks.capLinksName)}>
+                      <FaEye />
+                    </button>
+                    <button className="text-white p-2 bg-orange-500" onClick={() => handleEdit(capLinks._id , capLinks.capLinksName)}>
                       <FaEdit />
                     </button>
-                    <button className="text-red-500" onClick={() => handleDelete(car._id , car.carTitle)}>
+                    <button className="text-white p-2 bg-red-500" onClick={() => handleDelete(capLinks._id , capLinks.capLinksName)}>
                       <FaTrash />
                     </button>
                   </td>

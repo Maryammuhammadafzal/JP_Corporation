@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-import Button from "../../../../Components/Button/Button";
+import Button from "../../../../../Components/Button/Button";
 import axios from "axios";
-import AllFeatures from "../../../../Components/AllFeatures.js";
-import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
+import AllFeatures from "../../../../../Components/AllFeatures.js";
+import { safetyFeatures } from "../../../../../Components/safetyFeatures.js";
 
 
-const AddListingForm = () => {
+const GenerateCapLinksForm = () => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [attachmentImage, setAttachmentImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
@@ -30,8 +30,8 @@ const AddListingForm = () => {
 
   const detailsArray = [];
   const [details, setDetails] = useState(detailsArray);
-  const titleRef = useRef(null);
-  const conditionRef = useRef(null);
+  const nameRef = useRef(null);
+  const companyNameRef = useRef(null);
   const typeRef = useRef(null);
   const makeRef = useRef(null);
   const modelRef = useRef(null);
@@ -76,11 +76,11 @@ const AddListingForm = () => {
     return errors;
   };
 
-  const SubmitDetail = async () => {
+  const GenerateCapLinks = async () => {
     const formData = new FormData();
 
-    formData.append("carTitle", titleRef.current.value);
-    formData.append("carCondition", conditionRef.current.value);
+    formData.append("carTitle", nameRef.current.value);
+    formData.append("carCondition", companyNameRef.current.value);
     formData.append("CarType", typeRef.current.value);
     formData.append("carMake", makeRef.current.value);
     formData.append("carModel", modelRef.current.value);
@@ -124,7 +124,7 @@ const AddListingForm = () => {
       alert("Added Succesfully");
 
       // Reset refs 
-      titleRef.current.value = "";
+      nameRef.current.value = "";
       typeRef.current.value = "";
       availabilityRef.current.value = "";
       descriptionRef.current.value = "";
@@ -175,7 +175,7 @@ const AddListingForm = () => {
               <input
                 type="text"
                 id="title"
-                ref={titleRef}
+                ref={nameRef}
                 className="mt-2 w-full border rounded-md p-2"
                 placeholder="Enter Title Here"
               />
@@ -191,7 +191,7 @@ const AddListingForm = () => {
                   id="condition"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Condition"
-                  ref={conditionRef}
+                  ref={companyNameRef}
                 >
                   <option
                     value=""
@@ -1124,10 +1124,10 @@ const AddListingForm = () => {
         </form>
 
       <div className="button w-full flex justify-start items-center p-6">
-        <Button text="Add Listing" onClick={SubmitDetail} />
+        <Button text="Add Listing" onClick={GenerateCapLinks} />
       </div>
     </div>
   );
 };
 
-export default AddListingForm;
+export default GenerateCapLinksForm;

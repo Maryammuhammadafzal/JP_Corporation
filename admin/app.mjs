@@ -6,6 +6,7 @@ import carRoutes from "./routes/carRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js"
 import modelRoutes from "./routes/modelRoutes.js"
+import capLinksRoutes from "./routes/capLinksRoutes.js"
 import multer from "multer";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/cards", carRoutes);
 app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
+app.use("/api/caplinks" , capLinksRoutes)
 app.use("/api/model" , modelRoutes)
 
 // MongoDB Connection
