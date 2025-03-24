@@ -5,9 +5,9 @@ import { statusFeatures } from "../../../../../Components/StatusFeatures.js";
 import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
 
 const GenerateCapLinksForm = () => {
-  const [featuredImage, setFeaturedImage] = useState(null);
-  const [attachmentImage, setAttachmentImage] = useState(null);
-  const [galleryImages, setGalleryImages] = useState([]);
+  const [productFeatureImage, setproductFeatureImage] = useState(null);
+  const [productImage, setproductImage] = useState(null);
+  // const [galleryImages, setGalleryImages] = useState([]);
   const [selectedStatusFeatures, setSelectedStatusFeatures] = useState([]);
   const [selectedNameOption, setSelectedNameOption] = useState([]);
   const [selectedForwarderNameOption, setSelectedForwarderNameOption] = useState([]);
@@ -35,46 +35,110 @@ const GenerateCapLinksForm = () => {
 
   const detailsArray = [];
   const [details, setDetails] = useState(detailsArray);
+
+// Departure Ref
   const carrierNameRef = useRef(null);
   const departureVesselRef = useRef(null);
   const departurePartsOfLandingRef = useRef(null);
   const departureETDRef = useRef(null);
-  
-  const nameRef = useRef(null);
-  const companyNameRef = useRef(null);
-  const typeRef = useRef(null);
-  const makeRef = useRef(null);
-  const modelRef = useRef(null);
-  const priceRef = useRef(null);
-  const yearRef = useRef(null);
-  const driveTypeRef = useRef(null);
-  const transmissionRef = useRef(null);
-  const fuelTypeRef = useRef(null);
-  const mileageRef = useRef(null);
-  const engineSizeRef = useRef(null);
-  const cylinderRef = useRef(null);
-  const colorRef = useRef(null);
-  const doorRef = useRef(null);
-  const vinRef = useRef(null);
-  const availabilityRef = useRef(null);
+
+  // Arrival Ref
+  const arrivalVesselRef = useRef(null)
+  const ArrivalPartOfDischargeRef = useRef(null)
+  const arrivalETDRef = useRef(null)
+
+  // Files Ref
+  const bLFileRef = useRef(null)
+  const inspectionFileRef = useRef(null)
+  const certificateFileRef = useRef(null)
+  const englishCertificateFileRef = useRef(null)
+  const invoiceFileRef = useRef(null)
+
+  // Document Ref
+  const documentNameRef = useRef(null);
+  const documentAddressRef = useRef(null);
+  const documentCityRef = useRef(null);
+  const documentCountryRef = useRef(null);
+  const documentFaxNumberRef = useRef(null);
+  const documentTrackingNumberRef = useRef(null);
+  const documentPhoneNumber1Ref = useRef(null);
+  const documentPhoneNumber2Ref = useRef(null);
+  const documentPhoneNumber3Ref = useRef(null);
+  const documentCellPhoneNumberOREmailRef = useRef(null);
+
+// Document Center Ref
+  const documentCenterNameRef = useRef(null);
+  const documentCenterAddressRef = useRef(null);
+  const documentCenterCityRef = useRef(null);
+  const documentCenterCountryRef = useRef(null);
+  const documentCenterPhoneNumber1Ref = useRef(null);
+  const documentCenterPhoneNumber2Ref = useRef(null);
+  const documentCenterPhoneNumber3Ref = useRef(null);
+  const documentCenterEmailRef = useRef(null);
+  const documentCenterUrlRef = useRef(null);
+  const documentCenterOtherInformationRef = useRef(null);
+
+  // cosignee Ref
+  const consigneeNameRef = useRef(null);
+  const consigneeCityRef = useRef(null);
+  const consigneeAddressRef = useRef(null);
+  const consigneeCountryRef = useRef(null);
+  const consigneeFaxNumberRef = useRef(null);
+  const consigneePhoneNumber1Ref = useRef(null);
+  const consigneePhoneNumber2Ref = useRef(null);
+  const consigneePhoneNumber3Ref = useRef(null);
+  const consigneeCellPhoneNumberOREmailRef = useRef(null);
+  const enrollementRef= useRef(null);
+
+  // Notify party Ref
+  const notifyPartyNameRef = useRef(null);
+  const notifyPartyCityRef = useRef(null);
+  const notifyPartyCountryRef = useRef(null);
+  const notifyPartyAddressRef = useRef(null);
+  const notifyPartyChassisRef = useRef(null);
+  const notifyPartyDoorRef = useRef(null);
+  const notifyPartytransmissionRef = useRef(null);
+  const notifyPartySteeringRef = useRef(null);
+  const notifyPartySeatsRef = useRef(null);
+  const notifyPartyRegistrationYearORMonthRef = useRef(null);
+  const notifyPartyCellPhoneNumberRef = useRef(null);
+  const notifyPartyReferenceNoRef = useRef(null);
+  const notifyPartyEngineNoRef = useRef(null);
+  const notifyPartyDriveRef = useRef(null);
+  const notifyPartyEngineSizeRef = useRef(null);
+  const notifyPartyExtColorRef = useRef(null);
+  const notifyPartyFuelRef = useRef(null);
+  const notifyPartyFaxNumberRef = useRef(null);
+  const notifyPartyMileageRef = useRef(null);
+  const notifyPartyModelCodeRef = useRef(null);
+  const notifyPartyModelGradeRef = useRef(null);
+  const notifyPartyPhoneNumber1Ref = useRef(null);
+  const notifyPartyPhoneNumber2Ref = useRef(null);
+  const notifyPartyPhoneNumber3Ref = useRef(null);
+  const notifyPartyProductNameRef = useRef(null);
+ 
   const descriptionRef = useRef(null);
-  let forwarderName = useRef(null);
-  let organizationName = null
+  const forwarderName = useRef(null);
+  const organizationName = useRef(null);
   
   const handleFeaturedChange = (e) => {
-    setFeaturedImage(e.target.files[0]);
+    setproductFeatureImage(e.target.files[0]);
+  };
+
+  const handleProductFeaturedChange = (e) => {
+    setproductFeatureImage(e.target.files[0]);
   };
   
-  const handleAttachmentChange = (e) => {
-    setAttachmentImage(e.target.files[0]);
+  const handleProductImageChange = (e) => {
+    setproductImage(e.target.files[0]);
   };
   
-  const handleGalleryChange = (e) => {
-    const files = Array.from(e.target.files);
-    setGalleryImages(files);
+  // const handleGalleryChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setGalleryImages(files);
     
-    console.log("Selected images: ", files);
-  };
+  //   console.log("Selected images: ", files);
+  // };
   
   const handleNameRadioChange = (e) => {
     organizationName = setSelectedNameOption(e.target.value);
@@ -85,8 +149,6 @@ const GenerateCapLinksForm = () => {
     forwarderName = setSelectedForwarderNameOption(e.target.value);
     
   };
-  
-  
   
   const validateDetails = (details) => {
     const errors = [];
@@ -441,7 +503,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="VesselName"
-                    // ref={organizationNameRef}
+                    ref={arrivalVesselRef}
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Vessel Name "
                   />
@@ -458,7 +520,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="PartOfDischarge "
-                      // ref={organizationNameRef}
+                      ref={ArrivalPartOfDischargeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Part Of Discharge  "
                     />
@@ -473,7 +535,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="date"
                       id="ETD(Estimated Time of Departure)"
-                      // ref={organizationNameRef}
+                      ref={arrivalETDRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" ETD (Estimated Time of Departure)"
                     />
@@ -491,7 +553,7 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload B/L
-                    <label htmlFor="" className="w-full h-auto flex">
+                    <label htmlFor="B/L" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -500,11 +562,11 @@ const GenerateCapLinksForm = () => {
                         Upload File
                       </button>
 
-                      {/* Hidden Input */}
+                      {/* File Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
+                        id="B/L"
+                         ref={bLFileRef}
                         onChange={handleFeaturedChange}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -516,7 +578,7 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload Inspection
-                    <label htmlFor="" className="w-full h-auto flex">
+                    <label htmlFor="inspection" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -525,11 +587,11 @@ const GenerateCapLinksForm = () => {
                         Upload File
                       </button>
 
-                      {/* Hidden Input */}
+                      {/* File Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
+                        id="inspection"
+                         ref={inspectionFileRef}
                         onChange={handleFeaturedChange}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -544,7 +606,7 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload Export Certificate
-                    <label htmlFor="image" className="w-full h-auto flex">
+                    <label htmlFor="certificate" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -556,8 +618,8 @@ const GenerateCapLinksForm = () => {
                       {/* File Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
+                        id="certificate"
+                         ref={certificateFileRef}
                         onChange={handleFeaturedChange}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -569,7 +631,7 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload English Export Certificate
-                    <label htmlFor="image" className="w-full h-auto flex">
+                    <label htmlFor="englishCertificate" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -581,8 +643,8 @@ const GenerateCapLinksForm = () => {
                       {/* Hidden Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
+                        id="englishCertificate"
+                         ref={englishCertificateFileRef}
                         onChange={handleFeaturedChange}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -596,7 +658,7 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload Invoice
-                    <label htmlFor="image" className="w-full h-auto flex">
+                    <label htmlFor="invoice" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -608,8 +670,8 @@ const GenerateCapLinksForm = () => {
                       {/* Hidden Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
+                        id="invoice"
+                         ref={invoiceFileRef}
                         onChange={handleFeaturedChange}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -621,14 +683,14 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     <label
-                      htmlFor="Enrollment"
+                      htmlFor="Enrollement"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p> Enrollment</p>
                       <input
                         type="text"
-                        id="Enrollment"
-                        // ref={organizationNameRef}
+                        id="Enrollement"
+                        ref={enrollementRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder="Enrollment"
                       />
@@ -662,7 +724,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="documentName"
-                    ref={nameRef}
+                    ref={documentNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter name Here"
                   />
@@ -679,7 +741,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentAddress"
-                      // ref={organizationNameRef}
+                      ref={documentAddressRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -694,7 +756,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentCity"
-                      // ref={organizationNameRef}
+                      ref={documentCityRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -713,7 +775,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentCountry"
-                      // ref={organizationNameRef}
+                      ref={documentCountryRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -728,7 +790,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentPhoneNumber1"
-                      // ref={organizationNameRef}
+                      ref={documentPhoneNumber1Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -747,7 +809,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentPhoneNumber2"
-                      // ref={organizationNameRef}
+                      ref={documentPhoneNumber2Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -762,7 +824,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentPhoneNumber3"
-                      // ref={organizationNameRef}
+                      ref={documentPhoneNumber3Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -774,14 +836,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="FaxNumber"
+                    htmlFor="documentFaxNumber"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Fax Number</p>
                     <input
                       type="number"
-                      id="FaxNumber"
-                      // ref={organizationNameRef}
+                      id="documentFaxNumber"
+                      ref={documentFaxNumberRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fax Number"
                     />
@@ -789,14 +851,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="CellPhoneNumber/Email"
+                    htmlFor="documentCellPhoneNumber/Email"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Cell Phone Number/Email</p>
                     <input
                       type="number"
-                      id="CellPhoneNumber/Email"
-                      // ref={organizationNameRef}
+                      id="documentCellPhoneNumber/Email"
+                      ref={documentCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Cell Phone Number/Email"
                     />
@@ -814,14 +876,14 @@ const GenerateCapLinksForm = () => {
 
                 {/* First Content */}
                 <div className="w-full">
-                  <label htmlFor="TrackingNumber" className="w-full">
+                  <label htmlFor="documentTrackingNumber" className="w-full">
                     <p>
                       Tracking Number<sup className="text-orange-700">*</sup>
                     </p>
                     <input
                       type="text"
-                      id="TrackingNumber"
-                      ref={nameRef}
+                      id="documentTrackingNumber"
+                      ref={documentTrackingNumberRef}
                       className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                       placeholder="Tracking Number"
                     />
@@ -839,14 +901,14 @@ const GenerateCapLinksForm = () => {
                 <div className="w-full h-auto justify-start items-center flex gap-5 ">
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="Name"
+                      htmlFor="documentCenterName"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Name</p>
                       <input
                         type="text"
-                        id="Name"
-                        // ref={organizationNameRef}
+                        id="documentCenterName"
+                        ref={documentCenterNameRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Name"
                       />
@@ -854,14 +916,14 @@ const GenerateCapLinksForm = () => {
                   </div>
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="Address"
+                      htmlFor="documentCenterAddress"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Address</p>
                       <input
                         type="text"
-                        id="Address"
-                        // ref={organizationNameRef}
+                        id="documentCenterAddress"
+                        ref={documentCenterAddressRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Address"
                       />
@@ -872,14 +934,14 @@ const GenerateCapLinksForm = () => {
                 <div className="w-full h-auto justify-start items-center flex gap-5 ">
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="City"
+                      htmlFor="documentCenterCity"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>City</p>
                       <input
                         type="text"
-                        id="City"
-                        // ref={organizationNameRef}
+                        id="documentCenterCity"
+                        ref={documentCenterCityRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" City"
                       />
@@ -887,14 +949,14 @@ const GenerateCapLinksForm = () => {
                   </div>
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="Country"
+                      htmlFor="documentCenterCountry"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Country</p>
                       <input
                         type="text"
-                        id="Country"
-                        // ref={organizationNameRef}
+                        id="documentCenterCountry"
+                        ref={documentCenterCountryRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Country"
                       />
@@ -906,14 +968,14 @@ const GenerateCapLinksForm = () => {
                 <div className="w-full h-auto justify-start items-center flex gap-5 ">
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="PhoneNumber1"
+                      htmlFor="documentCenterPhoneNumber1"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Phone Number1</p>
                       <input
                         type="text"
-                        id="PhoneNumber1"
-                        // ref={organizationNameRef}
+                        id="documentCenterPhoneNumber1"
+                        ref={documentCenterPhoneNumber1Ref}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Phone Number1"
                       />
@@ -921,14 +983,14 @@ const GenerateCapLinksForm = () => {
                   </div>
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="PhoneNumber2"
+                      htmlFor="documentCenterPhoneNumber2"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Phone Number2</p>
                       <input
                         type="number"
-                        id="PhoneNumber2"
-                        // ref={organizationNameRef}
+                        id="documentCenterPhoneNumber2"
+                        ref={documentCenterPhoneNumber2Ref}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Phone Number2"
                       />
@@ -940,14 +1002,14 @@ const GenerateCapLinksForm = () => {
                 <div className="w-full h-auto justify-start items-center flex gap-5 ">
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="PhoneNumber3"
+                      htmlFor="documentCenterPhoneNumber3"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Phone Number3</p>
                       <input
                         type="number"
-                        id="PhoneNumber3"
-                        // ref={organizationNameRef}
+                        id="documentCenterPhoneNumber3"
+                        ref={documentCenterPhoneNumber3Ref}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Phone Number3"
                       />
@@ -955,14 +1017,14 @@ const GenerateCapLinksForm = () => {
                   </div>
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="Email"
+                      htmlFor="documentCenterEmail"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Email</p>
                       <input
                         type="email"
-                        id="Email"
-                        // ref={organizationNameRef}
+                        id="documentCenterEmail"
+                        ref={documentCenterEmailRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Email"
                       />
@@ -974,14 +1036,14 @@ const GenerateCapLinksForm = () => {
                 <div className="w-full h-auto justify-start items-center flex gap-5 ">
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="Url"
+                      htmlFor="documentCenterUrl"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Url</p>
                       <input
                         type="url"
-                        id="Url"
-                        // ref={organizationNameRef}
+                        id="documentCenterUrl"
+                        ref={documentCenterUrlRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Url"
                       />
@@ -989,14 +1051,14 @@ const GenerateCapLinksForm = () => {
                   </div>
                   <div className="flex flex-col w-full gap-2 h-auto">
                     <label
-                      htmlFor="OtherInformation"
+                      htmlFor="documentCenterOtherInformation"
                       className="w-full gap-3 flex flex-col justify-center items-start "
                     >
                       <p>Other Information</p>
                       <input
                         type="number"
-                        id="OtherInformation"
-                        // ref={organizationNameRef}
+                        id="documentCenterOtherInformation"
+                        ref={documentCenterOtherInformationRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Other Information"
                       />
@@ -1023,14 +1085,14 @@ const GenerateCapLinksForm = () => {
 
               {/* First Content */}
               <div className="w-full">
-                <label htmlFor="name" className="w-full">
+                <label htmlFor="consigneeName" className="w-full">
                   <p>
                     Name<sup className="text-orange-700">*</sup>
                   </p>
                   <input
                     type="text"
-                    id="name"
-                    ref={nameRef}
+                    id="consigneeName"
+                    ref={consigneeNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter name Here"
                   />
@@ -1040,14 +1102,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Address"
+                    htmlFor="consigneeAddress"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Address</p>
                     <input
                       type="text"
-                      id="Address"
-                      // ref={organizationNameRef}
+                      id="consigneeAddress"
+                      ref={consigneeAddressRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -1055,14 +1117,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="City"
+                    htmlFor="consigneeCity"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>City</p>
                     <input
                       type="text"
-                      id="City"
-                      // ref={organizationNameRef}
+                      id="consigneeCity"
+                      ref={consigneeCityRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -1074,14 +1136,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Country"
+                    htmlFor="consigneeCountry"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Country</p>
                     <input
                       type="text"
-                      id="Country"
-                      // ref={organizationNameRef}
+                      id="consigneeCountry"
+                      ref={consigneeCountryRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -1089,14 +1151,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Phone Number1"
+                    htmlFor="consigneePhoneNumber1"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Phone Number1</p>
                     <input
                       type="number"
-                      id="Phone Number1"
-                      // ref={organizationNameRef}
+                      id="consigneePhoneNumber1"
+                      ref={consigneePhoneNumber1Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -1108,14 +1170,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Phone Number2"
+                    htmlFor="consigneePhoneNumber2"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Phone Number2</p>
                     <input
                       type="number"
-                      id="Phone Number2"
-                      // ref={organizationNameRef}
+                      id="consigneePhoneNumber2"
+                      ref={consigneePhoneNumber2Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -1123,14 +1185,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Phone Number3"
+                    htmlFor="consigneePhoneNumber3"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Phone Number3</p>
                     <input
                       type="number"
-                      id="Phone Number3"
-                      // ref={organizationNameRef}
+                      id="consigneePhoneNumber3"
+                      ref={consigneePhoneNumber3Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -1142,14 +1204,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Fax Number"
+                    htmlFor="consigneeFaxNumber"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Fax Number</p>
                     <input
                       type="number"
-                      id="Fax Number"
-                      // ref={organizationNameRef}
+                      id="consigneeFaxNumber"
+                      ref={consigneeFaxNumberRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fax Number"
                     />
@@ -1157,14 +1219,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Cell Phone Number/Email"
+                    htmlFor="consigneeCellPhoneNumber/Email"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Cell Phone Number/Email</p>
                     <input
                       type="number"
-                      id="Cell Phone Number/Email"
-                      // ref={organizationNameRef}
+                      id="consigneeCellPhoneNumber/Email"
+                      ref={consigneeCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Cell Phone Number/Email"
                     />
@@ -1174,18 +1236,18 @@ const GenerateCapLinksForm = () => {
             </div>
             {/* 2nd Inputs */}
             <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-              <h3 className="text-md font-bold ">Consignee</h3>
+              <h3 className="text-md font-bold ">Notify Party</h3>
 
               {/* First Content */}
               <div className="w-full">
-                <label htmlFor="name" className="w-full">
+                <label htmlFor="notifyPartyName" className="w-full">
                   <p>
                     Name<sup className="text-orange-700">*</sup>
                   </p>
                   <input
                     type="text"
-                    id="name"
-                    ref={nameRef}
+                    id="notifyPartyName"
+                    ref={notifyPartyNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter name Here"
                   />
@@ -1195,14 +1257,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Address"
+                    htmlFor="notifyPartyAddress"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Address</p>
                     <input
                       type="text"
-                      id="Address"
-                      // ref={organizationNameRef}
+                      id="notifyPartyAddress"
+                      ref={notifyPartyAddressRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -1210,14 +1272,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="City"
+                    htmlFor="notifyPartyCity"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>City</p>
                     <input
                       type="text"
-                      id="City"
-                      // ref={organizationNameRef}
+                      id="notifyPartyCity"
+                      ref={notifyPartyCityRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -1229,14 +1291,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Country"
+                    htmlFor="notifyPartyCountry"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Country</p>
                     <input
                       type="text"
-                      id="Country"
-                      // ref={organizationNameRef}
+                      id="notifyPartyCountry"
+                      ref={notifyPartyCountryRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -1244,14 +1306,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Phone Number1"
+                    htmlFor="notifyPartyPhoneNumber1"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Phone Number1</p>
                     <input
                       type="number"
-                      id="Phone Number1"
-                      // ref={organizationNameRef}
+                      id="notifyPartyPhoneNumber1"
+                      ref={notifyPartyPhoneNumber1Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -1263,14 +1325,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Phone Number2"
+                    htmlFor="notifyPartyPhoneNumber2"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Phone Number2</p>
                     <input
                       type="number"
-                      id="Phone Number2"
-                      // ref={organizationNameRef}
+                      id="notifyPartyPhoneNumber2"
+                      ref={notifyPartyPhoneNumber2Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -1278,14 +1340,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Phone Number3"
+                    htmlFor="notifyPartyPhoneNumber3"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Phone Number3</p>
                     <input
                       type="number"
-                      id="Phone Number3"
-                      // ref={organizationNameRef}
+                      id="notifyPartyPhoneNumber3"
+                      ref={notifyPartyPhoneNumber3Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -1297,14 +1359,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Fax Number"
+                    htmlFor="notifyPartyFaxNumber"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Fax Number</p>
                     <input
                       type="number"
-                      id="Fax Number"
-                      // ref={organizationNameRef}
+                      id="notifyPartyFaxNumber"
+                      ref={notifyPartyFaxNumberRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fax Number"
                     />
@@ -1312,14 +1374,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Cell Phone Number/Email"
+                    htmlFor="notifyPartyCellPhoneNumber/Email"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Cell Phone Number/Email</p>
                     <input
                       type="number"
-                      id="Cell Phone Number/Email"
-                      // ref={organizationNameRef}
+                      id="notifyPartyCellPhoneNumber/Email"
+                      ref={notifyPartyCellPhoneNumberOREmail}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Cell Phone Number/Email"
                     />
@@ -1341,14 +1403,14 @@ const GenerateCapLinksForm = () => {
             <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
               {/* First Content */}
               <div className="w-full">
-                <label htmlFor="Product Name" className="w-full">
+                <label htmlFor="notifyPartyProductName" className="w-full">
                   <p>
                     Product Name<sup className="text-orange-700">*</sup>
                   </p>
                   <input
                     type="text"
-                    id="Product Name"
-                    ref={nameRef}
+                    id="notifyPartyProductName"
+                    ref={notifyPartyProductNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter Product Name Here"
                   />
@@ -1358,14 +1420,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Reference No"
+                    htmlFor="notifyPartyReferenceNo"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Reference No</p>
                     <input
                       type="text"
-                      id="Reference No"
-                      // ref={organizationNameRef}
+                      id="notifyPartyReferenceNo"
+                      ref={notifyPartyReferenceNoRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Reference No"
                     />
@@ -1373,14 +1435,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Mileage"
+                    htmlFor="notifyPartyMileage"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Mileage</p>
                     <input
                       type="text"
-                      id="Mileage"
-                      // ref={organizationNameRef}
+                      id="notifyPartyMileage"
+                      ref={notifyPartyMileageRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Mileage"
                     />
@@ -1392,14 +1454,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Model Code"
+                    htmlFor="notifyPartyModelCode"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Model Code</p>
                     <input
                       type="text"
-                      id="Model Code"
-                      // ref={organizationNameRef}
+                      id="notifyPartyModelCode"
+                      ref={notifyPartyModelCodeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Model Code"
                     />
@@ -1407,14 +1469,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Registration Year/Month"
+                    htmlFor="notifyPartyRegistrationYear/Month"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Registration Year/Month</p>
                     <input
                       type="text"
-                      id="Registration Year/Month"
-                      // ref={organizationNameRef}
+                      id="notifyPartyRegistrationYear/Month"
+                      ref={notifyPartyRegistrationYearORMonthRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Registration Year/Month"
                     />
@@ -1426,14 +1488,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Manufacture Year/Month"
+                    htmlFor="ManufactureYear/Month"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Manufacture Year/Month</p>
                     <input
                       type="number"
-                      id="Manufacture Year/Month"
-                      // ref={organizationNameRef}
+                      id="ManufactureYear/Month"
+                      ref={ManufactureYearORMonthRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Manufacture Year/Month"
                     />
@@ -1441,14 +1503,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Model Grade"
+                    htmlFor="notifyPartyModelGrade"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Model Grade</p>
                     <input
                       type="text"
-                      id="Model Grade"
-                      // ref={organizationNameRef}
+                      id="notifyPartyModelGrade"
+                      ref={notifyPartyModelGradeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Model Grade"
                     />
@@ -1460,14 +1522,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Chassis #"
+                    htmlFor="notifyPartyChassis#"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Chassis #</p>
                     <input
                       type="text"
-                      id="Chassis #"
-                      // ref={organizationNameRef}
+                      id="notifyPartyChassis#"
+                      ref={notifyPartyChassisRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Chassis #"
                     />
@@ -1475,14 +1537,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Engine Size"
+                    htmlFor="notifyPartyEngineSize"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Engine Size</p>
                     <input
                       type="number"
-                      id="Engine Size"
-                      // ref={organizationNameRef}
+                      id="notifyPartyEngineSize"
+                      ref={notifyPartyEngineSizeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Engine Size"
                     />
@@ -1494,14 +1556,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Drive"
+                    htmlFor="notifyPartyDrive"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Drive</p>
                     <input
                       type="text"
-                      id="Drive"
-                      // ref={organizationNameRef}
+                      id="notifyPartyDrive"
+                      ref={notifyPartyDriveRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Drive"
                     />
@@ -1509,14 +1571,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Ext. Color"
+                    htmlFor="notifyPartyExtColor"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Ext. Color</p>
                     <input
                       type="number"
-                      id="Ext. Color"
-                      // ref={organizationNameRef}
+                      id="notifyPartyExtColor"
+                      ref={notifyPartyExtColorRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Ext. Color"
                     />
@@ -1527,15 +1589,15 @@ const GenerateCapLinksForm = () => {
               {/* Seventh Content */}
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
-                  <label htmlFor="Steering" className="w-full">
+                  <label htmlFor="notifyPartySteering" className="w-full">
                     <p>
                       Steering <sup className="text-orange-700">*</sup>
                     </p>
                     <select
-                      id="Steering"
+                      id="notifyPartySteering"
                       className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
                       placeholder="Select Steering"
-                      // ref={SteeringRef}
+                      ref={notifyPartySteeringRef}
                     >
                       <option
                         value=""
@@ -1561,13 +1623,13 @@ const GenerateCapLinksForm = () => {
                   </label>
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
-                  <label htmlFor="transmission" className="w-full">
+                  <label htmlFor="notifyPartytransmission" className="w-full">
                     <p>Select Transmission</p>
                     <select
-                      id="transmission"
+                      id="notifyPartytransmission"
                       className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
                       placeholder="Select transmission"
-                      ref={transmissionRef}
+                      ref={notifyPartytransmissionRef}
                     >
                       <option
                         value=""
@@ -1615,14 +1677,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Fuel"
+                    htmlFor="notifyPartyFuel"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Fuel</p>
                     <input
                       type="text"
-                      id="Fuel"
-                      // ref={organizationNameRef}
+                      id="notifyPartyFuel"
+                      ref={notifyPartyFuelRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fuel"
                     />
@@ -1630,14 +1692,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Seats"
+                    htmlFor="notifyPartySeats"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Seats</p>
                     <input
                       type="number"
-                      id="Seats"
-                      // ref={organizationNameRef}
+                      id="notifyPartySeats"
+                      ref={notifyPartySeatsRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Seats"
                     />
@@ -1649,14 +1711,14 @@ const GenerateCapLinksForm = () => {
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Door"
+                    htmlFor="notifyPartyDoor"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Door</p>
                     <input
                       type="text"
-                      id="Door"
-                      // ref={organizationNameRef}
+                      id="notifyPartyDoor"
+                      ref={notifyPartyDoorRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Door"
                     />
@@ -1664,14 +1726,14 @@ const GenerateCapLinksForm = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
-                    htmlFor="Engine No."
+                    htmlFor="notifyPartyEngineNo"
                     className="w-full gap-3 flex flex-col justify-center items-start "
                   >
                     <p>Engine No.</p>
                     <input
                       type="number"
-                      id="Engine No."
-                      // ref={organizationNameRef}
+                      id="notifyPartyEngineNo"
+                      ref={notifyPartyEngineNoRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Engine No."
                     />
@@ -1728,10 +1790,10 @@ const GenerateCapLinksForm = () => {
               {/* first input */}
               <div className="w-full h-auto justify-start items-center flex flex-col gap-5 ">
                 {/* First Image input */}
-                <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
+                <div className="imageInpput text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload Featured Image
-                    <label htmlFor="" className="w-full h-auto flex">
+                    <label htmlFor="productFeatureImage" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -1743,9 +1805,9 @@ const GenerateCapLinksForm = () => {
                       {/* Hidden Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
-                        onChange={handleFeaturedChange}
+                        id="productFeatureImage"
+                         ref={productFeatureImageRef}
+                        onChange={handleProductFeaturedChange}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -1756,7 +1818,7 @@ const GenerateCapLinksForm = () => {
                 <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
                   <div className="flex flex-col gap-2 ">
                     Upload Image
-                    <label htmlFor="image" className="w-full h-auto flex">
+                    <label htmlFor="productImage" className="w-full h-auto flex">
                       {/* Custom Button */}
                       <button
                         type="button"
@@ -1768,9 +1830,9 @@ const GenerateCapLinksForm = () => {
                       {/* Hidden Input */}
                       <input
                         type="file"
-                        id="image"
-                        //  ref={fileInputRef}
-                        onChange={handleFeaturedChange}
+                        id="productImage"
+                         ref={productImageRef}
+                        onChange={handleProductImageChange}
                         className=" border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
