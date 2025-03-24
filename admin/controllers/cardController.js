@@ -13,10 +13,49 @@ export const getCars = async (req, res) => {
         res.json(getCar);
 };
 
+export const getCarsByQuery = async (req, res) => {
+  try {
+    let filter = {};
+
+    console.log("REQ.QUERY ===>", req?.query);
+
+    if (req.query.type) {
+      console.log("Fetching by TYPE:", req.query.type);
+      filter.carMake = req.query.type;
+    } else {
+      console.log("Searching by custom fields...");
+      if (req.query.carMake) {
+        filter.carMake = req.query.make;
+        console.log("carMake ===>", req.query.carMake);
+      }
+      if (req.query.carModel) {
+        filter.carModel = req.query.model;
+        console.log("carModel ===>", req.query.carModel);
+      }
+      if (req.query.carYear) {
+        filter.minYear = req.query.maxYear;
+        console.log("carYear ===>", req.query.carYear);
+      }
+    }
+
+    console.log("FINAL FILTER OBJECT ===>", filter);
+
+    const cars = await Car.find(filter);
+    // console.log("CARS ===>", cars);
+
+    res.json(cars);
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
 export const postCar = async (req, res) => {
         try {
-          console.log('BODY:', req.body);
-          console.log('FILES:', req.files);
       
           const {
             carTitle,
@@ -221,58 +260,3 @@ res.status(500).json({ message: 'Server error' });
   
 };
 
-
-//   // Images handling
-  //   const featuredImage = req.files?.featuredImage?.[0]?.filename;
-  //   const attachmentImage = req.files?.attachmentImage?.[0]?.filename;
-  //   const galleryImages = req.files?.galleryImages
-  //     ? req.files.galleryImages.map(file => file.filename)
-  //     : [];
-
-  //   // Find car by ID
-  //   const car = await Car.findByIdAndUpdate(id , {
-      
-  //   });
-  //   if (!car) {
-  //     return res.status(404).json({ message: 'Car not found' });
-  //   }
-
-  //   // Update fields
-  //   car.carTitle = carTitle || car.carTitle;
-  //   car.carCondition = carCondition || car.carCondition;
-  //   car.carType = carType || car.carType;
-  //   car.carMake = carMake || car.carMake;
-  //   car.carModel = carModel || car.carModel;
-  //   car.carPrice = carPrice || car.carPrice;
-  //   car.carYear = carYear || car.carYear;
-  //   car.carDriveType = carDriveType || car.carDriveType;
-  //   car.carTransmission = carTransmission || car.carTransmission;
-  //   car.carFuelType = carFuelType || car.carFuelType;
-  //   car.carMileage = carMileage || car.carMileage;
-  //   car.carEngineSize = carEngineSize || car.carEngineSize;
-  //   car.carCylinder = carCylinder || car.carCylinder;
-  //   car.carColour = carColour || car.carColour;
-  //   car.carDoor = carDoor || car.carDoor;
-  //   car.carVin = carVin || car.carVin;
-  //   car.carAvailability = carAvailability || car.carAvailability;
-
-  //   // Images
-  //   if (featuredImage) car.featuredImage = featuredImage;
-  //   if (attachmentImage) car.attachmentImage = attachmentImage;
-  //   if (galleryImages.length > 0) car.galleryImages = galleryImages;
-
-  //   // Save updated car
-  //   // const updatedCar = await car.save();
-
-  //   res.status(200).json({
-  //     message: "Car updated successfully",
-  //     data: updatedCar
-  //   });
-
-  // } catch (err) {
-  //   console.error('Error updating car:', err);
-  //   res.status(400).json({
-  //     message: "Failed to update car",
-  //     error: err.message
-  //   });
-  // }

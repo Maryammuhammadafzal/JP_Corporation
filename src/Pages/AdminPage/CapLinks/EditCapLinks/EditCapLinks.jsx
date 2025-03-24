@@ -1,11 +1,10 @@
 import React, {useState , useEffect} from 'react'
-import Logo from "../../../assets/Images/jplogo.png"
+import Logo from "../../../../assets/Images/jplogo.png"
 import { BsList } from "react-icons/bs";
 import { BsLink } from "react-icons/bs";
 import { BsCarFrontFill } from "react-icons/bs";
 import EditCapLinksForm from './EditCapLinksForm/EditCapLinksForm';
-import AddListingForm from '../AddListing/AddListingForm/AddListingForm';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const EditCapLinks = () => {
   const { id } = useParams(); // Get ID from URL params
@@ -96,21 +95,21 @@ const EditCapLinks = () => {
               </div>
               <div className="tabs w-full h-auto flex p-3 gap-3 flex-col ">
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard" className="flex gap-3 items-center">
                     <BsList /> <p className="hover:text-white text-md">Listings</p>
-                  </a>
+                  </Link>
                 </div>
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
                     <BsLink />{" "}
                     <p className="hover:text-white text-md">Cap Links List</p>
-                  </a>
+                  </Link>
                 </div>
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard/manage-modal" className="flex gap-3 items-center">
                     <BsCarFrontFill />{" "}
                     <p className="hover:text-white text-md">Manage Model</p>
-                  </a>
+                  </Link>
                 </div>
     
               </div>
@@ -125,19 +124,19 @@ const EditCapLinks = () => {
             >
               <div className="tabs w-full h-auto flex p-1 gap-3 flex-col ">
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center font-bold">
+                  <Link to="/dashboard" className="flex gap-3 items-center font-bold">
                     <BsList size={30}/>
-                  </a>
+                  </Link>
                 </div>
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
                     <BsLink   size={30}/>
-                  </a>
+                  </Link>
                 </div>
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard/manage-modal" className="flex gap-3 items-center">
                     <BsCarFrontFill size={30}/>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -150,19 +149,19 @@ const EditCapLinks = () => {
             >
               <div className="tabs w-full h-auto flex p-1 gap-3 flex-col ">
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center font-bold">
+                  <Link to="/dashboard" className="flex gap-3 items-center font-bold">
                     <BsList size={30}/>
-                  </a>
+                  </Link>
                 </div>
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard/cap-links" className="flex gap-3 items-center font-bold">
                     <BsLink size={30}/>
-                  </a>
+                  </Link>
                 </div>
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                  <a href="" className="flex gap-3 items-center">
+                  <Link to="/dashboard/manage-modal" className="flex gap-3 items-center font-bold">
                     <BsCarFrontFill size={30}/>
-                  </a>
+                  </Link>
                 </div>
               </div>
               </div>

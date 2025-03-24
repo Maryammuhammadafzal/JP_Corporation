@@ -1,13 +1,33 @@
 import React, { useState } from "react";
 import Navbar from "../../Components/Navbar/NAvbar";
 import { IoSearch } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [selectedMakes, setSelectedMakes] = useState("All Makes");
   const [selectedModels, setSelectedModles] = useState("All Models");
   const [selectedFromYear, setSelectedFromYear] = useState("Year");
   const [selectedToYear, setSelectedToYear] = useState("year");
 
+  console.log(selectedMakes , selectedModels, selectedFromYear, selectedToYear);
+  
+const handleSearch = ()=>{
+  if (!selectedMakes || !selectedModels || !selectedFromYear || !selectedToYear) {
+    alert("Please select at least one option!");
+    return;
+  }
+  
+  navigate(
+      `/search?make=${selectedMakes}&model=${selectedModels}&minYear=${selectedFromYear}&maxYear=${selectedToYear}`
+    );
+
+
+}
+  const handleCarClick = (type)=> {
+    navigate(`/search/?type=${type}`);
+  }
   return (
     <div className="hero w-full h-auto justify-center flex-col gap-3   items-center  p-4 flex ">
       <div className="heading w-fit h-fit my-3">
@@ -20,172 +40,176 @@ const HeroSection = () => {
           <select
             name="makes"
             id="makes"
+            value={selectedMakes}
+              onChange={(e) => setSelectedMakes(e.target.value)}
             aria-label="Select Make"
             className="form-select border-2 max-[900px]:w-[90%] border-gray-200 rounded-lg p-3 focus:border-blue-200 focus:shadow-md focus:shadow-blue-200"
           >
             <option
-              disabled="disabled"
-              value={selectedMakes}
-              onChange={(e) => setSelectedMakes(e.target.value)}
+             
+              disabled
+              
             >
               All Makes
             </option>
-            <option value="1">AUDI </option>
-            <option value="2">BENTLEY </option>
-            <option value="3">BMW </option>
-            <option value="4">CADILLAC </option>
-            <option value="5">CHEVROLET </option>
-            <option value="6">FERRARI </option>
-            <option value="7">FORD </option>
-            <option value="8">HINO </option>
-            <option value="9">HONDA </option>
-            <option value="10">ISUZU </option>
-            <option value="11">LEXUS </option>
-            <option value="12">MAZDA </option>
-            <option value="13">MERCEDES-BENZ </option>
-            <option value="14">MITSUBISHI </option>
-            <option value="15">NISSAN </option>
-            <option value="16">PORCHE </option>
-            <option value="17">SUBARU </option>
-            <option value="18">SUZUKI </option>
-            <option value="19">TOYOTA </option>
+            <option value="AUDI">AUDI </option>
+            <option value="SEDAN">SEDAN </option>
+            <option value="BENTLEY">BENTLEY </option>
+            <option value="BMW">BMW </option>
+            <option value="CADILLAC">CADILLAC </option>
+            <option value="CHEVROLET">CHEVROLET </option>
+            <option value="FERRARI">FERRARI </option>
+            <option value="FORD">FORD </option>
+            <option value="HINO">HINO </option>
+            <option value="HONDA">HONDA </option>
+            <option value="ISUZU">ISUZU </option>
+            <option value="LEXUS">LEXUS </option>
+            <option value="MAZDA">MAZDA </option>
+            <option value="MERCEDES-BENZ">MERCEDES-BENZ </option>
+            <option value="MITSUBISHI">MITSUBISHI </option>
+            <option value="NISSAN">NISSAN </option>
+            <option value="PORCHE">PORCHE </option>
+            <option value="SUBARU">SUBARU </option>
+            <option value="SUZUKI">SUZUKI </option>
+            <option value="TOYOTA">TOYOTA </option>
           </select>
           <select
             name="model"
+            value={selectedModels}
+              onChange={(e) => setSelectedModles(e.target.value)}
             aria-label="Select Model"
             className="form-select max-[900px]:w-[90%] border-2 border-gray-200 rounded-lg p-3 focus:border-blue-200 focus:shadow-md focus:shadow-blue-200"
           >
             <option
               disabled="disabled"
-              value={selectedModels}
-              onChange={(e) => setSelectedModles(e.target.value)}
+              
             >
               All Models
             </option>
-            <option value="1">A3 </option> <option value="2">A4 </option>
-            <option value="3">A5 </option> <option value="4">A6 </option>
-            <option value="5">A7 </option> <option value="6">A8 </option>
-            <option value="7">e-tron </option>
-            <option value="8">Q2 </option> <option value="9">Q3 </option>
-            <option value="10">Q5 </option>
-            <option value="11">Q7 </option>
-            <option value="12">Q8 </option>
-            <option value="13">TT </option>
-            <option value="14">Continental </option>
-            <option value="15">Mulsanne </option>
-            <option value="16">1-Serie </option>
-            <option value="17">2-Serie </option>
-            <option value="18">3-Serie </option>
-            <option value="19">4-Serie </option>
-            <option value="20">5-Serie </option>
-            <option value="21">6-Serie </option>
-            <option value="22">7-Serie </option>
-            <option value="23">8-Serie </option>
-            <option value="24">i3 </option>
-            <option value="25">i8 </option>
-            <option value="26">iX3 </option>
-            <option value="27">PHEV </option>
-            <option value="28">X1 </option>
-            <option value="29">X2 </option>
-            <option value="30">X3 </option>
-            <option value="31">X4 </option>
-            <option value="32">X5 </option>
-            <option value="33">X6 </option>
-            <option value="34">X7 </option> <option value="35">Z </option>
-            <option value="36">ATS </option>
-            <option value="37">CT6 </option>
-            <option value="38">CTS </option>
-            <option value="39">Escalade </option>
-            <option value="40">XT5 </option>
-            <option value="41">Camaro </option>
-            <option value="42">Corvette </option>
-            <option value="43">488 Spider </option>
-            <option value="44">F12 Berlinetta </option>
-            <option value="45">GTC4 </option>
-            <option value="46">LaFerrari </option>
-            <option value="47">Portofino </option>
-            <option value="48">Edge </option>
-            <option value="49">Mustang </option>
-            <option value="50">Raptor </option>
-            <option value="51">Dutro </option>
-            <option value="52">RANGER </option>
-            <option value="53">CR-V </option>
-            <option value="54">FIT </option>
-            <option value="55">VEZEL </option>
-            <option value="56">Elf </option>
-            <option value="57">Forward </option>
-            <option value="58">Giga </option>
-            <option value="59">RX </option>
-            <option value="60">BONGO VAN </option>
-            <option value="61">CX-5 </option>
-            <option value="62">Demio </option>
-            <option value="63">Titan 3T </option>
-            <option value="64">Actors </option>
-            <option value="65">AMG GT </option>
-            <option value="66">C-class </option>
-            <option value="67">E-class </option>
-            <option value="68">EQC </option>
-            <option value="69">GLE </option>
-            <option value="70">GLS </option>
-            <option value="71">S-class </option>
-            <option value="72">CANTER </option>
-            <option value="73">FUSO FIGHTER </option>
-            <option value="74">AD </option>
-            <option value="75">juke </option>
-            <option value="76">NV200 Vanette Van </option>
-            <option value="77">VY12-253667 </option>
-            <option value="78">X-TRAIL </option>
-            <option value="79">YF15-601990 </option>
-            <option value="80">718 Cayman </option>
-            <option value="81">Cayenne </option>
-            <option value="82">Macan </option>
-            <option value="83">Panamera </option>
-            <option value="84">IMPREZA </option>
-            <option value="85">JB23W-737087 </option>
-            <option value="86">ALLION </option>
-            <option value="87">ALPHARD </option>
-            <option value="88">CAMRY </option>
-            <option value="89">CHR </option>
-            <option value="90">COASTER </option>
-            <option value="91">COROLLA AXIO </option>
-            <option value="92">COROLLA FIELDER </option>
-            <option value="93">CROWN </option>
-            <option value="94">HARRIER </option>
-            <option value="95">HIAZCE VAN </option>
-            <option value="96">HILUX </option>
-            <option value="97">LAND CRUISER </option>
-            <option value="98">NOAH </option>
-            <option value="99">PREMIO </option>
-            <option value="100">PROBOX </option>
-            <option value="101">SUCCEED </option>
-            <option value="102">VOXY </option>
-            <option value="104">RACTICS </option>
-            <option value="105">IST </option>
-            <option value="106">RX200 </option>
-            <option value="107">GT-R </option>
-            <option value="108">G-CLASS </option>
-            <option value="109">LX570 </option>
-            <option value="110">PORTE FTV </option>
-            <option value="111">RVR </option>
-            <option value="112">RVR </option>
-            <option value="113">CRV </option>
-            <option value="114">XV </option>
-            <option value="115">HIACE VAN </option>
-            <option value="116">MARK X </option>
-            <option value="117">VEZEL Z </option>
-            <option value="118">SERENA </option>
-            <option value="119">TREZIA </option>
-            <option value="120">IS250 VERSION S </option>
+            <option value="A3">A3 </option> <option value="A4">A4 </option>
+            <option value="A5">A5 </option> <option value="A6">A6 </option>
+            <option value="A7">A7 </option> <option value="A8">A8 </option>
+            <option value="e-tron">e-tron </option>
+            <option value="Q2">Q2 </option> <option value="Q3">Q3 </option>
+            <option value="Q5">Q5 </option>
+            <option value="Q7">Q7 </option>
+            <option value="Q8">Q8 </option>
+            <option value="TT">TT </option>
+            <option value="Continental">Continental </option>
+            <option value="Mulsanne">Mulsanne </option>
+            <option value="1-Serie">1-Serie </option>
+            <option value="2-Serie">2-Serie </option>
+            <option value="3-Serie">3-Serie </option>
+            <option value="4-Serie">4-Serie </option>
+            <option value="5-Serie">5-Serie </option>
+            <option value="6-Serie">6-Serie </option>
+            <option value="7-Serie">7-Serie </option>
+            <option value="8-Serie">8-Serie </option>
+            <option value="i3">i3 </option>
+            <option value="i8">i8 </option>
+            <option value="iX3">iX3 </option>
+            <option value="PHEV">PHEV </option>
+            <option value="X1">X1 </option>
+            <option value="X2">X2 </option>
+            <option value="X3">X3 </option>
+            <option value="X4">X4 </option>
+            <option value="X5">X5 </option>
+            <option value="X6">X6 </option>
+            <option value="X7">X7 </option> <option value="Z">Z </option>
+            <option value="ATS">ATS </option>
+            <option value="CT6">CT6 </option>
+            <option value="CTS">CTS </option>
+            <option value="Escalade">Escalade </option>
+            <option value="XT5">XT5 </option>
+            <option value="Camaro">Camaro </option>
+            <option value="Corvette">Corvette </option>
+            <option value="488 Spider">488 Spider </option>
+            <option value="F12 Berlinetta">F12 Berlinetta </option>
+            <option value="GTC4">GTC4 </option>
+            <option value="LaFerrari">LaFerrari </option>
+            <option value="Portofino">Portofino </option>
+            <option value="Edge">Edge </option>
+            <option value="Mustang">Mustang </option>
+            <option value="Raptor">Raptor </option>
+            <option value="Dutro">Dutro </option>
+            <option value="RANGER">RANGER </option>
+            <option value="CR-V">CR-V </option>
+            <option value="FIT">FIT </option>
+            <option value="VEZEL">VEZEL </option>
+            <option value="Elf">Elf </option>
+            <option value="Forward">Forward </option>
+            <option value="Giga">Giga </option>
+            <option value="RX">RX </option>
+            <option value="BONGO VAN">BONGO VAN </option>
+            <option value="CX-5">CX-5 </option>
+            <option value="Demio">Demio </option>
+            <option value="Titan 3T">Titan 3T </option>
+            <option value="Actors">Actors </option>
+            <option value="AMG GT">AMG GT </option>
+            <option value="C-class">C-class </option>
+            <option value="E-class">E-class </option>
+            <option value="EQC">EQC </option>
+            <option value="GLE">GLE </option>
+            <option value="GLS">GLS </option>
+            <option value="S-class">S-class </option>
+            <option value="CANTER">CANTER </option>
+            <option value="FUSO FIGHTER">FUSO FIGHTER </option>
+            <option value="AD">AD </option>
+            <option value="juke">juke </option>
+            <option value="NV200 Vanette Van">NV200 Vanette Van </option>
+            <option value="VY12-253667">VY12-253667 </option>
+            <option value="X-TRAIL">X-TRAIL </option>
+            <option value="YF15-601990">YF15-601990 </option>
+            <option value="718 Cayman">718 Cayman </option>
+            <option value="Cayenne">Cayenne </option>
+            <option value="Macan">Macan </option>
+            <option value="Panamera">Panamera </option>
+            <option value="IMPREZA">IMPREZA </option>
+            <option value="JB23W-737087">JB23W-737087 </option>
+            <option value="ALLION">ALLION </option>
+            <option value="ALPHARD">ALPHARD </option>
+            <option value="CAMRY">CAMRY </option>
+            <option value="CHR">CHR </option>
+            <option value="COASTER">COASTER </option>
+            <option value="COROLLA AXIO">COROLLA AXIO </option>
+            <option value="COROLLA FIELDER">COROLLA FIELDER </option>
+            <option value="CROWN">CROWN </option>
+            <option value="HARRIER">HARRIER </option>
+            <option value="HIAZCE VAN">HIAZCE VAN </option>
+            <option value="HILUX">HILUX </option>
+            <option value="LAND CRUISER">LAND CRUISER </option>
+            <option value="NOAH">NOAH </option>
+            <option value="PREMIO">PREMIO </option>
+            <option value="PROBOX">PROBOX </option>
+            <option value="SUCCEED">SUCCEED </option>
+            <option value="VOXY">VOXY </option>
+            <option value="RACTICS">RACTICS </option>
+            <option value="IST">IST </option>
+            <option value="RX200">RX200 </option>
+            <option value="GT-R">GT-R </option>
+            <option value="G-CLASS">G-CLASS </option>
+            <option value="LX570">LX570 </option>
+            <option value="PORTE FTV">PORTE FTV </option>
+            <option value="RVR">RVR </option>
+            <option value="CRV">CRV </option>
+            <option value="XV">XV </option>
+            <option value="HIACE VAN">HIACE VAN </option>
+            <option value="MARK X">MARK X </option>
+            <option value="VEZEL Z">VEZEL Z </option>
+            <option value="SERENA">SERENA </option>
+            <option value="TREZIA">TREZIA </option>
+            <option value="IS250 VERSION S">IS250 VERSION S </option>
           </select>
           <select
             name="from_year"
             aria-label="From Year"
+            value={selectedFromYear}
+              onChange={(e) => setSelectedFromYear(e.target.value)}
             className="form-select max-[900px]:w-[90%]  border-2 border-gray-200 rounded-lg p-3 focus:border-blue-200 focus:shadow-md focus:shadow-blue-200 "
           >
             <option
-              disabled="disabled"
-              value={selectedFromYear}
-              onChange={(e) => setSelectedFromYear(e.target.value)}
+              disabled
+              
             >
               Year
             </option>
@@ -228,12 +252,12 @@ const HeroSection = () => {
           <select
             name="to_year"
             aria-label="To Year"
+            value={selectedToYear}
+             onChange={(e) => setSelectedToYear(e.target.value)}
             className="form-select max-[900px]:w-[90%] border-2 border-gray-200 rounded-lg p-3 focus:border-blue-200 focus:shadow-md focus:shadow-blue-200 "
           >
             <option
-              disabled="disabled"
-              value={selectedToYear}
-              onChange={(e) => setSelectedToYear(e.target.value)}
+              selected
             >
               Year
             </option>
@@ -273,7 +297,7 @@ const HeroSection = () => {
             <option value="2025">2025 </option>
             <option value="2026">2026 </option>
           </select>
-          <div className="searchButton max-[900px]:hidden bg-orange-600 rounded-lg p-3 text-white">
+          <div onClick={handleSearch} className="searchButton max-[900px]:hidden bg-orange-600 rounded-lg p-3 text-white">
             <IoSearch fontSize={20} />
           </div>
           <div className="searchButton min-[900px]:hidden flex w-[90%] justify-center items-center text-xl gap-3 font-bold bg-orange-600 rounded-lg p-3 text-white">
@@ -285,9 +309,11 @@ const HeroSection = () => {
       <div className="CarsCard w-[600px] h-auto my-4 max-[900px]:w-auto max-[900px]:h-auto flex flex-wrap justify-between max-[550px]:flex max-[572px]:justify-center ">
         {/* Card 1 */}
         <div className="card1 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
-          <div className="cardImage border-2 w-[80px] h-[80px]  hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
-            <a
-              href="search/?type=sedan"
+          <div  className="cardImage cur border-2 w-[80px] h-[80px]  hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
+            <button
+              onClick={()=>{
+                handleCarClick("sedan")
+              }}
               className="elementor-icon elementor-animation- "
               tabIndex="-1"
             >
@@ -342,7 +368,7 @@ const HeroSection = () => {
                   fill="#f1efef"
                 ></path>
               </svg>
-            </a>
+            </button>
           </div>
           <div className="cardText  flex justify-center">
             <p className="text-[16px] font-semibold text-white">Sedan</p>
@@ -351,8 +377,10 @@ const HeroSection = () => {
         {/* Card 2 */}
         <div className="card2 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
-            <a
-              href="search/?type=coupe"
+            <button
+               onClick={()=>{
+                handleCarClick("coupe")
+              }}
               className="elementor-icon elementor-animation-"
               tabIndex="-1"
             >
@@ -425,7 +453,7 @@ const HeroSection = () => {
                   ></path>
                 </g>
               </svg>
-            </a>
+            </button>
           </div>
           <div className="cardText  flex justify-center">
             <p className="text-[16px] font-semibold text-white">Coupe</p>
@@ -434,8 +462,10 @@ const HeroSection = () => {
         {/* Card 3 */}
         <div className="card3 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
-            <a
-              href="search/?type=suv"
+            <button
+               onClick={()=>{
+                handleCarClick("suv")
+              }}
               className="elementor-icon elementor-animation-"
               tabIndex="-1"
             >
@@ -494,7 +524,7 @@ const HeroSection = () => {
                   ></path>
                 </g>
               </svg>
-            </a>
+            </button>
           </div>
           <div className="cardText  flex justify-center">
             <p className="text-[16px] font-semibold text-white">SUV</p>
@@ -503,8 +533,10 @@ const HeroSection = () => {
         {/* Card 4 */}
         <div className="card4 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
-            <a
-              href="search/?type=hatchback"
+            <button
+              onClick={()=>{
+                handleCarClick("hatchback")
+              }}
               className="elementor-icon elementor-animation-"
               tabIndex="-1"
             >
@@ -570,7 +602,7 @@ const HeroSection = () => {
                   ></path>
                 </g>
               </svg>
-            </a>
+            </button>
           </div>
           <div className="cardText  flex justify-center">
             <p className="text-[16px] font-semibold text-white">HatchBack</p>
@@ -579,8 +611,10 @@ const HeroSection = () => {
         {/* Card 5 */}
         <div className="card5 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
-            <a
-              href="search/?type=convertible"
+            <button
+               onClick={()=>{
+                handleCarClick("convertible")
+              }}
               className="elementor-icon elementor-animation-"
               tabIndex="-1"
             >
@@ -648,7 +682,7 @@ const HeroSection = () => {
                   ></path>
                 </g>
               </svg>
-            </a>
+            </button>
           </div>
           <div className="cardText  flex justify-center">
             <p className="text-[16px] font-semibold text-white">Convertible</p>

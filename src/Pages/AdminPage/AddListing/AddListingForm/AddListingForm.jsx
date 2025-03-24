@@ -233,7 +233,7 @@ const AddListingForm = () => {
                     disabled
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
                   >
-                    Select Condition
+                    Select Type
                   </option>
                   <option
                     value="BUS"

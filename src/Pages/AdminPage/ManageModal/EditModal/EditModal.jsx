@@ -108,7 +108,7 @@ const EditModal = () => {
                 </Link>
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                <Link  className="flex gap-3 items-center">
+                <Link to="/dashboard/cap-links"  className="flex gap-3 items-center">
                   <BsLink />{" "}
                   <p className="hover:text-white text-md">Cap Links List</p>
                 </Link>
@@ -137,7 +137,7 @@ const EditModal = () => {
                 </Link>
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                <Link to="" className="flex gap-3 items-center">
+                <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
                   <BsLink   size={30}/>
                 </Link>
               </div>
@@ -162,7 +162,7 @@ const EditModal = () => {
                 </Link>
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                <Link to="" className="flex gap-3 items-center">
+                <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
                   <BsLink   size={30}/>
                 </Link>
               </div>

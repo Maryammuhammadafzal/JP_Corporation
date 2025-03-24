@@ -21,6 +21,8 @@ import EditModal from "./Pages/AdminPage/ManageModal/EditModal/EditModal";
 import CapLinks from "./Pages/AdminPage/CapLinks/CapLinks";
 import CapLinksListing from "./Pages/AdminPage/CapLinks/CapLinksListing/CapLinksListing";
 import EditCapLinks from "./Pages/AdminPage/CapLinks/EditCapLinks/EditCapLinks";
+import SearchPage from "./Pages/SearchPage/SearchPage";
+import GenerateCapLinks from "./Pages/AdminPage/CapLinks/GenerateCapLinks/GenerateCapLinks";
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/bank" element={<BankDetailPage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/listing/:id" element={<CardPage />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
@@ -41,7 +44,7 @@ function App() {
           <Route path="/model-listing/add-model-listing" element={<ModalListing />} />
           <Route path="/modal-listing/edit-modal-listing/get/:id" element={<EditModal />} />
           <Route path="/dashboard/cap-links" element={<CapLinks />} />
-          <Route path="/cap-links-listing/add-cap-links-listing" element={<CapLinksListing />} />
+          <Route path="/cap-links-listing/add-cap-links-listing" element={<GenerateCapLinks />} />
           <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<EditCapLinks />} />
         </Routes>
       </BrowserRouter>

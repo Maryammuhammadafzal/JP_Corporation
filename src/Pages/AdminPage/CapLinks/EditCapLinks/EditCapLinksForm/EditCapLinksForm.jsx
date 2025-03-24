@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
-import Button from "../../../../Components/Button/Button";
+import Button from "../../../../../Components/Button/Button";
 import axios from "axios";
-import AllFeatures from "../../../../Components/AllFeatures.js";
-import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
+import AllFeatures from "../../../../../Components/AllFeatures.js";
+import { safetyFeatures } from "../../../../../Components/safetyFeatures.js";
 
 const EditCapLinksForm = ({ carId }) => {
   const [featuredImage, setFeaturedImage] = useState(null);
