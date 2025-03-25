@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/cards", carRoutes);
 app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
-app.use("/api/caplinks" , capLinksRoutes)
+app.use("/api/capLinks" , capLinksRoutes)
 app.use("/api/model" , modelRoutes)
 
 // MongoDB Connection

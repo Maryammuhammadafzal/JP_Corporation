@@ -7,12 +7,18 @@ import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
 const GenerateCapLinksForm = () => {
   const [productFeatureImage, setproductFeatureImage] = useState(null);
   const [productImage, setproductImage] = useState(null);
-  // const [galleryImages, setGalleryImages] = useState([]);
+  const [blImage, setBLImage] = useState(null);
+  const [certificateImage, setCertificateImage] = useState(null);
+  const [invoiceImage, setInvoiceImage] = useState(null);
+  const [englishCertificateImage, setEnglishCerticateImage] = useState(null);
+  const [inspectionImage, setInspectionImage] = useState(null);
   const [selectedStatusFeatures, setSelectedStatusFeatures] = useState([]);
   const [selectedNameOption, setSelectedNameOption] = useState([]);
   const [selectedForwarderNameOption, setSelectedForwarderNameOption] = useState([]);
   const [selectedOptionFeatures, setselectedOptionFeatures] = useState([]);
+ 
 
+  // Toggle Status CheckBox Function
   const toggleCheckbox = (featureId) => {
     if (selectedStatusFeatures.includes(featureId)) {
       setSelectedStatusFeatures(
@@ -23,6 +29,7 @@ const GenerateCapLinksForm = () => {
     }
   };
 
+   // Toggle Option CheckBox Function
   const toggleOptionCheckbox = (featureId) => {
     if (selectedOptionFeatures.includes(featureId)) {
       setselectedOptionFeatures(
@@ -33,193 +40,225 @@ const GenerateCapLinksForm = () => {
     }
   };
 
-  const detailsArray = [];
-  const [details, setDetails] = useState(detailsArray);
 
-// Departure Ref
-  const carrierNameRef = useRef(null);
-  const departureVesselRef = useRef(null);
-  const departurePartsOfLandingRef = useRef(null);
-  const departureETDRef = useRef(null);
+  // Refrence Object
+  const refs = {
+    departure: {
+        // Departure Ref
+  carrierNameRef: useRef(null),
+  departureVesselRef: useRef(null),
+  departurePartsOfLandingRef: useRef(null),
+  departureETDRef: useRef(null),
 
-  // Arrival Ref
-  const arrivalVesselRef = useRef(null)
-  const ArrivalPartOfDischargeRef = useRef(null)
-  const arrivalETDRef = useRef(null)
+    },
+    arrival: {
+      arrivalVesselRef: useRef(null),
+      ArrivalPartOfDischargeRef: useRef(null),
+      arrivalETDRef: useRef(null),
+    },
+    files: {
+      bLFileRef: useRef(null),
+  inspectionFileRef: useRef(null),
+  certificateFileRef: useRef(null),
+  englishCertificateFileRef: useRef(null),
+  invoiceFileRef: useRef(null),
+  productFeatureImageRef: useRef(null),
+  productImageRef: useRef(null),
+    },
+    document: {
+      documentNameRef: useRef(null),
+      documentAddressRef: useRef(null),
+      documentCityRef: useRef(null),
+      documentCountryRef: useRef(null),
+      documentFaxNumberRef: useRef(null),
+      documentTrackingNumberRef: useRef(null),
+      documentPhoneNumber1Ref: useRef(null),
+      documentPhoneNumber2Ref: useRef(null),
+      documentPhoneNumber3Ref: useRef(null),
+      documentCellPhoneNumberOREmailRef: useRef(null),
+      documentenrollementRef: useRef(null),
+    },
+    documentCenter: {
+      documentCenterNameRef: useRef(null),
+      documentCenterAddressRef: useRef(null),
+      documentCenterCityRef: useRef(null),
+      documentCenterCountryRef: useRef(null),
+      documentCenterPhoneNumber1Ref: useRef(null),
+      documentCenterPhoneNumber2Ref: useRef(null),
+      documentCenterPhoneNumber3Ref: useRef(null),
+      documentCenterEmailRef: useRef(null),
+      documentCenterUrlRef: useRef(null),
+      documentCenterOtherInformationRef: useRef(null),
+    },
+    consignee: {
+      consigneeNameRef: useRef(null),
+  consigneeCityRef: useRef(null),
+  consigneeAddressRef: useRef(null),
+  consigneeCountryRef: useRef(null),
+  consigneeFaxNumberRef: useRef(null),
+  consigneePhoneNumber1Ref: useRef(null),
+  consigneePhoneNumber2Ref: useRef(null),
+  consigneePhoneNumber3Ref: useRef(null),
+  consigneeCellPhoneNumberOREmailRef: useRef(null),
 
-  // Files Ref
-  const bLFileRef = useRef(null)
-  const inspectionFileRef = useRef(null)
-  const certificateFileRef = useRef(null)
-  const englishCertificateFileRef = useRef(null)
-  const invoiceFileRef = useRef(null)
 
-  // Document Ref
-  const documentNameRef = useRef(null);
-  const documentAddressRef = useRef(null);
-  const documentCityRef = useRef(null);
-  const documentCountryRef = useRef(null);
-  const documentFaxNumberRef = useRef(null);
-  const documentTrackingNumberRef = useRef(null);
-  const documentPhoneNumber1Ref = useRef(null);
-  const documentPhoneNumber2Ref = useRef(null);
-  const documentPhoneNumber3Ref = useRef(null);
-  const documentCellPhoneNumberOREmailRef = useRef(null);
-
-// Document Center Ref
-  const documentCenterNameRef = useRef(null);
-  const documentCenterAddressRef = useRef(null);
-  const documentCenterCityRef = useRef(null);
-  const documentCenterCountryRef = useRef(null);
-  const documentCenterPhoneNumber1Ref = useRef(null);
-  const documentCenterPhoneNumber2Ref = useRef(null);
-  const documentCenterPhoneNumber3Ref = useRef(null);
-  const documentCenterEmailRef = useRef(null);
-  const documentCenterUrlRef = useRef(null);
-  const documentCenterOtherInformationRef = useRef(null);
-
-  // cosignee Ref
-  const consigneeNameRef = useRef(null);
-  const consigneeCityRef = useRef(null);
-  const consigneeAddressRef = useRef(null);
-  const consigneeCountryRef = useRef(null);
-  const consigneeFaxNumberRef = useRef(null);
-  const consigneePhoneNumber1Ref = useRef(null);
-  const consigneePhoneNumber2Ref = useRef(null);
-  const consigneePhoneNumber3Ref = useRef(null);
-  const consigneeCellPhoneNumberOREmailRef = useRef(null);
-  const enrollementRef= useRef(null);
-
-  // Notify party Ref
-  const notifyPartyNameRef = useRef(null);
-  const notifyPartyCityRef = useRef(null);
-  const notifyPartyCountryRef = useRef(null);
-  const notifyPartyAddressRef = useRef(null);
-  const notifyPartyChassisRef = useRef(null);
-  const notifyPartyDoorRef = useRef(null);
-  const notifyPartytransmissionRef = useRef(null);
-  const notifyPartySteeringRef = useRef(null);
-  const notifyPartySeatsRef = useRef(null);
-  const notifyPartyRegistrationYearORMonthRef = useRef(null);
-  const notifyPartyCellPhoneNumberRef = useRef(null);
-  const notifyPartyReferenceNoRef = useRef(null);
-  const notifyPartyEngineNoRef = useRef(null);
-  const notifyPartyDriveRef = useRef(null);
-  const notifyPartyEngineSizeRef = useRef(null);
-  const notifyPartyExtColorRef = useRef(null);
-  const notifyPartyFuelRef = useRef(null);
-  const notifyPartyFaxNumberRef = useRef(null);
-  const notifyPartyMileageRef = useRef(null);
-  const notifyPartyModelCodeRef = useRef(null);
-  const notifyPartyModelGradeRef = useRef(null);
-  const notifyPartyPhoneNumber1Ref = useRef(null);
-  const notifyPartyPhoneNumber2Ref = useRef(null);
-  const notifyPartyPhoneNumber3Ref = useRef(null);
-  const notifyPartyProductNameRef = useRef(null);
- 
-  const descriptionRef = useRef(null);
-  const forwarderName = useRef(null);
-  const organizationName = useRef(null);
-  
-  const handleFeaturedChange = (e) => {
-    setproductFeatureImage(e.target.files[0]);
+    },
+    notifyParty: {
+      notifyPartyNameRef: useRef(null),
+  notifyPartyCityRef: useRef(null),
+  notifyPartyCountryRef: useRef(null),
+  notifyPartyAddressRef: useRef(null),
+  notifyPartyChassisRef: useRef(null),
+  notifyPartyDoorRef: useRef(null),
+  notifyPartytransmissionRef: useRef(null),
+  notifyPartySteeringRef: useRef(null),
+  notifyPartySeatsRef: useRef(null),
+  notifyPartyRegistrationYearORMonthRef: useRef(null),
+  notifyPartyCellPhoneNumberOREmailRef: useRef(null),
+  notifyPartyReferenceNoRef: useRef(null),
+  notifyPartyEngineNoRef: useRef(null),
+  notifyPartyDriveRef: useRef(null),
+  notifyPartyEngineSizeRef: useRef(null),
+  notifyPartyExtColorRef: useRef(null),
+  notifyPartyFuelRef: useRef(null),
+  notifyPartyFaxNumberRef: useRef(null),
+  notifyPartyMileageRef: useRef(null),
+  notifyPartyModelCodeRef: useRef(null),
+  notifyPartyModelGradeRef: useRef(null),
+  notifyPartyPhoneNumber1Ref: useRef(null),
+  notifyPartyPhoneNumber2Ref: useRef(null),
+  notifyPartyPhoneNumber3Ref: useRef(null),
+  notifyPartyProductNameRef: useRef(null),
+  manufactureYearORMonthRef: useRef(null),
+    },
+    misc: {
+      descriptionRef: useRef(null),
+    },
   };
-
-  const handleProductFeaturedChange = (e) => {
-    setproductFeatureImage(e.target.files[0]);
+  
+  // File handlers
+  const handleProductionFeaturedImageChange = (e) => {
+    setproductFeatureImage(e.target.files[0].name);    
   };
   
   const handleProductImageChange = (e) => {
-    setproductImage(e.target.files[0]);
+    setproductImage(e.target.files[0].name);
   };
   
-  // const handleGalleryChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setGalleryImages(files);
+  const handleBLFileChange = (e) => {
+    setBLImage(e.target.files[0].name);
     
-  //   console.log("Selected images: ", files);
-  // };
+  };
   
+  const handleCertificateChange = (e) => {
+    setCertificateImage(e.target.files[0].name);
+  };
+  
+  const handleEnglishCertificateChange = (e) => {
+    setEnglishCerticateImage(e.target.files[0].name);
+  };
+  
+  const handleInvoiceChange = (e) => {
+    setInvoiceImage(e.target.files[0].name);
+  };
+  const handleInspectionFileChange = (e) => {
+    setInspectionImage(e.target.files[0].name);
+  };
+
+  // Radio Button Function
   const handleNameRadioChange = (e) => {
-    organizationName = setSelectedNameOption(e.target.value);
-    console.log(e.target.value);
-    
+  setSelectedNameOption(e.target.value);
+ 
   };
   const handleForwarderNameRadioChange = (e) => {
-    forwarderName = setSelectedForwarderNameOption(e.target.value);
+     setSelectedForwarderNameOption(e.target.value);
     
   };
   
-  const validateDetails = (details) => {
-    const errors = [];
-    
-    if (!details.title) errors.push("Title is required.");
-    else if (!details.condition) errors.push("Price is required.");
-    else if (!details.year) errors.push("Year is required.");
-    
-    // Add more validations as needed...
-    
-    return errors;
-  };
-  
+  // Submit All Deatails Function
   const GenerateCapLinks = async () => {
+    console.log(refs.departure.carrierNameRef.current.value);
     
     const formData = new FormData();
-    
-    formData.append("carrierName", carrierNameRef.current.value);
-    formData.append("departureVessel", departureVesselRef.current.value);
-    formData.append("departurePartsOfLanding", departurePartsOfLandingRef.current.value);
-    formData.append("departureETD", departureETDRef.current.value);
-    
-    console.log(formData);
-    console.log(carrierNameRef , departureVesselRef , departurePartsOfLandingRef , departureETDRef);
-    
-    // formData.append("carTitle", nameRef.current.value);
-    // formData.append("carCondition", companyNameRef.current.value);
-    // formData.append("CarType", typeRef.current.value);
-    // formData.append("carMake", makeRef.current.value);
-    // formData.append("carModel", modelRef.current.value);
-    // formData.append("carPrice", priceRef.current.value);
-    // formData.append("carYear", yearRef.current.value);
-    // formData.append("carDriveType", driveTypeRef.current.value);
-    // formData.append("carTransmission", transmissionRef.current.value);
-    // formData.append("carFuelType", fuelTypeRef.current.value);
-    // formData.append("carMileage", mileageRef.current.value);
-    // formData.append("carEngineSize", engineSizeRef.current.value);
-    // formData.append("carCylinder", cylinderRef.current.value);
-    // formData.append("carColour", colorRef.current.value);
-    // formData.append("carDoor", doorRef.current.value);
-    // formData.append("carVin", vinRef.current.value);
-    // formData.append("carAvailability", availabilityRef.current.value);
-    // formData.append("carDescription", descriptionRef.current.value);
-    // formData.append("carAllFeatures", JSON.stringify(selectedStatusFeatures));
-    // formData.append(
-    //   "carSafetyFeatures",
-    //   JSON.stringify(selectedSafetyFeatures)
-    // );
 
-    // Images
-    // if (featuredImage) formData.append("featuredImage", featuredImage);
-    // if (attachmentImage) formData.append("attachmentImage", attachmentImage);
+  // Extract text values
+  Object.keys(refs).forEach((key) => {
+   let keys = refs[key]
 
-    // galleryImages.forEach((image, index) => {
-    //   formData.append("galleryImages", image); // Don't use index here if you use upload.fields
-    // });
+   Object.keys(keys).forEach((innerKey) => {
+    let refObject = keys[innerKey]; 
 
-    // try {
-    //   const token = localStorage.getItem("adminToken");
-    //   const response = await axios.post(
-    //     "http://localhost:5000/api/cards/add",
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   );
-    //   console.log("Success" + JSON.stringify(response.data));
-    //   alert("Added Succesfully");
+    if (refObject && refObject.current) {
+      formData.append(innerKey, refObject.current.value);
+    } else {
+      console.warn(`Ref not found for: refs.${key}.${innerKey}`);
+    }
+   })
+  });
+  
+    
+      // Handle file inputs separately
+  if (refs.files.productFeatureImageRef.current?.files[0]) {
+    formData.append("productFeatureImageRef", productFeatureImage);
+  }
+  if (refs.files.productImageRef.current?.files[0]) {
+    formData.append("productImageRef", productImage);
+  }
+ 
+  if (refs.files.bLFileRef.current?.files[0]) {
+    formData.append("bLFileRef", blImage);
+  }
+  if (refs.files.certificateFileRef.current?.files[0]) {
+    formData.append("certificateFileRef", certificateImage);
+  }
+ 
+  if (refs.files.englishCertificateFileRef.current?.files[0]) {
+    formData.append("englishCertificateFileRef", englishCertificateImage);
+  }
+  if (refs.files.invoiceFileRef.current?.files[0]) {
+    formData.append("invoiceFileRef", invoiceImage);
+  }
+  if (refs.files.inspectionFileRef.current?.files[0]) {
+    formData.append("invoiceFileRef", inspectionImage);
+  }
+  
+  formData.append(
+    "statusFeatures",
+    JSON.stringify(selectedStatusFeatures)
+    );
+    formData.append(
+      "optionFeatures",
+      JSON.stringify(selectedOptionFeatures)
+    );
+    formData.append(
+      "companyName",
+      JSON.stringify(selectedNameOption)
+    );
+    formData.append(
+      "forwarderName",
+      JSON.stringify(selectedForwarderNameOption)
+    );
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+      
+    //   // console.log(pair[0] + ": ", pair[1]); 
+    // }
+    // console.log(formData);
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await axios.post(
+        "http://localhost:5000/api/capLinks/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            // Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Success" + JSON.stringify(response.data));
+      alert("Added Succesfully");
 
     //   // Reset refs
     //   nameRef.current.value = "";
@@ -251,10 +290,10 @@ const GenerateCapLinksForm = () => {
     //     });
 
     //   window.location.href = "/dashboard";
-    // } catch (error) {
-    //   console.error(error);
-    //   alert("Error");
-    // }
+    } catch (error) {
+      console.error(error);
+      alert("Error");
+    }
   };
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">
@@ -279,7 +318,7 @@ const GenerateCapLinksForm = () => {
                     id="beForward"
                     value="Be Forward"
                     checked={selectedNameOption === "Be Forward"}
-                    onChange={handleNameRadioChange}
+                    onChange={(e) => handleNameRadioChange(e)}
                     className="mt-2 rounded-md p-2"
                     placeholder="Enter beForward Here"
                   />
@@ -294,7 +333,7 @@ const GenerateCapLinksForm = () => {
                     id="jpCorporation"
                     value="JP Corporation"
                     checked={selectedNameOption === "JP Corporation"}
-                    onChange={handleNameRadioChange}
+                    onChange={(e) => handleNameRadioChange(e)}
                     className="mt-2 rounded-md p-2"
                     placeholder="Enter jpCorporation Here"
                   />
@@ -314,7 +353,7 @@ const GenerateCapLinksForm = () => {
                     id="Satish"
                     value="Satish"
                     checked={selectedForwarderNameOption === "Satish"}
-                    onChange={handleForwarderNameRadioChange}
+                    onChange={(e) => handleForwarderNameRadioChange(e)}
                     className="mt-2 border-neutral-500 border rounded-md p-2"
                     placeholder="Enter Satish Here"
                   />
@@ -329,7 +368,7 @@ const GenerateCapLinksForm = () => {
                     id="Vova"
                     value="Vova"
                     checked={selectedForwarderNameOption === "Vova"}
-                    onChange={handleForwarderNameRadioChange}
+                    onChange={(e) => handleForwarderNameRadioChange(e)}
                     className="mt-2 border-neutral-500 border rounded-md p-2"
                     placeholder="Enter Vova Here"
                   />
@@ -344,7 +383,7 @@ const GenerateCapLinksForm = () => {
                     id="Kaytee"
                     value="Kaytee"
                     checked={selectedForwarderNameOption === "Kaytee"}
-                    onChange={handleForwarderNameRadioChange}
+                    onChange={(e) => handleForwarderNameRadioChange(e)}
                     className="mt-2 border-neutral-500 border rounded-md p-2"
                     placeholder="Enter Kaytee Here"
                   />
@@ -356,7 +395,7 @@ const GenerateCapLinksForm = () => {
               <h3 className="text-md font-bold ">Message</h3>
               <textarea
                 id="description"
-                ref={descriptionRef}
+                ref={refs.misc.descriptionRef}
                 className="mt-2 w-full h-[150px]  border-neutral-500 border rounded-md p-2"
               />
             </div>
@@ -428,7 +467,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="CarrierName"
-                    ref={carrierNameRef}
+                    ref={refs.departure.carrierNameRef}
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Carrier Name "
                   />
@@ -438,18 +477,18 @@ const GenerateCapLinksForm = () => {
 
             {/* 2nd Content  */}
             <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-              <h3 className="text-md font-bold ">Departure Section</h3>
+              <h3 className="text-md font-bold">Departure Section</h3>
               {/* first input */}
               <div className="w-full h-auto justify-start items-center flex gap-5 ">
                 <label
                   htmlFor="VesselName"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
+                  className="w-full gap-3 flex flex-col justify-center items-start"
                 >
                   <p>Vessel</p>
                   <input
                     type="text"
                     id="VesselName"
-                    ref={departureVesselRef}
+                    ref={refs.departure.departureVesselRef}
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Vessel Name "
                   />
@@ -466,7 +505,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="PartOfLoading"
-                      ref={departurePartsOfLandingRef}
+                      ref={refs.departure.departurePartsOfLandingRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Part Of Loading"
                     />
@@ -481,7 +520,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="date"
                       id="ETD(Estimated Time of Departure)"
-                      ref={departureETDRef}
+                      ref={refs.departure.departureETDRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" ETD (Estimated Time of Departure)"
                     />
@@ -503,7 +542,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="VesselName"
-                    ref={arrivalVesselRef}
+                    ref={refs.arrival.arrivalVesselRef}
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Vessel Name "
                   />
@@ -520,7 +559,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="PartOfDischarge "
-                      ref={ArrivalPartOfDischargeRef}
+                      ref={refs.arrival.ArrivalPartOfDischargeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Part Of Discharge  "
                     />
@@ -535,7 +574,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="date"
                       id="ETD(Estimated Time of Departure)"
-                      ref={arrivalETDRef}
+                      ref={refs.arrival.arrivalETDRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" ETD (Estimated Time of Departure)"
                     />
@@ -566,8 +605,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="B/L"
-                         ref={bLFileRef}
-                        onChange={handleFeaturedChange}
+                         ref={refs.files.bLFileRef}
+                        onChange={(e) => handleBLFileChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -591,8 +630,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="inspection"
-                         ref={inspectionFileRef}
-                        onChange={handleFeaturedChange}
+                         ref={refs.files.inspectionFileRef}
+                        onChange={(e) => handleInspectionFileChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -619,8 +658,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="certificate"
-                         ref={certificateFileRef}
-                        onChange={handleFeaturedChange}
+                        ref={refs.files.certificateFileRef}
+                        onChange={(e) => handleCertificateChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -644,8 +683,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="englishCertificate"
-                         ref={englishCertificateFileRef}
-                        onChange={handleFeaturedChange}
+                        ref={refs.files.englishCertificateFileRef}
+                        onChange={(e) => handleEnglishCertificateChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -671,8 +710,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="invoice"
-                         ref={invoiceFileRef}
-                        onChange={handleFeaturedChange}
+                        ref={refs.files.invoiceFileRef}
+                        onChange={(e) => handleInvoiceChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -690,9 +729,9 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="text"
                         id="Enrollement"
-                        ref={enrollementRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder="Enrollment"
+                        ref={refs.document.documentenrollementRef}
                       />
                     </label>
                   </div>
@@ -724,7 +763,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="documentName"
-                    ref={documentNameRef}
+                    ref={refs.document.documentNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter name Here"
                   />
@@ -741,7 +780,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentAddress"
-                      ref={documentAddressRef}
+                      ref={refs.document.documentAddressRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -756,7 +795,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentCity"
-                      ref={documentCityRef}
+                      ref={refs.document.documentCityRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -775,7 +814,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentCountry"
-                      ref={documentCountryRef}
+                      ref={refs.document.documentCountryRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -790,7 +829,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentPhoneNumber1"
-                      ref={documentPhoneNumber1Ref}
+                      ref={refs.document.documentPhoneNumber1Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -809,7 +848,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentPhoneNumber2"
-                      ref={documentPhoneNumber2Ref}
+                      ref={refs.document.documentPhoneNumber2Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -824,7 +863,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentPhoneNumber3"
-                      ref={documentPhoneNumber3Ref}
+                      ref={refs.document.documentPhoneNumber3Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -843,7 +882,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentFaxNumber"
-                      ref={documentFaxNumberRef}
+                      ref={refs.document.documentFaxNumberRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fax Number"
                     />
@@ -858,7 +897,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="documentCellPhoneNumber/Email"
-                      ref={documentCellPhoneNumberOREmailRef}
+                      ref={refs.document.documentCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Cell Phone Number/Email"
                     />
@@ -883,7 +922,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="documentTrackingNumber"
-                      ref={documentTrackingNumberRef}
+                      ref={refs.document.documentTrackingNumberRef}
                       className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                       placeholder="Tracking Number"
                     />
@@ -908,7 +947,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="text"
                         id="documentCenterName"
-                        ref={documentCenterNameRef}
+                        ref={refs.documentCenter.documentCenterNameRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Name"
                       />
@@ -923,7 +962,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="text"
                         id="documentCenterAddress"
-                        ref={documentCenterAddressRef}
+                        ref={refs.documentCenter.documentCenterAddressRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Address"
                       />
@@ -941,7 +980,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="text"
                         id="documentCenterCity"
-                        ref={documentCenterCityRef}
+                        ref={refs.documentCenter.documentCenterCityRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" City"
                       />
@@ -956,7 +995,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="text"
                         id="documentCenterCountry"
-                        ref={documentCenterCountryRef}
+                        ref={refs.documentCenter.documentCenterCountryRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Country"
                       />
@@ -975,7 +1014,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="text"
                         id="documentCenterPhoneNumber1"
-                        ref={documentCenterPhoneNumber1Ref}
+                        ref={refs.documentCenter.documentCenterPhoneNumber1Ref}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Phone Number1"
                       />
@@ -990,7 +1029,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="number"
                         id="documentCenterPhoneNumber2"
-                        ref={documentCenterPhoneNumber2Ref}
+                        ref={refs.documentCenter.documentCenterPhoneNumber2Ref}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Phone Number2"
                       />
@@ -1009,7 +1048,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="number"
                         id="documentCenterPhoneNumber3"
-                        ref={documentCenterPhoneNumber3Ref}
+                        ref={refs.documentCenter.documentCenterPhoneNumber3Ref}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Phone Number3"
                       />
@@ -1024,7 +1063,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="email"
                         id="documentCenterEmail"
-                        ref={documentCenterEmailRef}
+                        ref={refs.documentCenter.documentCenterEmailRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Email"
                       />
@@ -1043,7 +1082,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="url"
                         id="documentCenterUrl"
-                        ref={documentCenterUrlRef}
+                        ref={refs.documentCenter.documentCenterUrlRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Url"
                       />
@@ -1058,7 +1097,7 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="number"
                         id="documentCenterOtherInformation"
-                        ref={documentCenterOtherInformationRef}
+                        ref={refs.documentCenter.documentCenterOtherInformationRef}
                         className=" border-neutral-500 border w-full rounded-md p-3"
                         placeholder=" Other Information"
                       />
@@ -1092,7 +1131,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="consigneeName"
-                    ref={consigneeNameRef}
+                    ref={refs.consignee.consigneeNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter name Here"
                   />
@@ -1109,7 +1148,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="consigneeAddress"
-                      ref={consigneeAddressRef}
+                      ref={refs.consignee.consigneeAddressRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -1124,7 +1163,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="consigneeCity"
-                      ref={consigneeCityRef}
+                      ref={refs.consignee.consigneeCityRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -1143,7 +1182,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="consigneeCountry"
-                      ref={consigneeCountryRef}
+                      ref={refs.consignee.consigneeCountryRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -1158,7 +1197,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="consigneePhoneNumber1"
-                      ref={consigneePhoneNumber1Ref}
+                      ref={refs.consignee.consigneePhoneNumber1Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -1177,7 +1216,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="consigneePhoneNumber2"
-                      ref={consigneePhoneNumber2Ref}
+                      ref={refs.consignee.consigneePhoneNumber2Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -1192,7 +1231,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="consigneePhoneNumber3"
-                      ref={consigneePhoneNumber3Ref}
+                      ref={refs.consignee.consigneePhoneNumber3Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -1211,7 +1250,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="consigneeFaxNumber"
-                      ref={consigneeFaxNumberRef}
+                      ref={refs.consignee.consigneeFaxNumberRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fax Number"
                     />
@@ -1226,7 +1265,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="consigneeCellPhoneNumber/Email"
-                      ref={consigneeCellPhoneNumberOREmailRef}
+                      ref={refs.consignee.consigneeCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Cell Phone Number/Email"
                     />
@@ -1247,7 +1286,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="notifyPartyName"
-                    ref={notifyPartyNameRef}
+                    ref={refs.notifyParty.notifyPartyNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter name Here"
                   />
@@ -1264,7 +1303,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyAddress"
-                      ref={notifyPartyAddressRef}
+                      ref={refs.notifyParty.notifyPartyAddressRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -1279,7 +1318,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyCity"
-                      ref={notifyPartyCityRef}
+                      ref={refs.notifyParty.notifyPartyCityRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -1298,7 +1337,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyCountry"
-                      ref={notifyPartyCountryRef}
+                      ref={refs.notifyParty.notifyPartyCountryRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -1313,7 +1352,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyPhoneNumber1"
-                      ref={notifyPartyPhoneNumber1Ref}
+                      ref={refs.notifyParty.notifyPartyPhoneNumber1Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -1332,7 +1371,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyPhoneNumber2"
-                      ref={notifyPartyPhoneNumber2Ref}
+                      ref={refs.notifyParty.notifyPartyPhoneNumber2Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -1347,7 +1386,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyPhoneNumber3"
-                      ref={notifyPartyPhoneNumber3Ref}
+                      ref={refs.notifyParty.notifyPartyPhoneNumber3Ref}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -1366,7 +1405,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyFaxNumber"
-                      ref={notifyPartyFaxNumberRef}
+                      ref={refs.notifyParty.notifyPartyFaxNumberRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fax Number"
                     />
@@ -1381,7 +1420,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyCellPhoneNumber/Email"
-                      ref={notifyPartyCellPhoneNumberOREmail}
+                      ref={refs.notifyParty.notifyPartyCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Cell Phone Number/Email"
                     />
@@ -1410,7 +1449,7 @@ const GenerateCapLinksForm = () => {
                   <input
                     type="text"
                     id="notifyPartyProductName"
-                    ref={notifyPartyProductNameRef}
+                    ref={refs.notifyParty.notifyPartyProductNameRef}
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Enter Product Name Here"
                   />
@@ -1427,7 +1466,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyReferenceNo"
-                      ref={notifyPartyReferenceNoRef}
+                      ref={refs.notifyParty.notifyPartyReferenceNoRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Reference No"
                     />
@@ -1442,7 +1481,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyMileage"
-                      ref={notifyPartyMileageRef}
+                      ref={refs.notifyParty.notifyPartyMileageRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Mileage"
                     />
@@ -1461,7 +1500,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyModelCode"
-                      ref={notifyPartyModelCodeRef}
+                      ref={refs.notifyParty.notifyPartyModelCodeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Model Code"
                     />
@@ -1476,7 +1515,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyRegistrationYear/Month"
-                      ref={notifyPartyRegistrationYearORMonthRef}
+                      ref={refs.notifyParty.notifyPartyRegistrationYearORMonthRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Registration Year/Month"
                     />
@@ -1495,7 +1534,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="ManufactureYear/Month"
-                      ref={ManufactureYearORMonthRef}
+                      ref={refs.notifyParty.manufactureYearORMonthRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Manufacture Year/Month"
                     />
@@ -1510,7 +1549,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyModelGrade"
-                      ref={notifyPartyModelGradeRef}
+                      ref={refs.notifyParty.notifyPartyModelGradeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Model Grade"
                     />
@@ -1529,7 +1568,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyChassis#"
-                      ref={notifyPartyChassisRef}
+                      ref={refs.notifyParty.notifyPartyChassisRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Chassis #"
                     />
@@ -1544,7 +1583,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyEngineSize"
-                      ref={notifyPartyEngineSizeRef}
+                      ref={refs.notifyParty.notifyPartyEngineSizeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Engine Size"
                     />
@@ -1563,7 +1602,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyDrive"
-                      ref={notifyPartyDriveRef}
+                      ref={refs.notifyParty.notifyPartyDriveRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Drive"
                     />
@@ -1578,7 +1617,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyExtColor"
-                      ref={notifyPartyExtColorRef}
+                      ref={refs.notifyParty.notifyPartyExtColorRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Ext. Color"
                     />
@@ -1597,7 +1636,7 @@ const GenerateCapLinksForm = () => {
                       id="notifyPartySteering"
                       className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
                       placeholder="Select Steering"
-                      ref={notifyPartySteeringRef}
+                      ref={refs.notifyParty.notifyPartySteeringRef}
                     >
                       <option
                         value=""
@@ -1629,7 +1668,7 @@ const GenerateCapLinksForm = () => {
                       id="notifyPartytransmission"
                       className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
                       placeholder="Select transmission"
-                      ref={notifyPartytransmissionRef}
+                      ref={refs.notifyParty.notifyPartytransmissionRef}
                     >
                       <option
                         value=""
@@ -1684,7 +1723,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyFuel"
-                      ref={notifyPartyFuelRef}
+                      ref={refs.notifyParty.notifyPartyFuelRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Fuel"
                     />
@@ -1699,7 +1738,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartySeats"
-                      ref={notifyPartySeatsRef}
+                      ref={refs.notifyParty.notifyPartySeatsRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Seats"
                     />
@@ -1718,7 +1757,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="text"
                       id="notifyPartyDoor"
-                      ref={notifyPartyDoorRef}
+                      ref={refs.notifyParty.notifyPartyDoorRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Door"
                     />
@@ -1733,7 +1772,7 @@ const GenerateCapLinksForm = () => {
                     <input
                       type="number"
                       id="notifyPartyEngineNo"
-                      ref={notifyPartyEngineNoRef}
+                      ref={refs.notifyParty.notifyPartyEngineNoRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Engine No."
                     />
@@ -1806,8 +1845,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="productFeatureImage"
-                         ref={productFeatureImageRef}
-                        onChange={handleProductFeaturedChange}
+                        ref={refs.files.productFeatureImageRef}
+                        onChange={(e) => handleProductionFeaturedImageChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
@@ -1831,8 +1870,8 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="productImage"
-                         ref={productImageRef}
-                        onChange={handleProductImageChange}
+                        ref={refs.files.productImageRef}
+                        onChange={(e) => handleProductImageChange(e)}
                         className=" border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>
