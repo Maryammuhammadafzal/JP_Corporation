@@ -86,46 +86,48 @@ if(response.status === 200){
   };
 
   return (
-    <div className="w-full mx-auto border rounded-md py-3">
+    <div className="w-[95%] mx-auto border rounded-md py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
         <h1 className="text-3xl font-bold">Manage Modal</h1>
-        <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={showModelListingForm}>Add Modal</button>
+        <button type="button" className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={showModelListingForm}>Add Modal</button>
       </div>
 
           {/* Controls */}
-          <div className="flex flex-col md:flex-row justify-between items-center px-6 py-2 mb-4 gap-4">
+          <div className="flex  flex-row justify-between items-center px-6 py-2 mb-4 gap-4">
         <div>
           Show
           <select
             value={entriesPerPage}
             onChange={handleEntriesChange}
-            className="border p-1 rounded"
+            className="border p-1 mx-2 border-gray-400 text-gray-500 rounded"
           >
             <option value={15}>15</option>
             <option value={30}>30</option> 
             <option value={50}>50</option>
             <option value={100}>100</option>
           </select>
-          entries
+          Entries
         </div>
 
-        <input
-          type="text"
+       <form>
+       <input
+          type="search"
           placeholder="Search..."
-          className="p-2 border rounded w-full md:w-64"
+          className="p-2 border rounded w-[270px]"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+       </form>
       </div>
 
       <div className="overflow-x-auto">
         <table className="min-w-full p-3 bg-white  rounded-lg shadow-md">
           <thead className="p-3 border-b">
             <tr >
-              <th className="w-[10%] text-center p-3">S.No</th>
-              <th className="w-[20%] text-start">Modal</th>
-              <th className="w-[20%] text-start p-3">Make</th>
-              <th className="w-[20%] text-center p-3">Actions</th>
+              <th className="w-[10%] text-center p-5">S.No</th>
+              <th className="w-[20%] text-start p-5">Modal</th>
+              <th className="w-[20%] text-start p-5">Make</th>
+              <th className="w-[20%] text-center p-5">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -133,15 +135,15 @@ if(response.status === 200){
               .filter((modal) => modal.modalTitle.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
               .map((modal, index) => ( 
-                <tr key={modal._id} className="border-b">
-                  <td className="p-2 text-center">{indexOfFirstModal + index + 1}</td>
-                  {/* <td className="p-2 text-center">
+                <tr key={modal._id} className="border-b ">
+                  <td className="p-4 text-center">{indexOfFirstModal + index + 1}</td>
+                  {/* <td className="p-4 text-center">
                     <img src={`../../../../admin/uploads/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
                   </td>
                    */}
-                  <td className="p-2 text-start">{modal.modalTitle}</td>
-                  <td className="p-2 text-start">{modal.modalMake}</td>  
-                  <td className="p-2 justify-center flex space-x-2">
+                  <td className="p-4 text-start">{modal.modalTitle}</td>
+                  <td className="p-4 text-start">{modal.modalMake}</td>  
+                  <td className="p-4 justify-center flex space-x-2">
                     <button className="text-orange-500" onClick={() => handleEdit(modal._id , modal.modalTitle)}>
                       <FaEdit />
                     </button>
@@ -169,7 +171,7 @@ if(response.status === 200){
     <button
       key={index + 1}
       className={`px-4 py-2 mx-1 rounded ${
-        currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+        currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-300'
       }`}
       onClick={() => goToPage(index + 1)}
     >

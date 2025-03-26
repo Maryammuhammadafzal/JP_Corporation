@@ -11,16 +11,19 @@ const CapLinksListing = () => {
 
 const  fetchCapLinks = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/caplinks")
+    const res = await axios.get("http://localhost:5000/api/capLinks/")
     const data = await res.data;
     console.log(data);
-    setCarData(data);
+    setCapLinksData(data);
     
   }catch (error) {
   console.log("error" ,error.message);
   
   }
 }
+
+capLinksData.map((capLink) => {console.log(capLink);
+})
 
 useEffect(()=> {
   
@@ -46,19 +49,19 @@ console.log(allCapLinks);
   const currentCars = filteredCapLinks.slice(indexOfFirstCapLinks, indexOfLastCapLinks);
   const totalPages = Math.ceil(filteredCapLinks.length / entriesPerPage);
 
-  const handleDelete = async(id , title) => {
-const response = await axios.delete(`http://localhost:5000/api/capLinks/delete/${id}`)
-if(response.status === 200){
-  alert(`${title} deleted`); 
-  fetchCapLinks()
-  } else {
-    alert("error")
-    }
-  };
-  const handleEdit = async(id ) => {
-    localStorage.setItem("EditId" , id);
-    window.location.href = `/cap-links-listing/edit-cap-links-listing/get/${id}`;
-  };
+//   const handleDelete = async(id , title) => {
+// const response = await axios.delete(`http://localhost:5000/api/capLinks/delete/${id}`)
+// if(response.status === 200){
+//   alert(`${title} deleted`); 
+//   fetchCapLinks()
+//   } else {
+//     alert("error")
+//     }
+//   };
+//   const handleEdit = async(id ) => {
+//     localStorage.setItem("EditId" , id);
+//     window.location.href = `/cap-links-listing/edit-cap-links-listing/get/${id}`;
+//   };
 
   const handleEntriesChange = (e) => {
     setEntriesPerPage(Number(e.target.value));
@@ -88,7 +91,7 @@ if(response.status === 200){
   };
 
   return (
-    <div className="w-full mx-auto border rounded-md py-3">
+    <div className="w-[95%] mx-auto border rounded-md py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
         <h1 className="text-3xl font-bold">Cap Links</h1>
         <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowCapLinksListingForm}>Generate Cap Links</button>
@@ -136,29 +139,29 @@ if(response.status === 200){
           </thead>
           <tbody>
             {capLinksData 
-              .filter((capLinks) => capLinks.capLinksName.toLowerCase().includes(search.toLowerCase()))
+              .filter((capLink) => capLink.departure.carrierNameRef.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
-              .map((capLinks, index) => ( 
-                <tr key={capLinks.id} className="border-b">
+              .map((capLink, index) => ( 
+                <tr key={capLink.id} className="border-b">
                   <td className="p-2 text-center">{indexOfFirstCapLinks + index + 1}</td>
                   <td className="p-2 text-center">
-                    <img src={`../../../../admin/uploads/${capLinks.featuredImage}`} alt="capLinks" className="w-10 h-10 object-cover" />
+                    <img src={`../../../../admin/uploads/${capLink.files.productFeatureImageRef}`} alt="capLinks" className="w-10 h-10 object-cover" />
                   </td>
                   
-                  <td className="p-2 text-center">{capLinks.capLinksName}</td>
-                  <td className="p-2 text-center">{capLinks.capLinksCompanyName}</td>
-                  <td className="p-2 text-center">{capLinks.capLinksForwarderName}</td>
-                  <td className="p-2 text-center">{capLinks.capLinksYear}</td>
-                  <td className="p-2 text-center">{capLinks.createdAt.slice(0,10)}</td>
+                  <td className="p-2 text-center">{capLink.departure.carrierNameRef}</td>
+                  <td className="p-2 text-center">{capLink.companyName}</td>
+                  <td className="p-2 text-center">{capLink.forwarderName}</td>
+                  <td className="p-2 text-center">{capLink.notifyParty.notifyPartyRegistrationYearORMonthRef}</td>
+                  <td className="p-2 text-center">{capLink.createdAt.slice(0,10)}</td>
                   <td className="p-2 justify-center flex space-x-2">
-                    <button className="text-white p-2 bg-emerald-500 " onClick={() => handleEdit(capLinks._id , capLinks.capLinksName)}>
-                      <FaEye />
+                    <button className="text-white p-1 rounded bg-emerald-500 " onClick={() => handleEdit(capLink._id)}>
+                      <FaEye size={15} />
                     </button>
-                    <button className="text-white p-2 bg-orange-500" onClick={() => handleEdit(capLinks._id , capLinks.capLinksName)}>
-                      <FaEdit />
+                    <button className="text-white p-1 rounded bg-orange-500" onClick={() => handleEdit(capLink._id)}>
+                      <FaEdit size={15} />
                     </button>
-                    <button className="text-white p-2 bg-red-500" onClick={() => handleDelete(capLinks._id , capLinks.capLinksName)}>
-                      <FaTrash />
+                    <button className="text-white p-1 rounded bg-red-500" onClick={() => handleDelete(capLink._id)}>
+                      <FaTrash size={15} />
                     </button>
                   </td>
                 </tr>
@@ -181,7 +184,7 @@ if(response.status === 200){
     <button
       key={index + 1}
       className={`px-4 py-2 mx-1 rounded ${
-        currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+        currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-300'
       }`}
       onClick={() => goToPage(index + 1)}
     >

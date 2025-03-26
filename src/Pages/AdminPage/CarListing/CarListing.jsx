@@ -70,7 +70,7 @@ if(response.status === 200){
   };
 
   const ShowAddListingForm = () => {
-    window.location.href = "/listing/add-listing"
+    window.location.replace("/listing/add-listing")
   }
 
   const goToPage = (pageNumber) => {
@@ -88,10 +88,10 @@ if(response.status === 200){
   };
 
   return (
-    <div className="w-full mx-auto border rounded-md py-3">
+    <div className="w-full mx-auto border rounded-md  py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
         <h1 className="text-3xl font-bold">Car Listings</h1>
-        <button className="bg-orange-500 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowAddListingForm}>Add Listing</button>
+        <button className="bg-orange-600 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowAddListingForm}>Add Listing</button>
       </div>
 
           {/* Controls */}
@@ -140,7 +140,7 @@ if(response.status === 200){
               .filter((car) => car.carTitle.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
               .map((car, index) => ( 
-                <tr key={car.id} className="border-b">
+                <tr key={car._id} className="border-b">
                   <td className="p-2 text-center">{indexOfFirstCar + index + 1}</td>
                   <td className="p-2 text-center">
                     <img src={`../../../../admin/uploads/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
@@ -180,7 +180,7 @@ if(response.status === 200){
     <button
       key={index + 1}
       className={`px-4 py-2 mx-1 rounded ${
-        currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+        currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-300'
       }`}
       onClick={() => goToPage(index + 1)}
     >

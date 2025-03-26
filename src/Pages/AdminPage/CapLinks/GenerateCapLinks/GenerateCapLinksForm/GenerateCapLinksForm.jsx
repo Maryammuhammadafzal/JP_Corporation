@@ -56,15 +56,6 @@ const GenerateCapLinksForm = () => {
       ArrivalPartOfDischargeRef: useRef(null),
       arrivalETDRef: useRef(null),
     },
-    files: {
-      bLFileRef: useRef(null),
-  inspectionFileRef: useRef(null),
-  certificateFileRef: useRef(null),
-  englishCertificateFileRef: useRef(null),
-  invoiceFileRef: useRef(null),
-  productFeatureImageRef: useRef(null),
-  productImageRef: useRef(null),
-    },
     document: {
       documentNameRef: useRef(null),
       documentAddressRef: useRef(null),
@@ -138,31 +129,31 @@ const GenerateCapLinksForm = () => {
   
   // File handlers
   const handleProductionFeaturedImageChange = (e) => {
-    setproductFeatureImage(e.target.files[0].name);    
+    setproductFeatureImage(e.target.files[0]);    
   };
   
   const handleProductImageChange = (e) => {
-    setproductImage(e.target.files[0].name);
+    setproductImage(e.target.files[0]);
   };
   
   const handleBLFileChange = (e) => {
-    setBLImage(e.target.files[0].name);
+    setBLImage(e.target.files[0]);
     
   };
   
   const handleCertificateChange = (e) => {
-    setCertificateImage(e.target.files[0].name);
+    setCertificateImage(e.target.files[0]);
   };
   
   const handleEnglishCertificateChange = (e) => {
-    setEnglishCerticateImage(e.target.files[0].name);
+    setEnglishCerticateImage(e.target.files[0]);
   };
   
   const handleInvoiceChange = (e) => {
-    setInvoiceImage(e.target.files[0].name);
+    setInvoiceImage(e.target.files[0]);
   };
   const handleInspectionFileChange = (e) => {
-    setInspectionImage(e.target.files[0].name);
+    setInspectionImage(e.target.files[0]);
   };
 
   // Radio Button Function
@@ -176,7 +167,8 @@ const GenerateCapLinksForm = () => {
   };
   
   // Submit All Deatails Function
-  const GenerateCapLinks = async () => {
+  const GenerateCapLinks = async (e) => {
+    e.preventDefault();
     console.log(refs.departure.carrierNameRef.current.value);
     
     const formData = new FormData();
@@ -198,98 +190,72 @@ const GenerateCapLinksForm = () => {
   
     
       // Handle file inputs separately
-  if (refs.files.productFeatureImageRef.current?.files[0]) {
-    formData.append("productFeatureImageRef", productFeatureImage);
-  }
-  if (refs.files.productImageRef.current?.files[0]) {
-    formData.append("productImageRef", productImage);
-  }
- 
-  if (refs.files.bLFileRef.current?.files[0]) {
-    formData.append("bLFileRef", blImage);
-  }
-  if (refs.files.certificateFileRef.current?.files[0]) {
-    formData.append("certificateFileRef", certificateImage);
-  }
- 
-  if (refs.files.englishCertificateFileRef.current?.files[0]) {
-    formData.append("englishCertificateFileRef", englishCertificateImage);
-  }
-  if (refs.files.invoiceFileRef.current?.files[0]) {
-    formData.append("invoiceFileRef", invoiceImage);
-  }
-  if (refs.files.inspectionFileRef.current?.files[0]) {
-    formData.append("invoiceFileRef", inspectionImage);
-  }
+        formData.append("productFeatureImageRef", productFeatureImage);
+        formData.append("productImageRef", productImage);
+        formData.append("bLFileRef", blImage);
+        formData.append("certificateFileRef", certificateImage);
+        formData.append("englishCertificateFileRef", englishCertificateImage);
+        formData.append("invoiceFileRef", invoiceImage);
+        formData.append("inspectionFileRef", inspectionImage);
   
-  formData.append(
-    "statusFeatures",
-    JSON.stringify(selectedStatusFeatures)
-    );
-    formData.append(
-      "optionFeatures",
-      JSON.stringify(selectedOptionFeatures)
-    );
-    formData.append(
-      "companyName",
-      JSON.stringify(selectedNameOption)
-    );
-    formData.append(
-      "forwarderName",
-      JSON.stringify(selectedForwarderNameOption)
-    );
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
+  
+    formData.append("statusFeatures", selectedStatusFeatures);
+    formData.append("optionFeatures", selectedOptionFeatures);
+    formData.append( "companyName",  selectedNameOption );
+    formData.append( "forwarderName",  selectedForwarderNameOption);
+try {
+    const token = localStorage.getItem("adminToken");
+  if (!token) {
+    alert("Admin token missing!");
+    return;
+  }
+
+  const response = await axios.post(
+    "http://localhost:5000/api/capLinks/add",
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  console.log("Success:", response.data);
+  alert("Added Successfully");
+
+      // Extract text values
+      Object.keys(refs).forEach((key) => {
+        let keys = refs[key];
       
-    //   // console.log(pair[0] + ": ", pair[1]); 
-    // }
-    // console.log(formData);
-
-    try {
-      const token = localStorage.getItem("adminToken");
-      const response = await axios.post(
-        "http://localhost:5000/api/capLinks/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            // Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Success" + JSON.stringify(response.data));
-      alert("Added Succesfully");
-
-    //   // Reset refs
-    //   nameRef.current.value = "";
-    //   typeRef.current.value = "";
-    //   availabilityRef.current.value = "";
-    //   descriptionRef.current.value = "";
-    //   vinRef.current.value = "";
-    //   doorRef.current.value = "";
-    //   colorRef.current.value = "";
-    //   cylinderRef.current.value = "";
-    //   engineSizeRef.current.value = "";
-    //   mileageRef.current.value = "";
-    //   fuelTypeRef.current.value = "";
-    //   transmissionRef.current.value = "";
-    //   driveTypeRef.current.value = "";
-    //   yearRef.current.value = "";
-    //   priceRef.current.value = "";
-    //   modelRef.current.value = "";
-    //   makeRef.current.value = "";
+        Object.keys(keys).forEach((innerKey) => {
+          let refObject = keys[innerKey];
+      
+          if (refObject && refObject.current) {
+            refObject.current.value = "";
+          } else {
+            console.warn(`Ref not found for: refs.${key}.${innerKey}`);
+          }
+        });
+      });
 
     //   // Reset file inputs
     //   document.getElementById("image").value = "";
 
-    //   // Reset checkboxes
-    //   document
-    //     .querySelectorAll("input[type='checkbox']")
-    //     .forEach((checkbox) => {
-    //       checkbox.checked = false;
-    //     });
+      // Reset checkboxes
+      document
+        .querySelectorAll("input[type='checkbox']")
+        .forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      // Reset radio
+      document
+        .querySelectorAll("input[type='radio']")
+        .forEach((checkbox) => {
+          checkbox.checked = false;
+        });
 
-    //   window.location.href = "/dashboard";
+      window.location.href = "/dashboard/cap-links";
     } catch (error) {
       console.error(error);
       alert("Error");
@@ -605,7 +571,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="B/L"
-                         ref={refs.files.bLFileRef}
                         onChange={(e) => handleBLFileChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -630,7 +595,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="inspection"
-                         ref={refs.files.inspectionFileRef}
                         onChange={(e) => handleInspectionFileChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -658,7 +622,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="certificate"
-                        ref={refs.files.certificateFileRef}
                         onChange={(e) => handleCertificateChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -683,7 +646,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="englishCertificate"
-                        ref={refs.files.englishCertificateFileRef}
                         onChange={(e) => handleEnglishCertificateChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -710,7 +672,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="invoice"
-                        ref={refs.files.invoiceFileRef}
                         onChange={(e) => handleInvoiceChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -1845,7 +1806,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="productFeatureImage"
-                        ref={refs.files.productFeatureImageRef}
                         onChange={(e) => handleProductionFeaturedImageChange(e)}
                         className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
@@ -1870,7 +1830,6 @@ const GenerateCapLinksForm = () => {
                       <input
                         type="file"
                         id="productImage"
-                        ref={refs.files.productImageRef}
                         onChange={(e) => handleProductImageChange(e)}
                         className=" border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />

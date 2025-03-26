@@ -16,7 +16,7 @@ const GenerateCapLinks = () => {
         <div className="w-full h-auto">
 
         {/* Navbar */}
-        <div className="navbar w-full h-[100px]  flex">
+        <div className="navbar w-full h-[100px] flex">
           <div className="w-full h-auto flex justify-between fixed bg-gray-100 items-center">
             <div className="w-[30%] h-auto flex justify-between items-center">
               {/* Logo */}

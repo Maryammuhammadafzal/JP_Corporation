@@ -88,7 +88,7 @@ const AdminDashboard = () => {
       <div className="body gap-3 w-full h-auto flex">
 
 <div className="w-full h-auto flex justify-between">
-<div className="left w-[18%]">
+<div className="left w-[18%] max-[1300px]:w-[10%]">
 <div className="side w-full fixed max-[1300px]:hidden">
   
         
@@ -105,13 +105,13 @@ const AdminDashboard = () => {
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
                 <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
-                  <BsLink />{" "}
+                  <BsLink />
                   <p className="hover:text-white text-md">Cap Links List</p>
                 </Link>
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
                 <Link to="/dashboard/manage-modal" className="flex gap-3 items-center">
-                  <BsCarFrontFill />{" "}
+                  <BsCarFrontFill />
                   <p className="hover:text-white text-md">Manage Model</p>
                 </Link>
               </div>
@@ -149,7 +149,7 @@ const AdminDashboard = () => {
   </div>
   <div
             id="sideNavIcon"
-            className=" w-[10%] p-3 min-[1300px]:hidden rounded-2xl h-screen fixed shadow-xl"
+            className=" w-[100px] p-3 min-[1300px]:hidden rounded-2xl h-screen fixed shadow-xl"
           >
             <div className="tabs w-full h-auto flex p-1 gap-3 flex-col ">
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
@@ -158,7 +158,7 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-500">
-                <Link to="/" className="flex gap-3 items-center">
+                <Link to="/dashboard/cap-links" className="flex gap-3 items-center">
                   <BsLink   size={30}/>
                 </Link>
               </div>
@@ -171,7 +171,7 @@ const AdminDashboard = () => {
             </div>
 </div>
 
-<div className="right  w-[82%] max-[1300px]:w-full flex flex-col gap-3 justify-end ">
+<div className="right  w-[82%] max-[1300px]:w-[98%] flex flex-col gap-3 p-6 mx-auto justify-end ">
 <CarListing/>
 <div className="copyright w-full h-[80px] border-t border-gray-400 flex justify-center items-center">
   <p>Copyright  <a href="" className="text-orange-500">JP Corporation</a> © 2024. All rights reserved.</p>

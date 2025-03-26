@@ -50,7 +50,11 @@ const AddListingForm = () => {
   const descriptionRef = useRef(null);
 
   const handleFeaturedChange = (e) => {
-    setFeaturedImage(e.target.files[0]);
+    const files = (e.target.files); 
+    for(let i = 0; i < files.length; i++) {
+      setFeaturedImage(files[i]); 
+}
+
   };
 
   const handleAttachmentChange = (e) => {
@@ -62,18 +66,6 @@ const AddListingForm = () => {
     setGalleryImages(files); 
     
     console.log("Selected images: ", files);
-  };
-
-  const validateDetails = (details) => {
-    const errors = [];
-
-    if (!details.title) errors.push("Title is required.");
-    else if (!details.condition) errors.push("Price is required.");
-    else if (!details.year) errors.push("Year is required.");
-
-    // Add more validations as needed...
-
-    return errors;
   };
 
   const SubmitDetail = async () => {
@@ -115,7 +107,7 @@ const AddListingForm = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -153,7 +145,7 @@ const AddListingForm = () => {
           checkbox.checked = false;
         });
        
-          window.location.href = "/dashboard"
+          // window.location.href = "/dashboard"
         
     } catch (error) {
       console.error(error);
@@ -165,7 +157,7 @@ const AddListingForm = () => {
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Add Details</h1>
       </div>
-      <form action="" className="form  w-full h-auto p-3  flex flex-col gap-5">
+      <form action="" encType='multipart/form-data' className="form  w-full h-auto p-3  flex flex-col gap-5">
         <div className="p-6 border rounded-md text-sm text-gray-600 w-full h-auto">
           <div className="w-full">
             <label htmlFor="title" className="w-full">
@@ -988,7 +980,7 @@ const AddListingForm = () => {
             <input
               type="file"
               id="image"
-              //  ref={fileInputRef}
+               //  ref={fileInputRef}
               onChange={handleFeaturedChange}
               className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
             />

@@ -13,28 +13,30 @@ const AdminDashboard = () => {
     setShowPassword(!showPassword);
   };
 
+  // User already logged in
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (token) {
-      // User already logged in
       window.location.replace("/dashboard");
     }
   }, []);
  
+  
   // Handle Form Submission
-  const handleForm = async (event) => {
-    event.preventDefault();
+  const handleForm = async (e) => {
+    e.preventDefault();
 
-    const username = document.getElementById("name").value;
-    const password = document.getElementById("password").value;
+    let username = document.getElementById("name").value
+    let password = document.getElementById("password").value
 
     if (username.trim() === "" || password.trim() === "") {
       alert("Please fill all the fields");
       return;
     }
 
+    console.log(username , password);
+    
     try {
-      console.log("try chala");
       
       const response = await fetch("http://localhost:5000/api/admin", {
         method: "POST",
@@ -50,13 +52,17 @@ const AdminDashboard = () => {
         // Save token in localStorage
         localStorage.setItem("adminToken", data.token);
         alert("Login successful!");
+
         username = ""
         password = ""
-        // Redirect to Dashboard or wherever
-        window.location.replace = "/dashboard";
+
+        // Redirect to Dashboard 
+        window.location.replace("/dashboard");
+
       } else {
         alert(data.message);
       }
+
     } catch (error) {
       console.error("Error during login:", error);
       alert("Something went wrong. Please try again.");

@@ -1,7 +1,10 @@
 import express from "express";
 import { getCars, postCar , updateCar , getCarsByQuery } from '../controllers/cardController.js';
 import verifyToken from '../middlewares/tokenVerify.js';
-import upload from '../middlewares/upload.js';
+// import upload from '../middlewares/upload.js';
+
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 

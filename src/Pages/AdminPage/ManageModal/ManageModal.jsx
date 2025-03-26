@@ -26,7 +26,7 @@ const ManageModal = () => {
     <div className="w-full h-auto">
 
       {/* Navbar */}
-      <div className="navbar w-full h-[100px]  flex">
+      <div className="navbar w-[95%] h-[100px]  flex">
         <div className="w-full h-auto flex justify-between fixed bg-gray-100 items-center">
           <div className="w-[30%] h-auto flex justify-between items-center">
             {/* Logo */}
@@ -174,7 +174,7 @@ const ManageModal = () => {
 
 <div className="right  w-[82%] max-[1300px]:w-full flex flex-col gap-3 justify-end ">
 <ManageListing/>
-<div className="copyright w-full h-[80px] border-t border-gray-400 flex justify-center items-center">
+<div className="copyright w-full h-[80px] border-t mt-5 border-gray-400 flex justify-center items-center">
   <p>Copyright  <a href="" className="text-orange-500">JP Corporation</a> © 2024. All rights reserved.</p>
 
 </div>
