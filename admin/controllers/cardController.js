@@ -79,6 +79,10 @@ export const postCar = async (req, res) => {
             carSafetyFeatures
           } = req.body;
       
+          console.log(req.body);
+          console.log("Files" + req.file);
+          
+          
           // Parse features
           let parsedcarAllFeatures = [];
 if (req.body.carAllFeatures) {
@@ -95,15 +99,18 @@ if (req.body.carSafetyFeatures) {
          
 
           // Multer files
-          const featuredImage = req.files?.featuredImage?.[0]?.filename || null;
-          const attachmentImage = req.files?.attachmentImage?.[0]?.filename || null;
-          const galleryImages = req.files?.galleryImages
-            ? req.files.galleryImages.map(file => file.filename)
-            : [];
-      
-          console.log('Featured Image:', featuredImage);
-          console.log('Attachment Image:', attachmentImage);
-          console.log('Gallery Images:', galleryImages);
+          // const featuredImage = req.files?.featuredImage?.[0]?.filename || null;
+          const featuredImage = req.file ? req.file.filename : null;
+          console.log(featuredImage);
+          
+          const attachmentImage = req.file ? req.file.filename : null;
+           console.log(attachmentImage);
+           
+          // const galleryImages = req.file ? req.file.filename.map(file => file.filename) : [];
+          const galleryImages = req.files ? req.files.map((file) => file.filename) : [];
+          // console.log('Featured Image:', featuredImage);
+          // console.log('Attachment Image:', attachmentImage);
+          // console.log('Gallery Images:', galleryImages);
       
           const newCar = new Car({
             carTitle,
@@ -123,8 +130,8 @@ if (req.body.carSafetyFeatures) {
             carDoor,
             carVin,
             carAvailability,
-            featuredImage,
-            attachmentImage,
+            // featuredImage,
+            // attachmentImage,
             galleryImages,
             carAllFeatures : parsedcarAllFeatures,
             carSafetyFeatures : parsedCarSafetyFeatures,

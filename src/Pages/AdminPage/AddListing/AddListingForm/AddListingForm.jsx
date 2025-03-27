@@ -50,22 +50,20 @@ const AddListingForm = () => {
   const descriptionRef = useRef(null);
 
   const handleFeaturedChange = (e) => {
-    const files = (e.target.files); 
-    for(let i = 0; i < files.length; i++) {
-      setFeaturedImage(files[i]); 
-}
-
+      setFeaturedImage(e.target.files[0]); 
+      console.log(e.target.files[0]);
+      
   };
 
   const handleAttachmentChange = (e) => {
     setAttachmentImage(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   const handleGalleryChange = (e) => {
-    const files = Array.from(e.target.files); 
-    setGalleryImages(files); 
+    setGalleryImages([e.target.files[0]]); 
     
-    console.log("Selected images: ", files);
+    console.log([e.target.files[0]]);
   };
 
   const SubmitDetail = async () => {
@@ -93,25 +91,24 @@ const AddListingForm = () => {
     formData.append("carSafetyFeatures", JSON.stringify(selectedSafetyFeatures));
 
     // Images
-    if (featuredImage) formData.append("featuredImage", featuredImage);
-    if (attachmentImage) formData.append("attachmentImage", attachmentImage);
+   formData.append("featuredImage", featuredImage);
+    formData.append("attachmentImage", attachmentImage);
 
-    galleryImages.forEach((image, index) => {
+    galleryImages.forEach((image) => {
       formData.append("galleryImages", image); // Don't use index here if you use upload.fields
     });
 
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.post(
-        "http://localhost:5000/api/cards/add",
-        formData,
+        "http://localhost:5000/api/cards/add", formData,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
+       // //     "Content-Type": "multipart/form-data",
       console.log("Success" + JSON.stringify(response.data));
       alert("Added Succesfully");
 
@@ -157,7 +154,7 @@ const AddListingForm = () => {
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Add Details</h1>
       </div>
-      <form action="" encType='multipart/form-data' className="form  w-full h-auto p-3  flex flex-col gap-5">
+      <form  onSubmit={SubmitDetail} className="form  w-full h-auto p-3  flex flex-col gap-5">
         <div className="p-6 border rounded-md text-sm text-gray-600 w-full h-auto">
           <div className="w-full">
             <label htmlFor="title" className="w-full">
@@ -977,13 +974,14 @@ const AddListingForm = () => {
             </button>
 
             {/* Hidden Input */}
-            <input
+            {/* <input
               type="file"
               id="image"
                //  ref={fileInputRef}
               onChange={handleFeaturedChange}
               className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-            />
+            /> */}
+           <input type="file" name="image" id="featuredImage" accept="image/*" onChange={handleFeaturedChange}/>
           </label>
         </div>
 
@@ -1113,11 +1111,11 @@ const AddListingForm = () => {
             </div>
           </div>
         </div>
+      <div className="button w-full flex justify-start items-center p-6">
+        <Button text="Add Listing" type="submit" />
+      </div>
         </form>
 
-      <div className="button w-full flex justify-start items-center p-6">
-        <Button text="Add Listing" onClick={SubmitDetail} />
-      </div>
     </div>
   );
 };

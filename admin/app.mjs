@@ -31,7 +31,6 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }
 app.use(cors(corsOptions));
-app.use(multer().any());
 app.use(express.json())
 app.use("/uploads", express.static("uploads"));
 app.use(express.urlencoded({ extended: true }));
