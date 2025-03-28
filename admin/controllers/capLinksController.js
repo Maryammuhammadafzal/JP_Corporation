@@ -53,200 +53,197 @@ export const getCapLinks =  async (req, res) => {
 //     };
     export const addCapLinks = async (req, res) => {
         try {
+                const {
+                        carrierNameRef,
+                        departureVesselRef,
+                        departurePartsOfLandingRef,
+                        departureETDRef,
+                        arrivalVesselRef,
+                        arrivalPartOfDischargeRef,
+                        arrivalETDRef,
+                        documentNameRef,
+                        documentAddressRef,
+                        documentCityRef,
+                        documentCountryRef,
+                        documentFaxNumberRef,
+                        documentTrackingNumberRef,
+                        documentPhoneNumber1Ref,
+                        documentPhoneNumber2Ref,
+                        documentPhoneNumber3Ref,
+                        documentCellPhoneNumberOREmailRef,
+                        documentenrollementRef,
+                        documentCenterNameRef,
+                        documentCenterAddressRef,
+                        documentCenterCityRef,
+                        documentCenterCountryRef,
+                        documentCenterPhoneNumber1Ref,
+                        documentCenterPhoneNumber2Ref,
+                        documentCenterPhoneNumber3Ref,
+                        documentCenterEmailRef,
+                        documentCenterUrlRef,
+                        documentCenterOtherInformationRef,
+                        consigneeNameRef,
+                        consigneeCityRef,
+                        consigneeAddressRef,
+                        consigneeCountryRef,
+                        consigneeFaxNumberRef,
+                        consigneePhoneNumber1Ref,
+                        consigneePhoneNumber2Ref,
+                        consigneePhoneNumber3Ref,
+                        consigneeCellPhoneNumberOREmailRef,
+                        notifyPartyNameRef,
+                        notifyPartyCityRef,
+                        notifyPartyCountryRef,
+                        notifyPartyAddressRef,
+                        notifyPartyChassisRef,
+                        notifyPartyDoorRef,
+                        notifyPartytransmissionRef,
+                        notifyPartySteeringRef,
+                        notifyPartySeatsRef,
+                        notifyPartyRegistrationYearORMonthRef,
+                        notifyPartyCellPhoneNumberOREmailRef,
+                        notifyPartyReferenceNoRef,
+                        notifyPartyEngineNoRef,
+                        notifyPartyDriveRef,
+                        notifyPartyEngineSizeRef,
+                        notifyPartyExtColorRef,
+                        notifyPartyFuelRef,
+                        notifyPartyFaxNumberRef,
+                        notifyPartyMileageRef,
+                        notifyPartyModelCodeRef,
+                        notifyPartyModelGradeRef,
+                        notifyPartyPhoneNumber1Ref,
+                        notifyPartyPhoneNumber2Ref,
+                        notifyPartyPhoneNumber3Ref,
+                        notifyPartyProductNameRef,
+                        manufactureYearORMonthRef,
+                        descriptionRef,
+                        forwarderName,
+                        companyName,
+                        optionFeatures,
+                        statusFeatures
+                      } = req.body || {};
+                      
+                          
 
-          console.log("Request Body:", req.body);
-console.log("Files:", req.files);
-// const {
-//   carrierNameRef,
-//   departureVesselRef,
-//   departurePartsOfLandingRef,
-//   departureETDRef,
-//   arrivalVesselRef,
-//   arrivalPartOfDischargeRef,
-//   arrivalETDRef,
-//   documentNameRef,
-//   documentAddressRef,
-//   documentCityRef,
-//   documentCountryRef,
-//   documentFaxNumberRef,
-//   documentTrackingNumberRef,
-//   documentPhoneNumber1Ref,
-//   documentPhoneNumber2Ref,
-//   documentPhoneNumber3Ref,
-//   documentCellPhoneNumberOREmailRef,
-//   documentenrollementRef,
-//   documentCenterNameRef,
-//   documentCenterAddressRef,
-//   documentCenterCityRef,
-//   documentCenterCountryRef,
-//   documentCenterPhoneNumber1Ref,
-//   documentCenterPhoneNumber2Ref,
-//   documentCenterPhoneNumber3Ref,
-//   documentCenterEmailRef,
-//   documentCenterUrlRef,
-//   documentCenterOtherInformationRef,
-//   consigneeNameRef,
-//   consigneeCityRef,
-//   consigneeAddressRef,
-//   consigneeCountryRef,
-//   consigneeFaxNumberRef,
-//   consigneePhoneNumber1Ref,
-//   consigneePhoneNumber2Ref,
-//   consigneePhoneNumber3Ref,
-//   consigneeCellPhoneNumberOREmailRef,
-//   notifyPartyNameRef,
-//   notifyPartyCityRef,
-//   notifyPartyCountryRef,
-//   notifyPartyAddressRef,
-//   notifyPartyChassisRef,
-//   notifyPartyDoorRef,
-//   notifyPartytransmissionRef,
-//   notifyPartySteeringRef,
-//   notifyPartySeatsRef,
-//   notifyPartyRegistrationYearORMonthRef,
-//   notifyPartyCellPhoneNumberOREmailRef,
-//   notifyPartyReferenceNoRef,
-//   notifyPartyEngineNoRef,
-//   notifyPartyDriveRef,
-//   notifyPartyEngineSizeRef,
-//   notifyPartyExtColorRef,
-//   notifyPartyFuelRef,
-//   notifyPartyFaxNumberRef,
-//   notifyPartyMileageRef,
-//   notifyPartyModelCodeRef,
-//   notifyPartyModelGradeRef,
-//   notifyPartyPhoneNumber1Ref,
-//   notifyPartyPhoneNumber2Ref,
-//   notifyPartyPhoneNumber3Ref,
-//   notifyPartyProductNameRef,
-//   manufactureYearORMonthRef,
-//   descriptionRef,
-//   productFeatureImageRef,
-//   productImageRef,
-//   bLFileRef,
-//   certificateFileRef,
-//   englishCertificateFileRef,
-//   invoiceFileRef,
-//   inspectionFileRef,
-//   forwarderName,
-//   companyName,
-//   optionFeatures,
-//   statusFeatures
-// } = req.body || {};
+                const files = JSON.stringify(req.files);
+                console.dir("Body " + JSON.stringify(req.body));
+                console.log("Files" + files);
+      let productFeatureImageRef = JSON.stringify(req.files['productFeatureImageRef'][0].originalname);
+      let parsedProductFeatureImageRef = productFeatureImageRef.split('"')[1]
+      let productImageRef = JSON.stringify(req.files['productImageRef'][0].originalname);
+      let parsedProductImageRef = productImageRef.split('"')[1]
+      let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].originalname);
+      let parsedBLFileRef = bLFileRef.split('"')[1]
+      let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].originalname);
+      let parsedCertificateFileRef = certificateFileRef.split('"')[1]
+      let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].originalname);
+      let parsedEnglishCertificateFileRef = englishCertificateFileRef.split('"')[1]
+      let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].originalname);
+      let parsedInspectionFileRef = inspectionFileRef.split('"')[1]
+      let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].originalname);
+      let parsedInvoiceFileRef = invoiceFileRef.split('"')[1]
 
+      
+
+console.log(parsedProductFeatureImageRef , parsedProductImageRef , parsedBLFileRef , parsedCertificateFileRef , parsedEnglishCertificateFileRef , parsedInvoiceFileRef , parsedInspectionFileRef);
+
+
+          const newCapLinkData = { 
+            departure: {
+              carrierNameRef,
+              departureVesselRef,
+              departurePartsOfLandingRef,
+              departureETDRef,
+            },
+            arrival: {
+              arrivalVesselRef,
+              arrivalPartOfDischargeRef,
+              arrivalETDRef,
+            },
+            document: {
+              documentNameRef,
+              documentAddressRef,
+              documentCityRef,
+              documentCountryRef,
+              documentFaxNumberRef,
+              documentTrackingNumberRef,
+              documentPhoneNumber1Ref,
+              documentPhoneNumber2Ref,
+              documentPhoneNumber3Ref,
+              documentCellPhoneNumberOREmailRef,
+              documentenrollementRef,
+            },
+            documentCenter: {
+              documentCenterNameRef,
+              documentCenterAddressRef,
+              documentCenterCityRef,
+              documentCenterCountryRef,
+              documentCenterPhoneNumber1Ref,
+              documentCenterPhoneNumber2Ref,
+              documentCenterPhoneNumber3Ref,
+              documentCenterEmailRef,
+              documentCenterUrlRef,
+              documentCenterOtherInformationRef,
+            },
+            consignee: {
+              consigneeNameRef,
+              consigneeCityRef,
+              consigneeAddressRef,
+              consigneeCountryRef,
+              consigneeFaxNumberRef,
+              consigneePhoneNumber1Ref,
+              consigneePhoneNumber2Ref,
+              consigneePhoneNumber3Ref,
+              consigneeCellPhoneNumberOREmailRef,
+            },
+            notifyParty: {
+              notifyPartyNameRef,
+              notifyPartyCityRef,
+              notifyPartyCountryRef,
+              notifyPartyAddressRef,
+              notifyPartyChassisRef,
+              notifyPartyDoorRef,
+              notifyPartytransmissionRef,
+              notifyPartySteeringRef,
+              notifyPartySeatsRef,
+              notifyPartyRegistrationYearORMonthRef,
+              notifyPartyCellPhoneNumberOREmailRef,
+              notifyPartyReferenceNoRef,
+              notifyPartyEngineNoRef,
+              notifyPartyDriveRef,
+              notifyPartyEngineSizeRef,
+              notifyPartyExtColorRef,
+              notifyPartyFuelRef,
+              notifyPartyFaxNumberRef,
+              notifyPartyMileageRef,
+              notifyPartyModelCodeRef,
+              notifyPartyModelGradeRef,
+              notifyPartyPhoneNumber1Ref,
+              notifyPartyPhoneNumber2Ref,
+              notifyPartyPhoneNumber3Ref,
+              notifyPartyProductNameRef,
+              manufactureYearORMonthRef,
+            },
+            misc: {
+              descriptionRef,
+            },
+            productFeatureImageRef : parsedProductFeatureImageRef,
+            productImageRef : parsedProductImageRef,
+            bLFileRef : parsedBLFileRef,
+            certificateFileRef : parsedCertificateFileRef,
+            englishCertificateFileRef : parsedEnglishCertificateFileRef,
+            invoiceFileRef : parsedInvoiceFileRef,
+            inspectionFileRef: parsedInspectionFileRef,
+            forwarderName,
+            companyName,
+            optionFeatures,
+            statusFeatures,
+           };
           
-
-//           if (!data || Object.keys(data).length === 0) {
-//             return res.status(400).json({ message: "All fields are required" });
-//           }
-
-//             // Multer files
-//             const productFeatureImage = req.files?.productFeatureImageRef?.[0]?.filename || null;
-//             const productImage = req.files?.productImageRef?.[0]?.filename || null;
-//             const bLFile = req.files?.bLFileRef?.[0]?.filename || null;
-//             const certificateFile = req.files?.certificateFileRef?.[0]?.filename || null;
-//             const englishCertificateFile = req.files?.englishCertificateFileRef?.[0]?.filename || null;
-//             const invoiceFile = req.files?.invoiceFileRef?.[0]?.filename || null;
-//             const inspectionFile = req.files?.invoiceFileRef?.[0]?.filename || null;
-
-// console.log(productFeatureImage , productImage , bLFile , certificateFile , englishCertificateFile , invoiceFile , inspectionFile);
-
-
-//           const newCapLinkData = { 
-//             departure: {
-//               carrierNameRef,
-//               departureVesselRef,
-//               departurePartsOfLandingRef,
-//               departureETDRef,
-//             },
-//             arrival: {
-//               arrivalVesselRef,
-//               arrivalPartOfDischargeRef,
-//               arrivalETDRef,
-//             },
-//             document: {
-//               documentNameRef,
-//               documentAddressRef,
-//               documentCityRef,
-//               documentCountryRef,
-//               documentFaxNumberRef,
-//               documentTrackingNumberRef,
-//               documentPhoneNumber1Ref,
-//               documentPhoneNumber2Ref,
-//               documentPhoneNumber3Ref,
-//               documentCellPhoneNumberOREmailRef,
-//               documentenrollementRef,
-//             },
-//             documentCenter: {
-//               documentCenterNameRef,
-//               documentCenterAddressRef,
-//               documentCenterCityRef,
-//               documentCenterCountryRef,
-//               documentCenterPhoneNumber1Ref,
-//               documentCenterPhoneNumber2Ref,
-//               documentCenterPhoneNumber3Ref,
-//               documentCenterEmailRef,
-//               documentCenterUrlRef,
-//               documentCenterOtherInformationRef,
-//             },
-//             consignee: {
-//               consigneeNameRef,
-//               consigneeCityRef,
-//               consigneeAddressRef,
-//               consigneeCountryRef,
-//               consigneeFaxNumberRef,
-//               consigneePhoneNumber1Ref,
-//               consigneePhoneNumber2Ref,
-//               consigneePhoneNumber3Ref,
-//               consigneeCellPhoneNumberOREmailRef,
-//             },
-//             notifyParty: {
-//               notifyPartyNameRef,
-//               notifyPartyCityRef,
-//               notifyPartyCountryRef,
-//               notifyPartyAddressRef,
-//               notifyPartyChassisRef,
-//               notifyPartyDoorRef,
-//               notifyPartytransmissionRef,
-//               notifyPartySteeringRef,
-//               notifyPartySeatsRef,
-//               notifyPartyRegistrationYearORMonthRef,
-//               notifyPartyCellPhoneNumberOREmailRef,
-//               notifyPartyReferenceNoRef,
-//               notifyPartyEngineNoRef,
-//               notifyPartyDriveRef,
-//               notifyPartyEngineSizeRef,
-//               notifyPartyExtColorRef,
-//               notifyPartyFuelRef,
-//               notifyPartyFaxNumberRef,
-//               notifyPartyMileageRef,
-//               notifyPartyModelCodeRef,
-//               notifyPartyModelGradeRef,
-//               notifyPartyPhoneNumber1Ref,
-//               notifyPartyPhoneNumber2Ref,
-//               notifyPartyPhoneNumber3Ref,
-//               notifyPartyProductNameRef,
-//               manufactureYearORMonthRef,
-//             },
-//             misc: {
-//               descriptionRef,
-//             },
-//             productFeatureImageRef : productFeatureImage,
-//             productImageRef : productImage,
-//             bLFileRef : bLFile,
-//             certificateFileRef : certificateFile,
-//             englishCertificateFileRef : englishCertificateFile,
-//             invoiceFileRef : invoiceFile,
-//             inspectionFileRef: inspectionFile,
-//             forwarderName,
-//             companyName,
-//             optionFeatures,
-//             statusFeatures,
-//            };
-          
-//           const newCapLink = new CapLinks(newCapLinkData);
-//           await newCapLink.save();
-//           res.status(201).json(newCapLink);
+          const newCapLink = new CapLinks(newCapLinkData);
+          await newCapLink.save();
+          res.status(201).json(newCapLink);
         } catch (error) {
           console.error("Error adding capLinks:", error);
           res.status(500).json({ message: "Server Error" });

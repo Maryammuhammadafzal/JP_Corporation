@@ -7,7 +7,15 @@ const router = express.Router();
 
 // Get All Cards
 
-router.post('/add', addCapLinks);
+router.post('/add', upload.fields([
+        { name : "productFeatureImageRef" },
+        { name : "productImageRef" },
+        { name : "bLFileRef" },
+        { name : "certificateFileRef" },
+        { name : "englishCertificateFileRef" },
+        { name : "invoiceFileRef" },
+        { name : "inspectionFileRef" },
+]), addCapLinks);
 router.get('/' , getCapLinks);
 // router.get('/get/:id' , getCapLinksById);
 // router.put('/update/:id' , updateCapLinks);

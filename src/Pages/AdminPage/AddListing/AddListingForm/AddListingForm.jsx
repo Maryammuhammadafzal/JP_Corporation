@@ -27,9 +27,7 @@ const AddListingForm = () => {
       setselectedSafetyFeatures([...selectedSafetyFeatures, featureId]);
     }
   };
-
-  const detailsArray = [];
-  const [details, setDetails] = useState(detailsArray);
+  
   const titleRef = useRef(null);
   const conditionRef = useRef(null);
   const typeRef = useRef(null);
@@ -48,6 +46,8 @@ const AddListingForm = () => {
   const vinRef = useRef(null);
   const availabilityRef = useRef(null);
   const descriptionRef = useRef(null);
+console.log(descriptionRef);
+
 
   const handleFeaturedChange = (e) => {
       setFeaturedImage(e.target.files[0]); 
@@ -61,17 +61,20 @@ const AddListingForm = () => {
   };
 
   const handleGalleryChange = (e) => {
-    setGalleryImages([e.target.files[0]]); 
+    setGalleryImages([...e.target.files]); 
     
-    console.log([e.target.files[0]]);
+    console.log([...e.target.files]);
   };
+  
+ 
 
-  const SubmitDetail = async () => {
+  const SubmitDetail = async (e) => {
+    e.preventDefault()
     const formData = new FormData();
 
     formData.append("carTitle", titleRef.current.value);
     formData.append("carCondition", conditionRef.current.value);
-    formData.append("CarType", typeRef.current.value);
+    formData.append("carType", typeRef.current.value);
     formData.append("carMake", makeRef.current.value);
     formData.append("carModel", modelRef.current.value);
     formData.append("carPrice", priceRef.current.value);
@@ -89,26 +92,33 @@ const AddListingForm = () => {
     formData.append("carDescription", descriptionRef.current.value);
     formData.append("carAllFeatures", JSON.stringify(selectedAllFeatures));
     formData.append("carSafetyFeatures", JSON.stringify(selectedSafetyFeatures));
-
     // Images
    formData.append("featuredImage", featuredImage);
     formData.append("attachmentImage", attachmentImage);
 
-    galleryImages.forEach((image) => {
-      formData.append("galleryImages", image); // Don't use index here if you use upload.fields
-    });
+    if (galleryImages.length > 0) {
+      galleryImages.forEach((image, index) => {
+        console.log(image);
+        
+          formData.append("galleryImages", image);
+      });
+  }
+
+for (let pairs of formData.entries()) {
+  console.log(pairs[0], pairs[1]);
+  }
 
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.post(
-        "http://localhost:5000/api/cards/add", formData,
+        "http://localhost:5000/api/cards/add", formData ,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-       // //     "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data",
+          }
+        });
+      
+        
       console.log("Success" + JSON.stringify(response.data));
       alert("Added Succesfully");
 
@@ -142,7 +152,7 @@ const AddListingForm = () => {
           checkbox.checked = false;
         });
        
-          // window.location.href = "/dashboard"
+          window.location.href = "/dashboard"
         
     } catch (error) {
       console.error(error);
@@ -205,6 +215,7 @@ const AddListingForm = () => {
                 </select>
               </label>
             </div>
+            {/* Type Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="type" className="w-full">
                 <p>
@@ -320,6 +331,10 @@ const AddListingForm = () => {
 
             {/* Make Input */}
             <div className="w-[370px] my-3">
+            <label htmlFor="type" className="w-full">
+                <p>
+                  Make
+                </p>
               <select
                 id="make"
                 className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
@@ -425,13 +440,14 @@ const AddListingForm = () => {
                   WAGON
                 </option>
               </select>
+              </label>
             </div>
 
             {/* Model Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="title" className="w-full">
                 <p>
-                  Model <sup className="text-orange-700">*</sup>
+                  Model
                 </p>
                 <select
                   id="condition"
@@ -943,7 +959,7 @@ const AddListingForm = () => {
               </label>
             </div>
           </div>
-
+{/* Description */}
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>Description </p>
@@ -974,14 +990,13 @@ const AddListingForm = () => {
             </button>
 
             {/* Hidden Input */}
-            {/* <input
+            <input
               type="file"
-              id="image"
-               //  ref={fileInputRef}
+               id="featuredImage"
+               accept="image/*"
               onChange={handleFeaturedChange}
               className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-            /> */}
-           <input type="file" name="image" id="featuredImage" accept="image/*" onChange={handleFeaturedChange}/>
+            />
           </label>
         </div>
 
@@ -996,7 +1011,6 @@ const AddListingForm = () => {
           <label htmlFor="" className="w-full h-auto flex">
             <button
               type="file"
-              //  onClick={handleButtonClick}
               className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
             >
               Upload File

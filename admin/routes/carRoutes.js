@@ -3,16 +3,15 @@ import { getCars, postCar , updateCar , getCarsByQuery } from '../controllers/ca
 import verifyToken from '../middlewares/tokenVerify.js';
 import upload from '../middlewares/upload.js';
 
-// import multer from "multer";
-// const upload = multer({ dest: "uploads/" });
-
 const router = express.Router();
 
 router.get("/", getCars);
 router.get("/get", getCarsByQuery);
-router.post("/add",   upload.array(
-  { name: "galleryImages", maxCount: 5 }
-),
+router.post("/add", upload.fields([
+  { name: 'featuredImage' },
+   { name: 'galleryImages' },
+   { name: 'attachmentImage'}
+  ]),
 postCar );
 // UPDATE route for editing car
 router.put('/update/:id', upload.fields([

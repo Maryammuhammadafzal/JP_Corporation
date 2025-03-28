@@ -19,9 +19,9 @@ const CarSchema = new mongoose.Schema({
   carVin: { type: String },
   carAvailability: { type: String },
   carDescription: { type: String },
-  featuredImage: { type: String },          
-  attachmentImage: { type: String },        
-  galleryImages: [{ type: String }],
+  featuredImage: String,          
+  attachmentImage: String,        
+  galleryImages: [String],
   carAllFeatures : [{ type: String }],
   carSafetyFeatures: [{ type: String }],
 }, { timestamps: true });

@@ -1,6 +1,5 @@
 import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash , FaEye} from "react-icons/fa";
-
 import axios from "axios"
 
 const CapLinksListing = () => {
@@ -22,8 +21,7 @@ const  fetchCapLinks = async () => {
   }
 }
 
-capLinksData.map((capLink) => {console.log(capLink);
-})
+capLinksData.map((capLink) => {console.log(capLink)})
 
 useEffect(()=> {
   
@@ -142,10 +140,10 @@ console.log(allCapLinks);
               .filter((capLink) => capLink.departure.carrierNameRef.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
               .map((capLink, index) => ( 
-                <tr key={capLink.id} className="border-b">
+                <tr key={capLink._id} className="border-b">
                   <td className="p-2 text-center">{indexOfFirstCapLinks + index + 1}</td>
                   <td className="p-2 text-center">
-                    <img src={`../../../../admin/uploads/${capLink.files.productFeatureImageRef}`} alt="capLinks" className="w-10 h-10 object-cover" />
+                    <img src={`../../../../../admin/uploads/${capLink.productFeatureImageRef}`} alt="capLinks" className="w-10 h-10 object-cover" />
                   </td>
                   
                   <td className="p-2 text-center">{capLink.departure.carrierNameRef}</td>

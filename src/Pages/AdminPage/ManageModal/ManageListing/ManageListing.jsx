@@ -2,6 +2,7 @@ import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios"
 
+
 const ManageListing = () => {
   const [search, setSearch] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(15);

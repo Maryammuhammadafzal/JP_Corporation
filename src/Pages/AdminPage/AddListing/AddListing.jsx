@@ -78,8 +78,8 @@ const AddListing = () => {
         {/* Main Body */}
         <div className="body gap-3 w-full h-auto flex">
   
-  <div className="left w-[16%]">
-  <div className="side w-[25%]  max-[1300px]:hidden">
+  <div className="left min-w-[8%] max-w-[16%]">
+  <div className="side w-full  max-[1300px]:hidden">
     
           
     {isOpen ? (

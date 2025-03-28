@@ -17,6 +17,8 @@ export const getCars =  async (req, res) => {
 // Get Car by id
 export const getCarById = async (req, res) => {
         const id = req.params.id;
+        console.log("dashboardEditId" , id);
+        
         try {
             const car = await Car.findById(id);     
         

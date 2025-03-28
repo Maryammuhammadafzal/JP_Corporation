@@ -101,7 +101,7 @@ if(response.status === 200){
           <select
             value={entriesPerPage}
             onChange={handleEntriesChange}
-            className="border p-1 rounded"
+            className="border p-1 px-2 mx-3 border-gray-400 text-gray-500 rounded"
           >
             <option value={15}>15</option>
             <option value={30}>30</option> 

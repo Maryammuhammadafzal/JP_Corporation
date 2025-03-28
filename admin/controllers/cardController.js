@@ -75,13 +75,16 @@ export const postCar = async (req, res) => {
             carDoor,
             carVin,
             carAvailability,
-            carAllFeatures,
-            carSafetyFeatures
+            carDescription
           } = req.body;
-      
-          console.log(req.body);
-          console.log("Files" + req.file);
           
+        
+let featuredImage = JSON.stringify(req.files['featuredImage'][0].originalname);
+let parsedFeaturedImage = featuredImage.split('"')[1]
+let galleryImages = JSON.stringify(req.files['galleryImages'][0].originalname);
+let parsedgalleryImages = galleryImages.split('"')[1]
+let attachmentImage = JSON.stringify(req.files['attachmentImage'][0].originalname);
+let parsedAttachmentImage = attachmentImage.split('"')[1]
           
           // Parse features
           let parsedcarAllFeatures = [];
@@ -96,22 +99,7 @@ if (req.body.carSafetyFeatures) {
 } else {
   console.log('No allFeatures provided');
 }
-         
 
-          // Multer files
-          // const featuredImage = req.files?.featuredImage?.[0]?.filename || null;
-          const featuredImage = req.file ? req.file.filename : null;
-          console.log(featuredImage);
-          
-          const attachmentImage = req.file ? req.file.filename : null;
-           console.log(attachmentImage);
-           
-          // const galleryImages = req.file ? req.file.filename.map(file => file.filename) : [];
-          const galleryImages = req.files ? req.files.map((file) => file.filename) : [];
-          // console.log('Featured Image:', featuredImage);
-          // console.log('Attachment Image:', attachmentImage);
-          // console.log('Gallery Images:', galleryImages);
-      
           const newCar = new Car({
             carTitle,
             carCondition,
@@ -129,10 +117,11 @@ if (req.body.carSafetyFeatures) {
             carColour,
             carDoor,
             carVin,
+            carDescription,
             carAvailability,
-            // featuredImage,
-            // attachmentImage,
-            galleryImages,
+            featuredImage : parsedFeaturedImage,
+            attachmentImage : parsedAttachmentImage,
+            galleryImages : [parsedgalleryImages],
             carAllFeatures : parsedcarAllFeatures,
             carSafetyFeatures : parsedCarSafetyFeatures,
 
@@ -140,7 +129,7 @@ if (req.body.carSafetyFeatures) {
       
           const savedCar = await newCar.save();
       
-          res.status(201).json({
+          res.status(200).json({
             message: "Car added successfully",
             data: savedCar
           });
@@ -154,11 +143,11 @@ if (req.body.carSafetyFeatures) {
         }
       };
 
-
+    
       // UPDATE car
 export const updateCar = async (req, res) => {
   try {
-    const { id } = req.params.id;
+    const { id } = req.params;
 
     console.log('Updating car with ID:', id);
     console.log('BODY:', req.body);
@@ -267,3 +256,17 @@ res.status(500).json({ message: 'Server error' });
   
 };
 
+//           // Multer files
+//           // const featuredImage = req.files?.featuredImage?.[0]?.filename || null;
+//           const featuredImage = req.files ? req.files.filename : null;
+//           console.log("featuredImage" +featuredImage);
+          
+//           const attachmentImage = req.files ? req.files.filename : null;
+//            console.log("attachmentImage" +attachmentImage);
+           
+//           // const galleryImages = req.file ? req.file.filename.map(file => file.filename) : [];
+//           // const galleryImages = req.files ? req.files.map((file) => file.filename) : [];
+//           const galleryImages = req.files.map((file) => file.filename);
+//           console.log( "galleryImages"+galleryImages);
+          
+      

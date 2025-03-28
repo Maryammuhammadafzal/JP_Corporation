@@ -238,9 +238,7 @@ try {
           }
         });
       });
-
-    //   // Reset file inputs
-    //   document.getElementById("image").value = "";
+   
 
       // Reset checkboxes
       document
@@ -255,7 +253,7 @@ try {
           checkbox.checked = false;
         });
 
-      window.location.href = "/dashboard/cap-links";
+      window.location.replace("/dashboard/cap-links");
     } catch (error) {
       console.error(error);
       alert("Error");

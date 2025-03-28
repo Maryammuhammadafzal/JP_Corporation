@@ -13,18 +13,12 @@ const EditListingForm = ({ carId }) => {
   const [carData, setCarData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // details stores in an Array
-  const detailsArray = [];
-  const [details, setDetails] = useState(detailsArray);
-
   // Fetch car data on mount
   useEffect(() => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/api/dashboard/get/${carId}`);
-        const car = res.data;
-        console.log(car);
-        
+        const car = res.data;  
         setCarData(car);
         setLoading(false);
       } catch (err) {
@@ -33,7 +27,8 @@ const EditListingForm = ({ carId }) => {
     };
     fetchCar();
   }, [carId]);
-
+  
+  
   useEffect(() => {
     if (carData) {  
       let featuresArray = [];
@@ -51,7 +46,6 @@ const EditListingForm = ({ carId }) => {
     }
   }, [carData]);
 
-  console.log(carAllFeatures);
   
 
   useEffect(() => {
@@ -80,7 +74,7 @@ const EditListingForm = ({ carId }) => {
   const descriptionRef = useRef(null);
 
   const handleFeaturedChange = (e) => {
-    setFeaturedImage(e.target.files[0]);
+    setFeaturedImage(e.target.files[0]);;  
   };
 
   const handleAttachmentChange = (e) => {
@@ -91,20 +85,18 @@ const EditListingForm = ({ carId }) => {
     setGalleryImages([...e.target.files]);
   };
 
+
   const hiddenFeaturedImage = () => {
     let image = document.getElementById("showFeaturedImage");
     image.classList.add("hidden");
-    console.log(image);
   };
   const hiddenGalleryImage = () => {
     let image = document.getElementById("showGalleryImage");
     image.classList.add("hidden");
-    console.log(image);
   };
   const hiddenAttachmentImage = () => {
     let image = document.getElementById("showAttachmentImage");
     image.classList.add("hidden");
-    console.log(image);
   };
 
   // Error Validation
@@ -155,8 +147,6 @@ const EditListingForm = ({ carId }) => {
     }
 
   };
-  
-
 
   const updateDetail = async () => {
     const formData = new FormData();
@@ -232,6 +222,7 @@ const EditListingForm = ({ carId }) => {
       </div>
       <form action="" className="form  w-full h-auto p-3 flex-col  flex gap-5">
         <div className="p-6 text-sm border text-gray-600 rounded-md w-full h-auto">
+          {/* Title  */}
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>
@@ -250,7 +241,9 @@ const EditListingForm = ({ carId }) => {
               />
             </label>
           </div>
+
           <div className="w-full flex justify-between flex-wrap my-3">
+            {/* Condition */}
             <div className="w-[370px] my-3">
               <label htmlFor="title" className="w-full">
                 <p>
@@ -289,6 +282,7 @@ const EditListingForm = ({ carId }) => {
                 </select>
               </label>
             </div>
+            {/* Type */}
             <div className="w-[370px] my-3">
               <label htmlFor="type" className="w-full">
                 <p>
@@ -405,7 +399,6 @@ const EditListingForm = ({ carId }) => {
                 </select>
               </label>
             </div>
-
             {/* Make Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="make" className="w-full">
@@ -598,6 +591,7 @@ const EditListingForm = ({ carId }) => {
                 />
               </label>
             </div>
+            {/* Year Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="year" className="w-full">
                 <p>
@@ -1113,7 +1107,7 @@ const EditListingForm = ({ carId }) => {
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Feature Image</h1>
         </div>
-
+{/* Featured Image */}
         <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
           <div className="flex flex-col gap-2 space-y-4">
             Upload Featured Image
@@ -1131,9 +1125,7 @@ const EditListingForm = ({ carId }) => {
                 type="file"
                 id="image"
                 files={carData.featuredImage || ""}
-                onChange={(e) =>
-                  setCarData({ ...carData, featuredImage: e.target.files[0] })
-                }
+                onChange={handleFeaturedChange}
                 className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
               />
             </label>
@@ -1147,7 +1139,6 @@ const EditListingForm = ({ carId }) => {
               className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
               onClick={hiddenFeaturedImage}
             >
-              {" "}
               ❌
             </div>
             <img
@@ -1178,12 +1169,7 @@ const EditListingForm = ({ carId }) => {
                 type="file"
                 id="image"
                 multiple
-                onChange={(e) =>
-                  setCarData({
-                    ...carData,
-                    galleryImages: Array.from(e.target.files),
-                  })
-                }
+                onChange={handleGalleryChange}
                 className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
               />
             </label>
@@ -1232,9 +1218,7 @@ const EditListingForm = ({ carId }) => {
               <input
                 type="file"
                 id="image"
-                onChange={(e) =>
-                  setCarData({ ...carData, attachmentImage: e.target.files[0] })
-                }
+                onChange={handleAttachmentChange}
                 className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
               />
             </label>
@@ -1248,7 +1232,6 @@ const EditListingForm = ({ carId }) => {
               className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
               onClick={hiddenAttachmentImage}
             >
-              {" "}
               ❌
             </div>
             <img
