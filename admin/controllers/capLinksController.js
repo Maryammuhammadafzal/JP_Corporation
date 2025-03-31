@@ -6,7 +6,7 @@ export const getCapLinks =  async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 100;
 
-        const getCapLinks = await CapLinks.find()
+        const getCapLinks = await CapLinks.find().sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit);
 
@@ -15,42 +15,46 @@ export const getCapLinks =  async (req, res) => {
 
 
 // Get CapLinks by id
-// export const getCapLinksById = async (req, res) => {
-//         const id = req.params.id;
-//         console.log(id);
+export const getCapLinksById = async (req, res) => {
+  
+  try {
+          const id = req.params.id;
+          console.log(id);
+            const capLinks = await CapLinks.findById(id);     
         
-//         try {
-//             const capLinks = await CapLinks.findById(id);     
+            if (!capLinks) {
+              return res.status(404).json({ message: "CapLinks not found" });
+            }
         
-//             if (!capLinks) {
-//               return res.status(404).json({ message: "CapLinks not found" });
-//             }
-        
-//             res.status(200).json(capLinks);
-//           } catch (error) {
-//             console.error("Error fetching CapLinks by ID:", error);
-//             res.status(500).json({ message: "Server error" });
-//           }
-//     };
+            console.log(capLinks);
+            
+            res.status(200).json(capLinks);
+          } catch (error) {
+            console.error("Error fetching CapLinks by ID:", error);
+            res.status(500).json({ message: "Server error" });
+          }
+    };
     
     // Delete CapLinks
-// export const deleteCapLinks =  async (req, res) => {
-//         const id = req.params.id;
-//         console.log(id);
+export const deleteCapLinks =  async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
         
     
-//         try {
-//             const deletedCapLinks = await CapLinks.findByIdAndDelete(id);
+        try {
+            const deletedCapLinks = await CapLinks.findByIdAndDelete(id);
     
-//             if (!deletedCapLinks) {
-//                 return res.status(404).json({ message: "CapLinks not found" });
-//             }
+            if (!deletedCapLinks) {
+                return res.status(404).json({ message: "CapLinks not found" });
+            }
     
-//             res.json({ message: "CapLinks deleted successfully", data: deletedCapLinks });
-//         } catch (err) {
-//             res.status(400).json({ message: "Failed to delete CapLinks", error: err.message });
-//         }
-//     };
+            res.json({ message: "CapLinks deleted successfully", data: deletedCapLinks });
+        } catch (err) {
+            res.status(400).json({ message: "Failed to delete CapLinks", error: err.message });
+        }
+    };
+
+
     export const addCapLinks = async (req, res) => {
         try {
                 const {
@@ -129,19 +133,19 @@ export const getCapLinks =  async (req, res) => {
                 const files = JSON.stringify(req.files);
                 console.dir("Body " + JSON.stringify(req.body));
                 console.log("Files" + files);
-      let productFeatureImageRef = JSON.stringify(req.files['productFeatureImageRef'][0].originalname);
+      let productFeatureImageRef = JSON.stringify(req.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
       let parsedProductFeatureImageRef = productFeatureImageRef.split('"')[1]
-      let productImageRef = JSON.stringify(req.files['productImageRef'][0].originalname);
+      let productImageRef = JSON.stringify(req.files['productImageRef'][0].path.replace(/\\/g, '/'));
       let parsedProductImageRef = productImageRef.split('"')[1]
-      let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].originalname);
+      let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
       let parsedBLFileRef = bLFileRef.split('"')[1]
-      let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].originalname);
+      let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
       let parsedCertificateFileRef = certificateFileRef.split('"')[1]
-      let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].originalname);
+      let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/'));
       let parsedEnglishCertificateFileRef = englishCertificateFileRef.split('"')[1]
-      let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].originalname);
+      let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/'));
       let parsedInspectionFileRef = inspectionFileRef.split('"')[1]
-      let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].originalname);
+      let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/'));
       let parsedInvoiceFileRef = invoiceFileRef.split('"')[1]
 
       
@@ -269,28 +273,28 @@ console.log(parsedProductFeatureImageRef , parsedProductImageRef , parsedBLFileR
       //   }
       // });
 
-
-      // export const updateCapLinks = async (req, res) => {
-      //   const id = req.params.id;
-      //   console.log("ID:", id);
-      //   try {
+// Update Cap links 
+      export const updateCapLinks = async (req, res) => {
+        const id = req.params.id;
+        console.log("ID:", id);
+        try {
   
-      //     let { capLinksName , capLinksCompanyName  } = req.body
-      //     console.log(capLinksCompanyName  , capLinksName);
+          let { capLinksName , capLinksCompanyName  } = req.body
+          console.log(capLinksCompanyName  , capLinksName);
 
-      //     const updateCapLinks = await CapLinks.findByIdAndUpdate(id, { capLinksName , capLinksCompanyName  }, { new: true });
+          const updateCapLinks = await CapLinks.findByIdAndUpdate(id, { capLinksName , capLinksCompanyName  }, { new: true });
 
-      //     if (!updateCapLinks) {
-      //       return res.status(404).json({ message: 'CapLinks not found' });
-      //     }
+          if (!updateCapLinks) {
+            return res.status(404).json({ message: 'CapLinks not found' });
+          }
           
-      //     res.status(200).json({
-      //       message: 'CapLinks updated successfully',
-      //       car: updateCapLinks,
-      //     });
+          res.status(200).json({
+            message: 'CapLinks updated successfully',
+            car: updateCapLinks,
+          });
           
-      //   }  catch (error) {
-      //     console.error(error);
-      //     res.status(500).json({ message: 'Server error' });
-      //     }
-      // };
+        }  catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Server error' });
+          }
+      };

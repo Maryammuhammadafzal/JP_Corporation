@@ -6,7 +6,7 @@ export const getCars =  async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 100;
 
-        const getCar = await Car.find()
+        const getCar = await Car.find().sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit);
 

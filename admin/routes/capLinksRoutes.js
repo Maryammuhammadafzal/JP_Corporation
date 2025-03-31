@@ -1,6 +1,6 @@
 import express from 'express';
 import verifyToken from '../middlewares/tokenVerify.js';
-import { addCapLinks , getCapLinks  } from '../controllers/capLinksController.js'
+import { addCapLinks , getCapLinks , deleteCapLinks , getCapLinksById , updateCapLinks } from '../controllers/capLinksController.js'
 import upload from '../middlewares/upload.js';
 
 const router = express.Router();
@@ -17,9 +17,9 @@ router.post('/add', upload.fields([
         { name : "inspectionFileRef" },
 ]), addCapLinks);
 router.get('/' , getCapLinks);
-// router.get('/get/:id' , getCapLinksById);
-// router.put('/update/:id' , updateCapLinks);
-// router.delete('/delete/:id', deleteCapLinks);
+router.get('/get/:id' , getCapLinksById);
+router.put('/update/:id' , updateCapLinks);
+router.delete('/delete/:id', deleteCapLinks);
 
 // Export Router
 export default router;

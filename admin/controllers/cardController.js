@@ -1,12 +1,13 @@
 import Car from '../models/CarModel.js';
 import upload from '../middlewares/upload.js'
+import path from 'path';
 
 // GET all cards
 export const getCars = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 100;
 
-        const getCar = await Car.find()
+        const getCar = await Car.find().sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit);
 
@@ -79,11 +80,11 @@ export const postCar = async (req, res) => {
           } = req.body;
           
         
-let featuredImage = JSON.stringify(req.files['featuredImage'][0].originalname);
+let featuredImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
 let parsedFeaturedImage = featuredImage.split('"')[1]
-let galleryImages = JSON.stringify(req.files['galleryImages'][0].originalname);
+let galleryImages = JSON.stringify(req.files['galleryImages'][0].path.replace(/\\/g, '/'));
 let parsedgalleryImages = galleryImages.split('"')[1]
-let attachmentImage = JSON.stringify(req.files['attachmentImage'][0].originalname);
+let attachmentImage = JSON.stringify(req.files['attachmentImage'][0].path.replace(/\\/g, '/'));
 let parsedAttachmentImage = attachmentImage.split('"')[1]
           
           // Parse features

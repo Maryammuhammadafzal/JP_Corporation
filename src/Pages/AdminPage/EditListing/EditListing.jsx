@@ -4,7 +4,6 @@ import { BsList } from "react-icons/bs";
 import { BsLink } from "react-icons/bs";
 import { BsCarFrontFill } from "react-icons/bs";
 import EditListingForm from './EditListingForm/EditListingForm';
-import AddListingForm from '../AddListing/AddListingForm/AddListingForm';
 import { Link, useParams } from "react-router-dom";
 
 const EditListing = () => {

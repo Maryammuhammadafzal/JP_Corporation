@@ -3,7 +3,7 @@ import Logo from "../../../../assets/Images/jplogo.png"
 import { BsList } from "react-icons/bs";
 import { BsLink } from "react-icons/bs";
 import { BsCarFrontFill } from "react-icons/bs";
-import EditCapLinksForm from './EditCapLinksForm/EditCapLinksForm';
+import EditCapLinksForm from "./EditCapLinksForm/EditCapLinksForm"
 import { Link, useParams } from "react-router-dom";
 
 const EditCapLinks = () => {
@@ -168,7 +168,7 @@ const EditCapLinks = () => {
   </div>
   
   <div className="right p-3 w-[83%] max-[1300px]:w-full ">
-  <EditListingForm carId={id} />
+  <EditCapLinksForm carId={id} />
   </div>
         </div>
       </div>

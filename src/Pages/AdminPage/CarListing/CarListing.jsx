@@ -3,6 +3,8 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios"
 
 const CarListings = () => {
+  console.log(document.elementFromPoint(window.innerWidth - 10, window.innerHeight / 2));
+  
   const [search, setSearch] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -143,7 +145,7 @@ if(response.status === 200){
                 <tr key={car._id} className="border-b">
                   <td className="p-2 text-center">{indexOfFirstCar + index + 1}</td>
                   <td className="p-2 text-center">
-                    <img src={`../../../../admin/uploads/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
+                    <img src={`../../../../admin/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
                   </td>
                   
                   <td className="p-2 text-center">{car.carTitle}</td>

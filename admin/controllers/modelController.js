@@ -6,7 +6,7 @@ export const getModal =  async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 100;
 
-        const getModal = await Modal.find()
+        const getModal = await Modal.find().sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit);
 

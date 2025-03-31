@@ -1,6 +1,7 @@
 import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash , FaEye} from "react-icons/fa";
 import axios from "axios"
+// import upload from "../../../../../admin/uploads/feature2.jpg"
 
 const CapLinksListing = () => {
   const [search, setSearch] = useState("");
@@ -21,7 +22,7 @@ const  fetchCapLinks = async () => {
   }
 }
 
-capLinksData.map((capLink) => {console.log(capLink)})
+capLinksData.map((capLink) => {console.log(capLink.productFeatureImageRef)})
 
 useEffect(()=> {
   
@@ -47,19 +48,22 @@ console.log(allCapLinks);
   const currentCars = filteredCapLinks.slice(indexOfFirstCapLinks, indexOfLastCapLinks);
   const totalPages = Math.ceil(filteredCapLinks.length / entriesPerPage);
 
-//   const handleDelete = async(id , title) => {
-// const response = await axios.delete(`http://localhost:5000/api/capLinks/delete/${id}`)
-// if(response.status === 200){
-//   alert(`${title} deleted`); 
-//   fetchCapLinks()
-//   } else {
-//     alert("error")
-//     }
-//   };
-//   const handleEdit = async(id ) => {
-//     localStorage.setItem("EditId" , id);
-//     window.location.href = `/cap-links-listing/edit-cap-links-listing/get/${id}`;
-//   };
+  // Delete Cap Link
+  const handleDelete = async(id , title) => {
+const response = await axios.delete(`http://localhost:5000/api/capLinks/delete/${id}`)
+if(response.status === 200){
+  alert(`${title} deleted`); 
+  fetchCapLinks()
+  } else {
+    alert("error")
+    }
+  };
+
+  
+  const handleEdit = async(id ) => {
+    localStorage.setItem("EditId" , id);
+    window.location.replace(`/cap-links-listing/edit-cap-links-listing/get/${id}`);
+  };
 
   const handleEntriesChange = (e) => {
     setEntriesPerPage(Number(e.target.value));
@@ -142,8 +146,8 @@ console.log(allCapLinks);
               .map((capLink, index) => ( 
                 <tr key={capLink._id} className="border-b">
                   <td className="p-2 text-center">{indexOfFirstCapLinks + index + 1}</td>
-                  <td className="p-2 text-center">
-                    <img src={`../../../../../admin/uploads/${capLink.productFeatureImageRef}`} alt="capLinks" className="w-10 h-10 object-cover" />
+                  <td className="p-2">
+                    <img src={`../../../../../admin/${capLink.productFeatureImageRef}`} alt="capLinks" className="w-10 h-10 object-cover" />
                   </td>
                   
                   <td className="p-2 text-center">{capLink.departure.carrierNameRef}</td>
@@ -158,7 +162,7 @@ console.log(allCapLinks);
                     <button className="text-white p-1 rounded bg-orange-500" onClick={() => handleEdit(capLink._id)}>
                       <FaEdit size={15} />
                     </button>
-                    <button className="text-white p-1 rounded bg-red-500" onClick={() => handleDelete(capLink._id)}>
+                    <button className="text-white p-1 rounded bg-red-500" onClick={() => handleDelete(capLink._id , capLink.departure.carrierNameRef)}>
                       <FaTrash size={15} />
                     </button>
                   </td>
