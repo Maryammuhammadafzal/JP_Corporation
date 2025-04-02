@@ -191,7 +191,7 @@ export const updateCar = async (req, res) => {
       parsedCarSafetyFeatures = JSON.parse(carAllFeatures);
     }
 
-      //  Prepare updated fields
+      //  Prepare updated 
       const updatedFields = {
         carTitle,
         carCondition,

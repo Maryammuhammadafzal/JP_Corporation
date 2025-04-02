@@ -1,23 +1,25 @@
 import React, { useRef, useState, useEffect } from "react";
 import Button from "../../../../../Components/Button/Button";
 import axios from "axios";
-import AllFeatures from "../../../../../Components/AllFeatures.js";
 import { statusFeatures } from "../../../../../Components/statusFeatures.js";
-import { optionFeatures } from "../../../../../Components/optionFeatures.js";
+import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
+import { Link } from "react-router-dom";
 
 const EditCapLinksForm = ({ carId }) => {
-  const [featuredImage, setFeaturedImage] = useState(null);
-  const [attachmentImage, setAttachmentImage] = useState(null);
-  const [galleryImages, setGalleryImages] = useState([]);
-  const [carAllFeatures, setCarAllFeatures] = useState([]);
-  const [carSafetyFeatures, setCarSafetyFeatures] = useState([]);
   const [carData, setCarData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // details stores in an Array
-  const detailsArray = [];
-  const [details, setDetails] = useState(detailsArray);
-
+   const [productFeatureImage, setproductFeatureImage] = useState(null);
+    const [productImage, setproductImage] = useState(null);
+    const [blImage, setBLImage] = useState(null);
+    const [certificateImage, setCertificateImage] = useState(null);
+    const [invoiceImage, setInvoiceImage] = useState(null);
+    const [englishCertificateImage, setEnglishCerticateImage] = useState(null);
+    const [inspectionImage, setInspectionImage] = useState(null);
+    const [selectedStatusFeatures, setSelectedStatusFeatures] = useState([]);
+    const [selectedNameOption, setSelectedNameOption] = useState([]);
+    const [selectedForwarderNameOption, setSelectedForwarderNameOption] = useState([]);
+    const [selectedOptionFeatures, setselectedOptionFeatures] = useState([]);
+  console.log(productFeatureImage);
+  
   // Fetch car data on mount
   useEffect(() => {
     const fetchCar = async () => {
@@ -36,92 +38,218 @@ const EditCapLinksForm = ({ carId }) => {
   }, [carId]);
 
   console.log(carData);
+
+      useEffect(() => {
+        if (carData) {
+          setselectedOptionFeatures(carData.optionFeatures || []);
+        }
+      }, [carData]);
+
+    useEffect(() => {
+      if (carData) {
+        setBLImage(carData.bLFileRef || []);
+      }
+    }, [carData]);
+    useEffect(() => {
+      if (carData) {
+        setInspectionImage(carData.inspectionFileRef || []);
+      }
+    }, [carData]);
+    useEffect(() => {
+      if (carData) {
+        setCertificateImage(carData.certificateFileRef || []);
+      }
+    }, [carData]);
+    useEffect(() => {
+      if (carData) {
+        setEnglishCerticateImage(carData.englishCertificateFileRef || []);
+      }
+    }, [carData]);
+    useEffect(() => {
+      if (carData) {
+        setInvoiceImage(carData.invoiceFileRef || []);
+      }
+    }, [carData]);
+    useEffect(() => {
+      if (carData) {
+        setproductFeatureImage(carData.productFeatureImageRef || []);
+      }
+    }, [carData]);
+    useEffect(() => {
+      if (carData) {
+        setproductImage(carData.productImageRef || []);
+      }
+    }, [carData]);
+    
+    
+    // Refrence Object
+    const refs = {
+      departure: {
+          // Departure Ref
+    carrierNameRef: useRef(null),
+    departureVesselRef: useRef(null),
+    departurePartsOfLandingRef: useRef(null),
+    departureETDRef: useRef(null),
   
-
-  // useEffect(() => {
-  //   if (carData) {  
-  //     let featuresArray = [];
-
-  //     // If carData.carAllFeatures exists
-  //     if (Array.isArray(carData?.carAllFeatures)) {
-  //       featuresArray = carData?.carAllFeatures;
-  //     } else if (typeof carData?.carAllFeatures === 'string') {
-  //       featuresArray = carData?.carAllFeatures.split(',');
-  //     } else {
-  //       featuresArray = []; // Default fallback if null or unexpected type
-  //     }
+      },
+      arrival: {
+        arrivalVesselRef: useRef(null),
+        ArrivalPartOfDischargeRef: useRef(null),
+        arrivalETDRef: useRef(null),
+      },
+      document: {
+        documentNameRef: useRef(null),
+        documentAddressRef: useRef(null),
+        documentCityRef: useRef(null),
+        documentCountryRef: useRef(null),
+        documentFaxNumberRef: useRef(null),
+        documentTrackingNumberRef: useRef(null),
+        documentPhoneNumber1Ref: useRef(null),
+        documentPhoneNumber2Ref: useRef(null),
+        documentPhoneNumber3Ref: useRef(null),
+        documentCellPhoneNumberOREmailRef: useRef(null),
+        documentenrollementRef: useRef(null),
+      },
+      documentCenter: {
+        documentCenterNameRef: useRef(null),
+        documentCenterAddressRef: useRef(null),
+        documentCenterCityRef: useRef(null),
+        documentCenterCountryRef: useRef(null),
+        documentCenterPhoneNumber1Ref: useRef(null),
+        documentCenterPhoneNumber2Ref: useRef(null),
+        documentCenterPhoneNumber3Ref: useRef(null),
+        documentCenterEmailRef: useRef(null),
+        documentCenterUrlRef: useRef(null),
+        documentCenterOtherInformationRef: useRef(null),
+      },
+      consignee: {
+        consigneeNameRef: useRef(null),
+    consigneeCityRef: useRef(null),
+    consigneeAddressRef: useRef(null),
+    consigneeCountryRef: useRef(null),
+    consigneeFaxNumberRef: useRef(null),
+    consigneePhoneNumber1Ref: useRef(null),
+    consigneePhoneNumber2Ref: useRef(null),
+    consigneePhoneNumber3Ref: useRef(null),
+    consigneeCellPhoneNumberOREmailRef: useRef(null),
   
-  //     setCarAllFeatures(featuresArray);
-  //   }
-  // }, [carData]);
-
-  // console.log(carAllFeatures);
   
+      },
+      notifyParty: {
+        notifyPartyNameRef: useRef(null),
+    notifyPartyCityRef: useRef(null),
+    notifyPartyCountryRef: useRef(null),
+    notifyPartyAddressRef: useRef(null),
+    notifyPartyChassisRef: useRef(null),
+    notifyPartyDoorRef: useRef(null),
+    notifyPartytransmissionRef: useRef(null),
+    notifyPartySteeringRef: useRef(null),
+    notifyPartySeatsRef: useRef(null),
+    notifyPartyRegistrationYearORMonthRef: useRef(null),
+    notifyPartyCellPhoneNumberOREmailRef: useRef(null),
+    notifyPartyReferenceNoRef: useRef(null),
+    notifyPartyEngineNoRef: useRef(null),
+    notifyPartyDriveRef: useRef(null),
+    notifyPartyEngineSizeRef: useRef(null),
+    notifyPartyExtColorRef: useRef(null),
+    notifyPartyFuelRef: useRef(null),
+    notifyPartyFaxNumberRef: useRef(null),
+    notifyPartyMileageRef: useRef(null),
+    notifyPartyModelCodeRef: useRef(null),
+    notifyPartyModelGradeRef: useRef(null),
+    notifyPartyPhoneNumber1Ref: useRef(null),
+    notifyPartyPhoneNumber2Ref: useRef(null),
+    notifyPartyPhoneNumber3Ref: useRef(null),
+    notifyPartyProductNameRef: useRef(null),
+    manufactureYearORMonthRef: useRef(null),
+      },
+      misc: {
+        descriptionRef: useRef(null),
+      },
+    };
+    
 
-  // useEffect(() => {
-  //   if (carData) {
-  //     setCarSafetyFeatures(carData.carSafetyFeatures || []);
-  //   }
-  // }, [carData]);
- 
-  // const titleRef = useRef(null);
-  // const conditionRef = useRef(null);
-  // const typeRef = useRef(null);
-  // const makeRef = useRef(null);
-  // const modelRef = useRef(null);
-  // const priceRef = useRef(null);
-  // const yearRef = useRef(null);
-  // const driveTypeRef = useRef(null);
-  // const transmissionRef = useRef(null);
-  // const fuelTypeRef = useRef(null);
-  // const mileageRef = useRef(null);
-  // const engineSizeRef = useRef(null);
-  // const cylinderRef = useRef(null);
-  // const colorRef = useRef(null);
-  // const doorRef = useRef(null);
-  // const vinRef = useRef(null);
-  // const availabilityRef = useRef(null);
-  // const descriptionRef = useRef(null);
+    // Toggle Status CheckBox Function
+    const toggleCheckbox = async (featureId) => {
+      let updatedFeatures;
+      {setSelectedStatusFeatures((carData.statusFeatures || []).some((item) => item.includes(feature.id)))}
+    console.log(featureId);
+    
+      if (selectedStatusFeatures.includes(featureId)) {
+        updatedFeatures = selectedStatusFeatures.filter((id) => id !== featureId);
+      } else {
+        updatedFeatures = [...selectedStatusFeatures, featureId];
+      }
+    
+      setSelectedStatusFeatures(updatedFeatures);
 
-  // const handleFeaturedChange = (e) => {
-  //   setFeaturedImage(e.target.files[0]);
-  // };
+    }
+  
+     // Toggle Option CheckBox Function
+     const toggleOptionCheckbox = async (featureId) => {
+      let updatedOptionFeatures;
+      {setselectedOptionFeatures((carData.statusFeatures || []).some((item) => item.includes(featureId)))}
+      console.log(selectedOptionFeatures);
+      
+    
+      if (selectedOptionFeatures.includes(featureId)) {
+        updatedOptionFeatures = selectedOptionFeatures.filter((id) => id !== featureId);
+      } else {
+        updatedOptionFeatures = [...selectedOptionFeatures, featureId];
+      }
+    
+      setselectedOptionFeatures({ ...cardData , Features: updatedOptionFeatures });
+  
+    }
+    console.log(selectedOptionFeatures);
 
-  // const handleAttachmentChange = (e) => {
-  //   setAttachmentImage(e.target.files[0]);
-  // };
-
-  // const handleGalleryChange = (e) => {
-  //   setGalleryImages([...e.target.files]);
-  // };
-
-  // const hiddenFeaturedImage = () => {
-  //   let image = document.getElementById("showFeaturedImage");
-  //   image.classList.add("hidden");
-  //   console.log(image);
-  // };
-  // const hiddenGalleryImage = () => {
-  //   let image = document.getElementById("showGalleryImage");
-  //   image.classList.add("hidden");
-  //   console.log(image);
-  // };
-  // const hiddenAttachmentImage = () => {
-  //   let image = document.getElementById("showAttachmentImage");
-  //   image.classList.add("hidden");
-  //   console.log(image);
-  // };
-
-  // // Error Validation
-  // const validateDetails = (details) => {
-  //   const errors = [];
-
-  //   if (!details.title) errors.push("Title is required.");
-  //   else if (!details.condition) errors.push("Price is required.");
-  //   else if (!details.year) errors.push("Year is required.");
-
-  //   return errors;
-  // };
-
+    // File handlers
+    const handleProductImageChange = (e) => {
+      let file = e.target.files[0];
+      setproductImage(file);  
+    };
+    const handleProductionFeaturedImageChange = (e) => {
+      let file = e.target.files[0];
+      setproductFeatureImage(file);
+    };
+    const handleBLFileChange = (e) => {
+      let file = e.target.files[0];
+      setBLImage(file);
+      
+    };
+    const handleCertificateChange = (e) => {
+      let file = e.target.files[0];
+      setCertificateImage(file);
+      
+    };
+    const handleEnglishCertificateChange = (e) => {
+      let file = e.target.files[0];
+      setEnglishCerticateImage(file);
+      
+    };
+    const handleInvoiceChange = (e) => {
+      let file = e.target.files[0];
+      setInvoiceImage(file);
+      
+    };
+    const handleInspectionFileChange = (e) => {
+      let file = e.target.files[0];
+      setInspectionImage(file);
+    };
+  
+    
+    // Radio Button Function
+    const handleNameRadioChange = (e) => {
+      setCarData({ ...carData, companyName: e.target.value });
+   
+    };
+    const handleForwarderNameRadioChange = (e) => {
+      setCarData({ ...carData, forwarderName: e.target.value });
+      
+    };
+    
+  
+  
   // //  Handle Features 
   // const handleFeatureChange = (e, type) => {
   //   const { value, checked } = e.target;
@@ -162,71 +290,71 @@ const EditCapLinksForm = ({ carId }) => {
   
 
 
-//   const updateDetail = async () => {
-//     const formData = new FormData();
+  const updateCapLinksData = async (e) => {
+  e.preventDefault();
   
-//     formData.append("carTitle", titleRef.current.value);
-//     formData.append("carCondition", conditionRef.current.value);
-//     formData.append("CarType", typeRef.current.value);
-//     formData.append("carMake", makeRef.current.value);
-//     formData.append("carModel", modelRef.current.value);
-//     formData.append("carPrice", priceRef.current.value);
-//     formData.append("carYear", yearRef.current.value);
-//     formData.append("carDriveType", driveTypeRef.current.value);
-//     formData.append("carTransmission", transmissionRef.current.value);
-//     formData.append("carFuelType", fuelTypeRef.current.value);
-//     formData.append("carMileage", mileageRef.current.value);
-//     formData.append("carEngineSize", engineSizeRef.current.value);
-//     formData.append("carCylinder", cylinderRef.current.value);
-//     formData.append("carColour", colorRef.current.value);
-//     formData.append("carDoor", doorRef.current.value);
-//     formData.append("carVin", vinRef.current.value);
-//     formData.append("carAvailability", availabilityRef.current.value);
-//     formData.append("description", descriptionRef.current.value);
+  const formData = new FormData();
+
+// Extract text values from carData
+Object.keys(carData).forEach((key) => {
+  let nestedObject = carData[key];
+
+  if (typeof nestedObject === "object" && nestedObject !== null) {
+    Object.keys(nestedObject).forEach((innerKey) => {
+      formData.append(innerKey, nestedObject[innerKey] || ""); // Default to empty string if undefined
+    });
+  } else {
+    formData.append(key, carData[key] || "");
+  }
+});
+
   
-//     // Add features arrays as JSON strings
-//     formData.append("carAllFeatures", JSON.stringify(carAllFeatures));
-//     formData.append("carSafetyFeatures", JSON.stringify(carSafetyFeatures));
+    // Handle file inputs separately
+      formData.append("productFeatureImageRef", productFeatureImage);
+      formData.append("productImageRef", productImage);
+      formData.append("bLFileRef", blImage);
+      formData.append("certificateFileRef", certificateImage);
+      formData.append("englishCertificateFileRef", englishCertificateImage);
+      formData.append("invoiceFileRef", invoiceImage);
+      formData.append("inspectionFileRef", inspectionImage);
+
+
+  formData.append("statusFeatures", JSON.stringify(selectedStatusFeatures));
+  formData.append("optionFeatures", JSON.stringify(selectedOptionFeatures));
+  formData.append( "companyName",  selectedNameOption );
+  formData.append( "forwarderName",  selectedForwarderNameOption);
   
-//     // Images
-//     if (featuredImage) formData.append("featuredImage", featuredImage);
-//     if (attachmentImage) formData.append("attachmentImage", attachmentImage);
+    try {
+      const token = localStorage.getItem("adminToken");
   
-//     galleryImages.forEach((image) => {
-//       formData.append("galleryImages", image);
-//     });
+      const response = await axios.put(
+        `http://localhost:5000/api/capLinks/update/${carId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
   
-//     try {
-//       const token = localStorage.getItem("adminToken");
+      console.log("Success" + JSON.stringify(response.data));
+      alert("Updated Succesfully");
   
-//       const response = await axios.put(
-//         `http://localhost:5000/api/cards/update/${carId}`,
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
+// reset car features
+      setCarAllFeatures([]);
+      setCarSafetyFeatures([]);
   
-//       console.log("Success" + JSON.stringify(response.data));
-//       alert("Updated Succesfully");
+      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = false;
+      });
   
-// // reset car features
-//       setCarAllFeatures([]);
-//       setCarSafetyFeatures([]);
-  
-//       document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-//         checkbox.checked = false;
-//       });
-  
-//       window.location.href = "/dashboard";
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error");
-//     }
-//   };
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.error(error);
+      alert("Error");
+    }
+  };
   
 
   return (
@@ -251,8 +379,8 @@ const EditCapLinksForm = ({ carId }) => {
                   type="radio"
                   id="beForward"
                   value="Be Forward"
-                  // checked={selectedNameOption === "Be Forward"}
-                  // onChange={(e) => handleNameRadioChange(e)}
+                  checked={carData.companyName === "Be Forward"}
+                  onChange={(e) => handleNameRadioChange(e)}
                   className="mt-2 rounded-md p-2"
                   placeholder="Enter beForward Here"
                 />
@@ -266,8 +394,8 @@ const EditCapLinksForm = ({ carId }) => {
                   type="radio"
                   id="jpCorporation"
                   value="JP Corporation"
-                  // checked={selectedNameOption === "JP Corporation"}
-                  // onChange={(e) => handleNameRadioChange(e)}
+                  checked={carData.companyName === "JP Corporation"}
+                  onChange={(e) => handleNameRadioChange(e)}
                   className="mt-2 rounded-md p-2"
                   placeholder="Enter jpCorporation Here"
                 />
@@ -286,8 +414,8 @@ const EditCapLinksForm = ({ carId }) => {
                   type="radio"
                   id="Satish"
                   value="Satish"
-                  // checked={selectedForwarderNameOption === "Satish"}
-                  // onChange={(e) => handleForwarderNameRadioChange(e)}
+                  checked={carData.forwarderName === "Satish"}
+                  onChange={(e) => handleForwarderNameRadioChange(e)}
                   className="mt-2 border-neutral-500 border rounded-md p-2"
                   placeholder="Enter Satish Here"
                 />
@@ -301,8 +429,8 @@ const EditCapLinksForm = ({ carId }) => {
                   type="radio"
                   id="Vova"
                   value="Vova"
-                  // checked={selectedForwarderNameOption === "Vova"}
-                  // onChange={(e) => handleForwarderNameRadioChange(e)}
+                  checked={carData.forwarderName === "Vova"}
+                  onChange={(e) => handleForwarderNameRadioChange(e)}
                   className="mt-2 border-neutral-500 border rounded-md p-2"
                   placeholder="Enter Vova Here"
                 />
@@ -316,8 +444,8 @@ const EditCapLinksForm = ({ carId }) => {
                   type="radio"
                   id="Kaytee"
                   value="Kaytee"
-                  // checked={selectedForwarderNameOption === "Kaytee"}
-                  // onChange={(e) => handleForwarderNameRadioChange(e)}
+                  checked={carData.forwarderName === "Kaytee"}
+                  onChange={(e) => handleForwarderNameRadioChange(e)}
                   className="mt-2 border-neutral-500 border rounded-md p-2"
                   placeholder="Enter Kaytee Here"
                 />
@@ -329,13 +457,15 @@ const EditCapLinksForm = ({ carId }) => {
             <h3 className="text-md font-bold ">Message</h3>
             <textarea
               id="description"
-              value={carData.carTitle || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carTitle: e.target.value })
-                  }
-              // ref={refs.misc.descriptionRef}
-              className="mt-2 w-full h-[150px]  border-neutral-500 border rounded-md p-2"
-            />
+              value={carData?.misc?.descriptionRef || ""}
+              onChange={(e) =>
+                setCarData({
+                  ...carData,
+                  misc: { ...carData.misc, descriptionRef: e.target.value } 
+                })
+              }
+               className="mt-2 w-full h-[150px]  border-neutral-500 border rounded-md p-2"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -361,7 +491,7 @@ const EditCapLinksForm = ({ carId }) => {
                       name="selectedStatusFeatures[]"
                       value={feature.value}
                       id={feature.id}
-                      checked={selectedStatusFeatures.includes(feature.id)}
+                      checked={(carData.statusFeatures || []).some((item) => item.includes(feature.id))}
                       onChange={() => toggleCheckbox(feature.id)}
                     />
                     <div>
@@ -405,7 +535,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="CarrierName"
-                  ref={refs.departure.carrierNameRef}
+                  value={carData?.departure?.carrierNameRef || ""}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      departure: { ...carData.departure, carrierNameRef: e.target.value } 
+                    })
+                  }
                   className=" border-neutral-500 border w-full rounded-md p-3"
                   placeholder=" Carrier Name "
                 />
@@ -426,7 +562,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="VesselName"
-                  ref={refs.departure.departureVesselRef}
+                  value={carData?.departure?.departureVesselRef || ""}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      departure: { ...carData.departure, departureVesselRef: e.target.value } 
+                    })
+                  }
                   className=" border-neutral-500 border w-full rounded-md p-3"
                   placeholder=" Vessel Name "
                 />
@@ -443,7 +585,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="PartOfLoading"
-                    ref={refs.departure.departurePartsOfLandingRef}
+                    value={carData?.departure?.departurePartsOfLandingRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        departure: { ...carData.departure, departurePartsOfLandingRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Part Of Loading"
                   />
@@ -458,7 +606,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="date"
                     id="ETD(Estimated Time of Departure)"
-                    ref={refs.departure.departureETDRef}
+                    value={carData?.departure?.departureETDRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        departure: { ...carData.departure, departureETDRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" ETD (Estimated Time of Departure)"
                   />
@@ -480,7 +634,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="VesselName"
-                  ref={refs.arrival.arrivalVesselRef}
+                  value={carData?.arrival?.arrivalVesselRef || ""}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      arrival: { ...carData.arrival, arrivalVesselRef: e.target.value } 
+                    })
+                  }
                   className=" border-neutral-500 border w-full rounded-md p-3"
                   placeholder=" Vessel Name "
                 />
@@ -497,7 +657,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="PartOfDischarge "
-                    ref={refs.arrival.ArrivalPartOfDischargeRef}
+                    value={carData?.arrival?.arrivalPartsOfLandingRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        arrival: { ...carData.arrival, arrivalPartsOfLandingRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Part Of Discharge  "
                   />
@@ -512,7 +678,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="date"
                     id="ETD(Estimated Time of Departure)"
-                    ref={refs.arrival.arrivalETDRef}
+                    value={carData?.arrival?.arrivalETDRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        arrival: { ...carData.arrival, arrivalETDRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" ETD (Estimated Time of Departure)"
                   />
@@ -548,6 +720,9 @@ const EditCapLinksForm = ({ carId }) => {
                     />
                   </label>
                 </div>
+                <div className="existingFile w-full h-auto p-2 text-sm">
+                  <p>Existing B/L File: <Link to={`/blFile/blFile_${carData?.bLFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
+                </div>
               </div>
 
               {/* 2nd Image Input  */}
@@ -567,10 +742,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="file"
                       id="inspection"
-                      onChange={(e) => handleInspectionFileChange(e)}
+                      onChange={handleInspectionFileChange}
                       className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                     />
                   </label>
+                </div>
+                <div className="existingFile w-full h-auto p-2 text-sm">
+                  <p>Existing Inspection File: <Link to={`/inspection/Inspection_${carData?.inspectionFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
                 </div>
               </div>
             </div>
@@ -599,6 +777,9 @@ const EditCapLinksForm = ({ carId }) => {
                     />
                   </label>
                 </div>
+                <div className="existingFile w-full h-auto p-2 text-sm">
+                  <p>Existing Export Certifcate File: <Link to={`/certificate/certificate_${carData?.certificateFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
+                </div>
               </div>
 
               {/* 2nd Image Input  */}
@@ -622,6 +803,9 @@ const EditCapLinksForm = ({ carId }) => {
                       className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                     />
                   </label>
+                </div>
+                <div className="existingFile w-full h-auto p-2 text-sm">
+                  <p>Existing English Export Certificate File: <Link to={`/english-certificate/english-certificate_${carData?.englishCertificateFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
                 </div>
               </div>
             </div>
@@ -649,14 +833,17 @@ const EditCapLinksForm = ({ carId }) => {
                     />
                   </label>
                 </div>
+                <div className="existingFile w-full h-auto p-2 text-sm">
+                  <p>Existing Invoice File: <Link to={`/invoice/invoice_${carData?.invoiceFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
+                </div>
               </div>
 
               {/* 2nd Image Input  */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
+              <div className="imageInpput mb-9  text-sm rounded-md  w-full h-auto  ">
                 <div className="flex flex-col gap-2 ">
                   <label
                     htmlFor="Enrollement"
-                    className="w-full gap-3 flex flex-col justify-center items-start "
+                    className="w-full gap-3  flex flex-col justify-center items-start "
                   >
                     <p> Enrollment</p>
                     <input
@@ -664,7 +851,13 @@ const EditCapLinksForm = ({ carId }) => {
                       id="Enrollement"
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder="Enrollment"
-                      ref={refs.document.documentenrollementRef}
+                      value={carData?.document?.documentenrollementRef || ""}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          document: { ...carData.document, documentenrollementRef: e.target.value } 
+                        })
+                      }
                     />
                   </label>
                 </div>
@@ -696,7 +889,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="documentName"
-                  ref={refs.document.documentNameRef}
+                  value={carData?.document?.documentNameRef || ""}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      document: { ...carData.document, documentNameRef: e.target.value } 
+                    })
+                  }
                   className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                   placeholder="Enter name Here"
                 />
@@ -713,7 +912,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="documentAddress"
-                    ref={refs.document.documentAddressRef}
+                    value={carData?.document?.documentAddressRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentAddressRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Address"
                   />
@@ -728,7 +933,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="documentCity"
-                    ref={refs.document.documentCityRef}
+                    value={carData?.document?.documentCityRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentCityRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" City"
                   />
@@ -747,7 +958,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="documentCountry"
-                    ref={refs.document.documentCountryRef}
+                    value={carData?.document?.documentCountryRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentCountryRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Country"
                   />
@@ -762,7 +979,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="documentPhoneNumber1"
-                    ref={refs.document.documentPhoneNumber1Ref}
+                    value={carData?.document?.documentPhoneNumber1Ref || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentPhoneNumber1Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number1"
                   />
@@ -781,7 +1004,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="documentPhoneNumber2"
-                    ref={refs.document.documentPhoneNumber2Ref}
+                    value={carData?.document?.documentPhoneNumber2Ref || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentPhoneNumber2Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number2"
                   />
@@ -796,7 +1025,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="documentPhoneNumber3"
-                    ref={refs.document.documentPhoneNumber3Ref}
+                    value={carData?.document?.documentPhoneNumber3Ref || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentPhoneNumber3Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number3"
                   />
@@ -815,7 +1050,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="documentFaxNumber"
-                    ref={refs.document.documentFaxNumberRef}
+                    value={carData?.document?.documentFaxNumberRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentFaxNumberRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Fax Number"
                   />
@@ -830,7 +1071,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="documentCellPhoneNumber/Email"
-                    ref={refs.document.documentCellPhoneNumberOREmailRef}
+                    value={carData?.document?.documentCellPhoneNumberOREmailRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentCellPhoneNumberOREmailRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Cell Phone Number/Email"
                   />
@@ -855,7 +1102,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="documentTrackingNumber"
-                    ref={refs.document.documentTrackingNumberRef}
+                    value={carData?.document?.documentTrackingNumberRef || ""}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        document: { ...carData.document, documentTrackingNumberRef: e.target.value } 
+                      })
+                    }
                     className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                     placeholder="Tracking Number"
                   />
@@ -880,7 +1133,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="text"
                       id="documentCenterName"
-                      ref={refs.documentCenter.documentCenterNameRef}
+                      value={carData?.documentCenter?.documentCenterNameRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterNameRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Name"
                     />
@@ -895,7 +1154,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="text"
                       id="documentCenterAddress"
-                      ref={refs.documentCenter.documentCenterAddressRef}
+                      value={carData?.documentCenter?.documentCenterAddressRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterAddressRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Address"
                     />
@@ -913,7 +1178,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="text"
                       id="documentCenterCity"
-                      ref={refs.documentCenter.documentCenterCityRef}
+                      value={carData?.documentCenter?.documentCenterCityRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterCityRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" City"
                     />
@@ -928,7 +1199,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="text"
                       id="documentCenterCountry"
-                      ref={refs.documentCenter.documentCenterCountryRef}
+                      value={carData?.documentCenter?.documentCenterCountryRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterCountryRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Country"
                     />
@@ -947,7 +1224,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="text"
                       id="documentCenterPhoneNumber1"
-                      ref={refs.documentCenter.documentCenterPhoneNumber1Ref}
+                      value={carData?.documentCenter?.documentCenterPhoneNumber1Ref}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterPhoneNumber1Ref: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number1"
                     />
@@ -962,7 +1245,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="number"
                       id="documentCenterPhoneNumber2"
-                      ref={refs.documentCenter.documentCenterPhoneNumber2Ref}
+                      value={carData?.documentCenter?.documentCenterPhoneNumber2Ref}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterPhoneNumber2Ref: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number2"
                     />
@@ -981,7 +1270,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="number"
                       id="documentCenterPhoneNumber3"
-                      ref={refs.documentCenter.documentCenterPhoneNumber3Ref}
+                      value={carData?.documentCenter?.documentCenterPhoneNumber3Ref}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterPhoneNumber3Ref: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Phone Number3"
                     />
@@ -996,7 +1291,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="email"
                       id="documentCenterEmail"
-                      ref={refs.documentCenter.documentCenterEmailRef}
+                      value={carData?.documentCenter?.documentCenterEmailRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterEmailRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Email"
                     />
@@ -1015,7 +1316,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="url"
                       id="documentCenterUrl"
-                      ref={refs.documentCenter.documentCenterUrlRef}
+                      value={carData?.documentCenter?.documentCenterUrlRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterUrlRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Url"
                     />
@@ -1030,7 +1337,13 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="number"
                       id="documentCenterOtherInformation"
-                      ref={refs.documentCenter.documentCenterOtherInformationRef}
+                      value={carData?.documentCenter?.documentCenterOtherInformationRef}
+                      onChange={(e) =>
+                        setCarData({
+                          ...carData,
+                          documentCenter: { ...carData.documentCenter, documentCenterOtherInformationRef: e.target.value } 
+                        })
+                      }
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Other Information"
                     />
@@ -1064,7 +1377,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="consigneeName"
-                  ref={refs.consignee.consigneeNameRef}
+                  value={carData?.consignee?.consigneeNameRef}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      consignee: { ...carData.consignee, consigneeNameRef: e.target.value } 
+                    })
+                  }
                   className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                   placeholder="Enter name Here"
                 />
@@ -1081,7 +1400,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="consigneeAddress"
-                    ref={refs.consignee.consigneeAddressRef}
+                    value={carData?.consignee?.consigneeAddressRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneeAddressRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Address"
                   />
@@ -1096,7 +1421,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="consigneeCity"
-                    ref={refs.consignee.consigneeCityRef}
+                    value={carData?.consignee?.consigneeCityRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneeCityRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" City"
                   />
@@ -1115,7 +1446,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="consigneeCountry"
-                    ref={refs.consignee.consigneeCountryRef}
+                    value={carData?.consignee?.consigneeCountryRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneeCountryRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Country"
                   />
@@ -1130,7 +1467,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="consigneePhoneNumber1"
-                    ref={refs.consignee.consigneePhoneNumber1Ref}
+                    value={carData?.consignee?.consigneePhoneNumber1Ref}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneePhoneNumber1Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number1"
                   />
@@ -1149,7 +1492,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="consigneePhoneNumber2"
-                    ref={refs.consignee.consigneePhoneNumber2Ref}
+                    value={carData?.consignee?.consigneePhoneNumber2Ref}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneePhoneNumber2Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number2"
                   />
@@ -1164,7 +1513,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="consigneePhoneNumber3"
-                    ref={refs.consignee.consigneePhoneNumber3Ref}
+                    value={carData?.consignee?.consigneePhoneNumber3Ref}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneePhoneNumber3Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number3"
                   />
@@ -1183,7 +1538,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="consigneeFaxNumber"
-                    ref={refs.consignee.consigneeFaxNumberRef}
+                    value={carData?.consignee?.consigneeFaxNumberRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneeFaxNumberRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Fax Number"
                   />
@@ -1198,7 +1559,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="consigneeCellPhoneNumber/Email"
-                    ref={refs.consignee.consigneeCellPhoneNumberOREmailRef}
+                    value={carData?.consignee?.consigneeCellPhoneNumberOREmailRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        consignee: { ...carData.consignee, consigneeCellPhoneNumberOREmailRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Cell Phone Number/Email"
                   />
@@ -1219,7 +1586,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="notifyPartyName"
-                  ref={refs.notifyParty.notifyPartyNameRef}
+                  value={carData?.notifyParty?.notifyPartyNameRef}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      notifyParty: { ...carData.notifyParty, notifyPartyNameRef: e.target.value } 
+                    })
+                  }
                   className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                   placeholder="Enter name Here"
                 />
@@ -1236,7 +1609,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyAddress"
-                    ref={refs.notifyParty.notifyPartyAddressRef}
+                    value={carData?.notifyParty?.notifyPartyAddressRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyAddressRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Address"
                   />
@@ -1251,7 +1630,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyCity"
-                    ref={refs.notifyParty.notifyPartyCityRef}
+                    value={carData?.notifyParty?.notifyPartyCityRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyCityRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" City"
                   />
@@ -1270,7 +1655,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyCountry"
-                    ref={refs.notifyParty.notifyPartyCountryRef}
+                    value={carData?.notifyParty?.notifyPartyCountryRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyCountryRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Country"
                   />
@@ -1285,7 +1676,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyPhoneNumber1"
-                    ref={refs.notifyParty.notifyPartyPhoneNumber1Ref}
+                    value={carData?.notifyParty?.notifyPartyPhoneNumber1Ref}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyPhoneNumber1Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number1"
                   />
@@ -1304,7 +1701,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyPhoneNumber2"
-                    ref={refs.notifyParty.notifyPartyPhoneNumber2Ref}
+                    value={carData?.notifyParty?.notifyPartyPhoneNumber2Ref}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyPhoneNumber2Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number2"
                   />
@@ -1319,7 +1722,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyPhoneNumber3"
-                    ref={refs.notifyParty.notifyPartyPhoneNumber3Ref}
+                    value={carData?.notifyParty?.notifyPartyPhoneNumber3Ref}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyPhoneNumber3Ref: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Phone Number3"
                   />
@@ -1338,7 +1747,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyFaxNumber"
-                    ref={refs.notifyParty.notifyPartyFaxNumberRef}
+                    value={carData?.notifyParty?.notifyPartyFaxNumberRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyFaxNumberRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Fax Number"
                   />
@@ -1353,7 +1768,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyCellPhoneNumber/Email"
-                    ref={refs.notifyParty.notifyPartyCellPhoneNumberOREmailRef}
+                    value={carData?.notifyParty?.notifyPartyCellPhoneNumberOREmailRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyCellPhoneNumberOREmailRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Cell Phone Number/Email"
                   />
@@ -1382,7 +1803,13 @@ const EditCapLinksForm = ({ carId }) => {
                 <input
                   type="text"
                   id="notifyPartyProductName"
-                  ref={refs.notifyParty.notifyPartyProductNameRef}
+                  value={carData?.notifyParty?.notifyPartyProductNameRef}
+                  onChange={(e) =>
+                    setCarData({
+                      ...carData,
+                      notifyParty: { ...carData.notifyParty, notifyPartyProductNameRef: e.target.value } 
+                    })
+                  }
                   className="mt-2 w-full border-neutral-500 border rounded-md p-2"
                   placeholder="Enter Product Name Here"
                 />
@@ -1399,7 +1826,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyReferenceNo"
-                    ref={refs.notifyParty.notifyPartyReferenceNoRef}
+                    value={carData?.notifyParty?.notifyPartyReferenceNoRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyReferenceNoRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Reference No"
                   />
@@ -1414,7 +1847,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyMileage"
-                    ref={refs.notifyParty.notifyPartyMileageRef}
+                    value={carData?.notifyParty?.notifyPartyMileageRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyMileageRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Mileage"
                   />
@@ -1433,7 +1872,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyModelCode"
-                    ref={refs.notifyParty.notifyPartyModelCodeRef}
+                    value={carData?.notifyParty?.notifyPartyModelCodeRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyModelCodeRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Model Code"
                   />
@@ -1448,7 +1893,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyRegistrationYear/Month"
-                    ref={refs.notifyParty.notifyPartyRegistrationYearORMonthRef}
+                    value={carData?.notifyParty?.notifyPartyRegistrationYearORMonthRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyRegistrationYearORMonthRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Registration Year/Month"
                   />
@@ -1467,7 +1918,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="ManufactureYear/Month"
-                    ref={refs.notifyParty.manufactureYearORMonthRef}
+                    value={carData?.notifyParty?.manufactureYearORMonthRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, manufactureYearORMonthRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Manufacture Year/Month"
                   />
@@ -1482,7 +1939,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyModelGrade"
-                    ref={refs.notifyParty.notifyPartyModelGradeRef}
+                    value={carData?.notifyParty?.notifyPartyModelGradeRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyModelGradeRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Model Grade"
                   />
@@ -1501,7 +1964,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyChassis#"
-                    ref={refs.notifyParty.notifyPartyChassisRef}
+                    value={carData?.notifyParty?.notifyPartyChassisRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyChassisRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Chassis #"
                   />
@@ -1516,7 +1985,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyEngineSize"
-                    ref={refs.notifyParty.notifyPartyEngineSizeRef}
+                    value={carData?.notifyParty?.notifyPartyEngineSizeRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyEngineSizeRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Engine Size"
                   />
@@ -1535,7 +2010,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyDrive"
-                    ref={refs.notifyParty.notifyPartyDriveRef}
+                    value={carData?.notifyParty?.notifyPartyDriveRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyDriveRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Drive"
                   />
@@ -1550,7 +2031,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyExtColor"
-                    ref={refs.notifyParty.notifyPartyExtColorRef}
+                    value={carData?.notifyParty?.notifyPartyExtColorRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyExtColorRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Ext. Color"
                   />
@@ -1569,7 +2056,13 @@ const EditCapLinksForm = ({ carId }) => {
                     id="notifyPartySteering"
                     className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
                     placeholder="Select Steering"
-                    ref={refs.notifyParty.notifyPartySteeringRef}
+                    value={carData?.notifyParty?.notifyPartySteeringRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartySteeringRef: e.target.value } 
+                      })
+                    }
                   >
                     <option
                       value=""
@@ -1601,7 +2094,13 @@ const EditCapLinksForm = ({ carId }) => {
                     id="notifyPartytransmission"
                     className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
                     placeholder="Select transmission"
-                    ref={refs.notifyParty.notifyPartytransmissionRef}
+                    value={carData?.notifyParty?.notifyPartytransmissionRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartytransmissionRef: e.target.value } 
+                      })
+                    }
                   >
                     <option
                       value=""
@@ -1656,7 +2155,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyFuel"
-                    ref={refs.notifyParty.notifyPartyFuelRef}
+                    value={carData?.notifyParty?.notifyPartyFuelRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyFuelRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Fuel"
                   />
@@ -1671,7 +2176,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartySeats"
-                    ref={refs.notifyParty.notifyPartySeatsRef}
+                    value={carData?.notifyParty?.notifyPartySeatsRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartySeatsRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Seats"
                   />
@@ -1690,7 +2201,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="text"
                     id="notifyPartyDoor"
-                    ref={refs.notifyParty.notifyPartyDoorRef}
+                    value={carData?.notifyParty?.notifyPartyDoorRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyDoorRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Door"
                   />
@@ -1705,7 +2222,13 @@ const EditCapLinksForm = ({ carId }) => {
                   <input
                     type="number"
                     id="notifyPartyEngineNo"
-                    ref={refs.notifyParty.notifyPartyEngineNoRef}
+                    value={carData?.notifyParty?.notifyPartyEngineNoRef}
+                    onChange={(e) =>
+                      setCarData({
+                        ...carData,
+                        notifyParty: { ...carData.notifyParty, notifyPartyEngineNoRef: e.target.value } 
+                      })
+                    }
                     className=" border-neutral-500 border w-full rounded-md p-3"
                     placeholder=" Engine No."
                   />
@@ -1723,7 +2246,7 @@ const EditCapLinksForm = ({ carId }) => {
             <div className="card p-6 flex  border-neutral-500 rounded-md ">
               <div className="row flex flex-wrap m-2">
                 <div className="card-body  flex flex-wrap">
-                  {optionFeatures.map((feature) => (
+                  {OptionFeatures.map((feature) => (
                     <div
                       key={feature.id}
                       className="col-md-4 mb-5 w-[280px] px-3 py-1"
@@ -1735,16 +2258,14 @@ const EditCapLinksForm = ({ carId }) => {
                           name="selectedOptionFeatures[]"
                           value={feature.value}
                           id={feature.id}
-                          // checked={selectedOptionFeatures.includes(
-                          //   feature.id
-                          // )}
+                          checked={(carData?.optionFeatures || []).some((item) => item.includes(feature.id))}
                           onChange={() => toggleOptionCheckbox(feature.id)}
                         />
                         <div>
                           <label
                             className="form-check-label text-sm font-bold text-gray-700"
                             htmlFor={feature.id}
-                            onClick={() => toggleOptionCheckbox(feature.id)}
+                            // onClick={() => toggleOptionCheckbox(feature.id)}
                           >
                             {feature.label}
                           </label>
@@ -1763,6 +2284,7 @@ const EditCapLinksForm = ({ carId }) => {
             <div className="w-full h-auto justify-start items-center flex flex-col gap-5 ">
               {/* First Image input */}
               <div className="imageInpput text-sm rounded-md w-full h-auto  ">
+                <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
                 <div className="flex flex-col gap-2 ">
                   Upload Featured Image
                   <label htmlFor="productFeatureImage" className="w-full h-auto flex">
@@ -1778,11 +2300,30 @@ const EditCapLinksForm = ({ carId }) => {
                     <input
                       type="file"
                       id="productFeatureImage"
-                      // onChange={(e) => handleProductionFeaturedImageChange(e)}
+                      file={carData.productFeatureImage || []}
+                      onChange={(e) => handleProductionFeaturedImageChange(e)}
                       className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                     />
                   </label>
                 </div>
+                <div
+            id="showFeaturedImage"
+            className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
+          >
+            <div
+              className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
+              // onClick={hiddenFeaturedImage}
+            >
+              ❌
+            </div>
+            <img
+              loading="lazy"
+              src={`http://localhost:5000/${carData?.productFeatureImageRef}`}
+              alt="image"
+              className="w-[160px] h-[160px]"
+            />
+          </div>
+        </div>
               </div>
 
               {/* 2nd Image Input  */}
@@ -1807,6 +2348,30 @@ const EditCapLinksForm = ({ carId }) => {
                     />
                   </label>
                 </div>
+                {/* <div className="flex w-auto h-auto p-3">
+            <div
+              id="showGalleryImage"
+              className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
+            >
+              <div
+                className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
+                // onClick={hiddenProductImages}
+              >
+                {" "}
+                ❌
+              </div>
+              {carData?.productImageRef?.map((productImage, index) => (
+      <img
+        key={index}
+        loading="lazy"
+        src={`http://localhost:5000/${productImage}`}
+        alt={`gallery-image-${index}`}
+        className="w-[160px] h-[160px] object-cover"
+      />
+    ))}
+
+            </div>
+          </div> */}
               </div>
             </div>
           </div>
@@ -1815,7 +2380,7 @@ const EditCapLinksForm = ({ carId }) => {
     </form>
 
     <div className="button w-full flex justify-start items-center p-6">
-      <Button text="Update Cap Link" onClick={updateCapLinks} />
+      <Button text="Update Cap Link" onClick={updateCapLinksData}  />
     </div>
   </div>
   );

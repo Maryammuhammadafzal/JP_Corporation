@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Button from "../../../../../Components/Button/Button";
 import axios from "axios";
-import { statusFeatures } from "../../../../../Components/StatusFeatures.js";
+import { statusFeatures } from "../../../../../Components/statusFeatures.js";
 import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
 
 const GenerateCapLinksForm = () => {
@@ -165,6 +165,8 @@ const GenerateCapLinksForm = () => {
      setSelectedForwarderNameOption(e.target.value);
     
   };
+
+  console.log(productFeatureImage);
   
   // Submit All Deatails Function
   const GenerateCapLinks = async (e) => {
@@ -188,6 +190,7 @@ const GenerateCapLinksForm = () => {
    })
   });
   
+
     
       // Handle file inputs separately
         formData.append("productFeatureImageRef", productFeatureImage);

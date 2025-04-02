@@ -18,7 +18,15 @@ router.post('/add', upload.fields([
 ]), addCapLinks);
 router.get('/' , getCapLinks);
 router.get('/get/:id' , getCapLinksById);
-router.put('/update/:id' , updateCapLinks);
+router.put('/update/:id' ,  upload.fields([
+        { name : "productFeatureImageRef" },
+        { name : "productImageRef" },
+        { name : "bLFileRef" },
+        { name : "certificateFileRef" },
+        { name : "englishCertificateFileRef" },
+        { name : "invoiceFileRef" },
+        { name : "inspectionFileRef" },
+]), updateCapLinks);
 router.delete('/delete/:id', deleteCapLinks);
 
 // Export Router

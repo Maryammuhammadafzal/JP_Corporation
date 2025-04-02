@@ -99,37 +99,7 @@ const EditListingForm = ({ carId }) => {
     image.classList.add("hidden");
   };
 
-  // Error Validation
-  const validateDetails = (details) => {
-    const errors = [];
-
-    if (!details.title) errors.push("Title is required.");
-    else if (!details.condition) errors.push("Price is required.");
-    else if (!details.year) errors.push("Year is required.");
-
-    return errors;
-  };
-
-  // //  Handle Features 
-  // const handleFeatureChange = (e, type) => {
-  //   const { value, checked } = e.target;
-
-  //   if (type === 'allFeatures') {
-  //     if (checked) {
-  //       setCarAllFeatures((prev) => [...prev, value]);
-  //     } else {
-  //       setCarAllFeatures((prev) => prev.filter((item) => item !== value));
-  //     }
-  //   }
   
-  //   if (type === 'safetyFeatures') {
-  //     if (checked) {
-  //       setCarSafetyFeatures([...carSafetyFeatures, value]);
-  //     } else {
-  //       setCarSafetyFeatures(carSafetyFeatures.filter((item) => item !== value));
-  //     }
-  //   }
-  // };
 
   const handleFeatureChange = (e, type) => {
     const { value, checked } = e.target;
