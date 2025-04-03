@@ -4,210 +4,235 @@ import axios from "axios";
 import { statusFeatures } from "../../../../../Components/statusFeatures.js";
 import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
 import { Link } from "react-router-dom";
+import { EditFileInput } from "../../../../../Components/EditFileInput/EditFileInput.jsx";
+import EditSelectFeild from "../../../../../Components/EditSelectFeild/EditSelectFeild.jsx";
+import EditInputFeild from "../../../../../Components/EditInputFeild/EditInputFeild.jsx";
 
-const EditCapLinksForm = ({ carId }) => {
-  const [carData, setCarData] = useState([]);
-   const [productFeatureImage, setproductFeatureImage] = useState(null);
-    const [productImage, setproductImage] = useState(null);
-    const [blImage, setBLImage] = useState(null);
-    const [certificateImage, setCertificateImage] = useState(null);
-    const [invoiceImage, setInvoiceImage] = useState(null);
-    const [englishCertificateImage, setEnglishCerticateImage] = useState(null);
-    const [inspectionImage, setInspectionImage] = useState(null);
-    const [selectedStatusFeatures, setSelectedStatusFeatures] = useState([]);
-    const [selectedNameOption, setSelectedNameOption] = useState([]);
-    const [selectedForwarderNameOption, setSelectedForwarderNameOption] = useState([]);
-    const [selectedOptionFeatures, setselectedOptionFeatures] = useState([]);
-  console.log(productFeatureImage);
-  
+
+
+const EditCapLinksForm = () => {
+  const [productFeatureImage, setproductFeatureImage] = useState(null);
+   const [productImages, setproductImages] = useState(null);
+   const [blImage, setBLImage] = useState(null);
+   const [certificateImage, setCertificateImage] = useState(null);
+   const [invoiceImage, setInvoiceImage] = useState(null);
+   const [englishCertificateImage, setEnglishCerticateImage] = useState(null);
+   const [inspectionImage, setInspectionImage] = useState(null);
+   const [selectedStatusFeatures, setSelectedStatusFeatures] = useState([]);
+   const [selectedNameOption, setSelectedNameOption] = useState([]);
+   const [selectedForwarderNameOption, setSelectedForwarderNameOption] = useState([]);
+   const [selectedOptionFeatures, setselectedOptionFeatures] = useState([]);
+  const [loading , setLoading] = useState(false);
+  const [carData, setCarData] = useState(null);
+
+  let carId = localStorage.getItem("EditCapLinksId");
   // Fetch car data on mount
   useEffect(() => {
+    if(!carData) return ;
     const fetchCar = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/capLinks/get/${carId}`);
-        const car = res.data;
-        console.log(car);
-        
-        setCarData(car);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchCar();
-  }, [carId]);
+      setLoading(true)
+        try {
+          const res = await axios.get(`http://localhost:5000/api/capLinks/get/${carId}`);
+          setCarData(res.data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+    setTimeout(fetchCar , 3000)
+    }, [carId]);
 
-  console.log(carData);
+    if(loading) {
+      return <div className="w-full h-screen items-center justify-center flex text-5xl bg-gray-200">Loading...</div>
+    }
 
-      useEffect(() => {
+   if (!carData) {
+    return (
+      <div className="w-full h-screen items-center justify-center flex text-5xl bg-gray-200">No data found</div>
+      )}
+  
+  const notifyInputData = [
+         { label: "Name", id: "notifyPartyName", value: carData?.notifyParty?.notifyPartyNameRef },
+         { label: "Address", id: "notifyPartyAddress", value: carData?.notifyParty?.notifyPartyAddressRef },
+         { label: "City", id: "notifyPartyCity", value: carData?.notifyParty?.notifyPartyCityRef },
+         { label: "Country", id: "notifyPartyCountry", value: carData?.notifyParty?.notifyPartyCountryRef },
+         { label: "Phone Number1", id: "notifyPartyPhoneNumber1", value: carData?.notifyParty?.notifyPartyPhoneNumber1Ref },
+         { label: "Phone Number2", id: "notifyPartyPhoneNumber2", value: carData?.notifyParty?.notifyPartyPhoneNumber2Ref },
+         { label: "Phone Number3", id: "notifyPartyPhoneNumber3", value: carData?.notifyParty?.notifyPartyPhoneNumber3Ref },
+         { label: "Fax Number", id: "notifyPartyFaxNumber", value: carData?.notifyParty?.notifyPartyFaxNumberRef },
+         { label: "Cell Phone Number/Email", id: "notifyPartyCellPhoneNumber/Email", value: carData?.notifyParty?.notifyPartyCellPhoneNumberOREmailRef }
+       ]
+  
+        const consigneeInputData = [
+              { label: "Name", id: "consigneeName", value: carData?.consignee?.consigneeNameRef },
+              { label: "Address", id: "consigneeAddress", value: carData?.consignee?.consigneeAddressRef },
+              { label: "City", id: "consigneeCity", value: carData?.consignee?.consigneeCityRef },
+              { label: "Country", id: "consigneeCountry", value: carData?.consignee?.consigneeCountryRef },
+              { label: "Phone Number1", id: "consigneePhoneNumber1", value: carData?.consignee?.consigneePhoneNumber1Ref },
+              { label: "Phone Number2", id: "consigneePhoneNumber2", value: carData?.consignee?.consigneePhoneNumber2Ref },
+              { label: "Phone Number3", id: "consigneePhoneNumber3", value: carData?.consignee?.consigneePhoneNumber3Ref },
+              { label: "Fax Number", id: "consigneeFaxNumber", value: carData?.consignee?.consigneeFaxNumberRef },
+              { label: "Cell Phone Number/Email", id: "consigneeCellPhoneNumber/Email", value: carData?.consignee?.consigneeCellPhoneNumberOREmailRef }
+       ]
+
+
+ 
+
+  // console.log(carData);
+
+   
         if (carData) {
           setselectedOptionFeatures(carData.optionFeatures || []);
         }
-      }, [carData]);
-
-    useEffect(() => {
       if (carData) {
         setBLImage(carData.bLFileRef || []);
       }
-    }, [carData]);
-    useEffect(() => {
+ 
       if (carData) {
         setInspectionImage(carData.inspectionFileRef || []);
       }
-    }, [carData]);
-    useEffect(() => {
+ 
       if (carData) {
         setCertificateImage(carData.certificateFileRef || []);
       }
-    }, [carData]);
-    useEffect(() => {
+ 
       if (carData) {
         setEnglishCerticateImage(carData.englishCertificateFileRef || []);
       }
-    }, [carData]);
-    useEffect(() => {
+ 
       if (carData) {
         setInvoiceImage(carData.invoiceFileRef || []);
       }
-    }, [carData]);
-    useEffect(() => {
+ 
       if (carData) {
         setproductFeatureImage(carData.productFeatureImageRef || []);
       }
-    }, [carData]);
-    useEffect(() => {
+ 
       if (carData) {
-        setproductImage(carData.productImageRef || []);
+        setproductImages(carData.productImageRef || []);
       }
-    }, [carData]);
     
     
-    // Refrence Object
-    const refs = {
-      departure: {
-          // Departure Ref
-    carrierNameRef: useRef(null),
-    departureVesselRef: useRef(null),
-    departurePartsOfLandingRef: useRef(null),
-    departureETDRef: useRef(null),
+    // // Refrence Object
+    // const refs = {
+    //   departure: {
+    //       // Departure Ref
+    // carrierNameRef: useRef(null),
+    // departureVesselRef: useRef(null),
+    // departurePartsOfLandingRef: useRef(null),
+    // departureETDRef: useRef(null),
   
-      },
-      arrival: {
-        arrivalVesselRef: useRef(null),
-        ArrivalPartOfDischargeRef: useRef(null),
-        arrivalETDRef: useRef(null),
-      },
-      document: {
-        documentNameRef: useRef(null),
-        documentAddressRef: useRef(null),
-        documentCityRef: useRef(null),
-        documentCountryRef: useRef(null),
-        documentFaxNumberRef: useRef(null),
-        documentTrackingNumberRef: useRef(null),
-        documentPhoneNumber1Ref: useRef(null),
-        documentPhoneNumber2Ref: useRef(null),
-        documentPhoneNumber3Ref: useRef(null),
-        documentCellPhoneNumberOREmailRef: useRef(null),
-        documentenrollementRef: useRef(null),
-      },
-      documentCenter: {
-        documentCenterNameRef: useRef(null),
-        documentCenterAddressRef: useRef(null),
-        documentCenterCityRef: useRef(null),
-        documentCenterCountryRef: useRef(null),
-        documentCenterPhoneNumber1Ref: useRef(null),
-        documentCenterPhoneNumber2Ref: useRef(null),
-        documentCenterPhoneNumber3Ref: useRef(null),
-        documentCenterEmailRef: useRef(null),
-        documentCenterUrlRef: useRef(null),
-        documentCenterOtherInformationRef: useRef(null),
-      },
-      consignee: {
-        consigneeNameRef: useRef(null),
-    consigneeCityRef: useRef(null),
-    consigneeAddressRef: useRef(null),
-    consigneeCountryRef: useRef(null),
-    consigneeFaxNumberRef: useRef(null),
-    consigneePhoneNumber1Ref: useRef(null),
-    consigneePhoneNumber2Ref: useRef(null),
-    consigneePhoneNumber3Ref: useRef(null),
-    consigneeCellPhoneNumberOREmailRef: useRef(null),
+    //   },
+    //   arrival: {
+    //     arrivalVesselRef: useRef(null),
+    //     ArrivalPartOfDischargeRef: useRef(null),
+    //     arrivalETDRef: useRef(null),
+    //   },
+    //   document: {
+    //     documentNameRef: useRef(null),
+    //     documentAddressRef: useRef(null),
+    //     documentCityRef: useRef(null),
+    //     documentCountryRef: useRef(null),
+    //     documentFaxNumberRef: useRef(null),
+    //     documentTrackingNumberRef: useRef(null),
+    //     documentPhoneNumber1Ref: useRef(null),
+    //     documentPhoneNumber2Ref: useRef(null),
+    //     documentPhoneNumber3Ref: useRef(null),
+    //     documentCellPhoneNumberOREmailRef: useRef(null),
+    //     documentenrollementRef: useRef(null),
+    //   },
+    //   documentCenter: {
+    //     documentCenterNameRef: useRef(null),
+    //     documentCenterAddressRef: useRef(null),
+    //     documentCenterCityRef: useRef(null),
+    //     documentCenterCountryRef: useRef(null),
+    //     documentCenterPhoneNumber1Ref: useRef(null),
+    //     documentCenterPhoneNumber2Ref: useRef(null),
+    //     documentCenterPhoneNumber3Ref: useRef(null),
+    //     documentCenterEmailRef: useRef(null),
+    //     documentCenterUrlRef: useRef(null),
+    //     documentCenterOtherInformationRef: useRef(null),
+    //   },
+    //   consignee: {
+    //     consigneeNameRef: useRef(null),
+    // consigneeCityRef: useRef(null),
+    // consigneeAddressRef: useRef(null),
+    // consigneeCountryRef: useRef(null),
+    // consigneeFaxNumberRef: useRef(null),
+    // consigneePhoneNumber1Ref: useRef(null),
+    // consigneePhoneNumber2Ref: useRef(null),
+    // consigneePhoneNumber3Ref: useRef(null),
+    // consigneeCellPhoneNumberOREmailRef: useRef(null),
   
   
-      },
-      notifyParty: {
-        notifyPartyNameRef: useRef(null),
-    notifyPartyCityRef: useRef(null),
-    notifyPartyCountryRef: useRef(null),
-    notifyPartyAddressRef: useRef(null),
-    notifyPartyChassisRef: useRef(null),
-    notifyPartyDoorRef: useRef(null),
-    notifyPartytransmissionRef: useRef(null),
-    notifyPartySteeringRef: useRef(null),
-    notifyPartySeatsRef: useRef(null),
-    notifyPartyRegistrationYearORMonthRef: useRef(null),
-    notifyPartyCellPhoneNumberOREmailRef: useRef(null),
-    notifyPartyReferenceNoRef: useRef(null),
-    notifyPartyEngineNoRef: useRef(null),
-    notifyPartyDriveRef: useRef(null),
-    notifyPartyEngineSizeRef: useRef(null),
-    notifyPartyExtColorRef: useRef(null),
-    notifyPartyFuelRef: useRef(null),
-    notifyPartyFaxNumberRef: useRef(null),
-    notifyPartyMileageRef: useRef(null),
-    notifyPartyModelCodeRef: useRef(null),
-    notifyPartyModelGradeRef: useRef(null),
-    notifyPartyPhoneNumber1Ref: useRef(null),
-    notifyPartyPhoneNumber2Ref: useRef(null),
-    notifyPartyPhoneNumber3Ref: useRef(null),
-    notifyPartyProductNameRef: useRef(null),
-    manufactureYearORMonthRef: useRef(null),
-      },
-      misc: {
-        descriptionRef: useRef(null),
-      },
-    };
+    //   },
+    //   notifyParty: {
+    //     notifyPartyNameRef: useRef(null),
+    // notifyPartyCityRef: useRef(null),
+    // notifyPartyCountryRef: useRef(null),
+    // notifyPartyAddressRef: useRef(null),
+    // notifyPartyChassisRef: useRef(null),
+    // notifyPartyDoorRef: useRef(null),
+    // notifyPartytransmissionRef: useRef(null),
+    // notifyPartySteeringRef: useRef(null),
+    // notifyPartySeatsRef: useRef(null),
+    // notifyPartyRegistrationYearORMonthRef: useRef(null),
+    // notifyPartyCellPhoneNumberOREmailRef: useRef(null),
+    // notifyPartyReferenceNoRef: useRef(null),
+    // notifyPartyEngineNoRef: useRef(null),
+    // notifyPartyDriveRef: useRef(null),
+    // notifyPartyEngineSizeRef: useRef(null),
+    // notifyPartyExtColorRef: useRef(null),
+    // notifyPartyFuelRef: useRef(null),
+    // notifyPartyFaxNumberRef: useRef(null),
+    // notifyPartyMileageRef: useRef(null),
+    // notifyPartyModelCodeRef: useRef(null),
+    // notifyPartyModelGradeRef: useRef(null),
+    // notifyPartyPhoneNumber1Ref: useRef(null),
+    // notifyPartyPhoneNumber2Ref: useRef(null),
+    // notifyPartyPhoneNumber3Ref: useRef(null),
+    // notifyPartyProductNameRef: useRef(null),
+    // manufactureYearORMonthRef: useRef(null),
+    //   },
+    //   misc: {
+    //     descriptionRef: useRef(null),
+    //   },
+    //   statusFeatures : useRef(null)
+    // };
     
 
     // Toggle Status CheckBox Function
-    const toggleCheckbox = async (featureId) => {
-      let updatedFeatures;
-      {setSelectedStatusFeatures((carData.statusFeatures || []).some((item) => item.includes(feature.id)))}
-    console.log(featureId);
-    
-      if (selectedStatusFeatures.includes(featureId)) {
-        updatedFeatures = selectedStatusFeatures.filter((id) => id !== featureId);
-      } else {
-        updatedFeatures = [...selectedStatusFeatures, featureId];
-      }
-    
-      setSelectedStatusFeatures(updatedFeatures);
-
-    }
-  
-     // Toggle Option CheckBox Function
-     const toggleOptionCheckbox = async (featureId) => {
-      let updatedOptionFeatures;
-      {setselectedOptionFeatures((carData.statusFeatures || []).some((item) => item.includes(featureId)))}
-      console.log(selectedOptionFeatures);
-      
-    
-      if (selectedOptionFeatures.includes(featureId)) {
-        updatedOptionFeatures = selectedOptionFeatures.filter((id) => id !== featureId);
-      } else {
-        updatedOptionFeatures = [...selectedOptionFeatures, featureId];
-      }
-    
-      setselectedOptionFeatures({ ...cardData , Features: updatedOptionFeatures });
-  
-    }
-    console.log(selectedOptionFeatures);
+    const toggleCheckbox = (id) => {
+      setCarData((prevData) => {
+        const updatedStatusFeatures = prevData.statusFeatures.includes(id)
+          ? prevData.statusFeatures.filter((item) => item !== id)
+          : [...prevData.statusFeatures, id];
+        
+        return {
+          ...prevData,
+          statusFeatures: updatedStatusFeatures,
+        };
+      });
+    };
+    const toggleOptionCheckbox = (id) => {
+      setCarData((prevData) => {
+        const updatedOptionFeatures = prevData.optionFeatures.includes(id)
+          ? prevData.optionFeatures.filter((item) => item !== id)
+          : [...prevData.optionFeatures, id];
+        
+        return {
+          ...prevData,
+          optionFeatures: updatedOptionFeatures,
+        };
+      });
+    };
 
     // File handlers
     const handleProductImageChange = (e) => {
-      let file = e.target.files[0];
-      setproductImage(file);  
-    };
+      const files = Array.from(e.target.files);
+      setproductImages((prevImages) => [...prevImages, ...files]);
+    };;
     const handleProductionFeaturedImageChange = (e) => {
       let file = e.target.files[0];
       setproductFeatureImage(file);
@@ -247,8 +272,27 @@ const EditCapLinksForm = ({ carId }) => {
       setCarData({ ...carData, forwarderName: e.target.value });
       
     };
+
+    const handleChange = (feild , value) => {
+      setCarData((prevData) => ({
+        ...prevData,
+        notifyParty : {
+          ...prevData.notifyParty , [feild] : value
+        },
+      }))
+    }
     
-  
+    // console.log(carData?.statusFeatures?.includes("feature-11"));
+    // console.log(carData.optionFeatures);
+    
+    
+    // const NotifyPartyForm = ({ carData, setCarData }) => {
+    //   const handleChange = (field, value) => {
+    //     setCarData((prevData) => ({
+    //       ...prevData,
+    //       notifyParty: { ...prevData.notifyParty, [field]: value },
+    //     }));
+    //   };
   
   // //  Handle Features 
   // const handleFeatureChange = (e, type) => {
@@ -289,40 +333,44 @@ const EditCapLinksForm = ({ carId }) => {
   // };
   
 
-
+//  Update Function
   const updateCapLinksData = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
   
-  const formData = new FormData();
-
-// Extract text values from carData
-Object.keys(carData).forEach((key) => {
-  let nestedObject = carData[key];
-
-  if (typeof nestedObject === "object" && nestedObject !== null) {
-    Object.keys(nestedObject).forEach((innerKey) => {
-      formData.append(innerKey, nestedObject[innerKey] || ""); // Default to empty string if undefined
+    const formData = new FormData();
+  
+    // Append plain text data from carData
+    Object.keys(carData).forEach((key) => {
+      let value = carData[key];
+  
+      // Handle nested objects
+      if (typeof value === "object" && value !== null) {
+        Object.keys(value).forEach((innerKey) => {
+          formData.append(innerKey, value[innerKey] || ""); // Default to empty string if undefined
+        });
+      } else {
+        formData.append(key, value || ""); // Append non-object values
+      }
     });
-  } else {
-    formData.append(key, carData[key] || "");
-  }
-});
-
   
     // Handle file inputs separately
-      formData.append("productFeatureImageRef", productFeatureImage);
-      formData.append("productImageRef", productImage);
-      formData.append("bLFileRef", blImage);
-      formData.append("certificateFileRef", certificateImage);
-      formData.append("englishCertificateFileRef", englishCertificateImage);
-      formData.append("invoiceFileRef", invoiceImage);
-      formData.append("inspectionFileRef", inspectionImage);
-
-
-  formData.append("statusFeatures", JSON.stringify(selectedStatusFeatures));
-  formData.append("optionFeatures", JSON.stringify(selectedOptionFeatures));
-  formData.append( "companyName",  selectedNameOption );
-  formData.append( "forwarderName",  selectedForwarderNameOption);
+    formData.append("productFeatureImageRef", productFeatureImage);
+    productImage.forEach((image) => {
+      formData.append("productImages", image);
+    });
+    formData.append("bLFileRef", blImage);
+    formData.append("certificateFileRef", certificateImage);
+    formData.append("englishCertificateFileRef", englishCertificateImage);
+    formData.append("invoiceFileRef", invoiceImage);
+    formData.append("inspectionFileRef", inspectionImage);
+  
+    // Handle features selection (checkboxes)
+    formData.append("statusFeatures", JSON.stringify(selectedStatusFeatures));
+    formData.append("optionFeatures", JSON.stringify(selectedOptionFeatures));
+  
+    // Append selected name options
+    formData.append("companyName", selectedNameOption);
+    formData.append("forwarderName", selectedForwarderNameOption);
   
     try {
       const token = localStorage.getItem("adminToken");
@@ -339,41 +387,41 @@ Object.keys(carData).forEach((key) => {
       );
   
       console.log("Success" + JSON.stringify(response.data));
-      alert("Updated Succesfully");
+      alert("Updated Successfully");
   
-// reset car features
+      // Reset car features (checkboxes, etc.)
       setCarAllFeatures([]);
       setCarSafetyFeatures([]);
-  
       document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
         checkbox.checked = false;
       });
   
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard"; // Redirect to dashboard after success
     } catch (error) {
       console.error(error);
-      alert("Error");
+      alert("Error updating the data");
     }
   };
+
   
 
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">
-    <form action="" className="form  w-full h-auto p-3  flex flex-col gap-5">
+    <form action="" className="form w-full h-auto p-3 flex flex-col gap-5">
       <div className="nameDetail w-full h-auto flex justify-center gap-5 flex-col">
-        <div className="flex justify-between items-center p-6 ">
+        <div className="flex justify-between items-center p-6">
           <h1 className="text-3xl font-bold">Update Details</h1>
         </div>
 
-        {/* 1st */}
+        {/* 1st Section */}
         <div className="p-6 border-neutral-500 border rounded-md space-y-5 text-sm text-gray-600 w-full h-auto">
-          {/* Name */}
+          {/* Company Name Radio Buttons */}
           <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">Select Name</h3>
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
+            <h3 className="text-md font-bold">Select Name</h3>
+            <div className="w-full h-auto justify-start items-center flex gap-5">
               <label
                 htmlFor="beForward"
-                className="w-36 gap-3 flex justify-center items-center "
+                className="w-36 gap-3 flex justify-center items-center"
               >
                 <input
                   type="radio"
@@ -382,7 +430,6 @@ Object.keys(carData).forEach((key) => {
                   checked={carData.companyName === "Be Forward"}
                   onChange={(e) => handleNameRadioChange(e)}
                   className="mt-2 rounded-md p-2"
-                  placeholder="Enter beForward Here"
                 />
                 <p>Be Forward</p>
               </label>
@@ -397,15 +444,16 @@ Object.keys(carData).forEach((key) => {
                   checked={carData.companyName === "JP Corporation"}
                   onChange={(e) => handleNameRadioChange(e)}
                   className="mt-2 rounded-md p-2"
-                  placeholder="Enter jpCorporation Here"
                 />
                 <p>JP Corporation</p>
               </label>
             </div>
           </div>
+
+          {/* Forwarder Name Radio Buttons */}
           <div className="w-fit flex flex-col gap-5 p-3 space-y-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">Forwarder Name</h3>
-            <div className="w-full h-auto justify-between items-center flex gap-3 ">
+            <h3 className="text-md font-bold">Forwarder Name</h3>
+            <div className="w-full h-auto justify-between items-center flex gap-3">
               <label
                 htmlFor="Satish"
                 className="w-36 gap-3 flex justify-center items-center"
@@ -417,7 +465,6 @@ Object.keys(carData).forEach((key) => {
                   checked={carData.forwarderName === "Satish"}
                   onChange={(e) => handleForwarderNameRadioChange(e)}
                   className="mt-2 border-neutral-500 border rounded-md p-2"
-                  placeholder="Enter Satish Here"
                 />
                 <p>Satish</p>
               </label>
@@ -432,7 +479,6 @@ Object.keys(carData).forEach((key) => {
                   checked={carData.forwarderName === "Vova"}
                   onChange={(e) => handleForwarderNameRadioChange(e)}
                   className="mt-2 border-neutral-500 border rounded-md p-2"
-                  placeholder="Enter Vova Here"
                 />
                 <p>Vova</p>
               </label>
@@ -447,423 +493,307 @@ Object.keys(carData).forEach((key) => {
                   checked={carData.forwarderName === "Kaytee"}
                   onChange={(e) => handleForwarderNameRadioChange(e)}
                   className="mt-2 border-neutral-500 border rounded-md p-2"
-                  placeholder="Enter Kaytee Here"
                 />
                 <p>Kaytee</p>
               </label>
             </div>
           </div>
+
+          {/* Description Textarea */}
           <div className="w-full h-auto flex flex-col p-3 justify-center space-y-3 items-start">
-            <h3 className="text-md font-bold ">Message</h3>
+            <h3 className="text-md font-bold">Message</h3>
             <textarea
               id="description"
               value={carData?.misc?.descriptionRef || ""}
               onChange={(e) =>
                 setCarData({
                   ...carData,
-                  misc: { ...carData.misc, descriptionRef: e.target.value } 
+                  misc: { ...carData.misc, descriptionRef: e.target.value },
                 })
               }
-               className="mt-2 w-full h-[150px]  border-neutral-500 border rounded-md p-2"
+              className="mt-2 w-full h-[150px] border-neutral-500 border rounded-md p-2"
             ></textarea>
           </div>
         </div>
       </div>
+
+
       {/* 2nd */}
       {/* Status Features */}
-      <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
-        <div className="flex justify-between items-center p-6 ">
-          <h1 className="text-3xl font-bold">Status</h1>
-        </div>
-        {/* Status Features */}
-        <div className="card p-6 flex  border-neutral-500 border rounded-md ">
-          <div className="row flex flex-wrap m-2">
-            <div className="card-body  flex flex-wrap">
-              {statusFeatures.map((feature) => (
-                <div
-                  key={feature.id}
-                  className="col-md-4 mb-5 w-[300px] px-3 py-1"
-                >
-                  <div className="form-check flex items-start ">
-                    <input
-                      className="form-check-input mt-2 mx-2"
-                      type="checkbox"
-                      name="selectedStatusFeatures[]"
-                      value={feature.value}
-                      id={feature.id}
-                      checked={(carData.statusFeatures || []).some((item) => item.includes(feature.id))}
-                      onChange={() => toggleCheckbox(feature.id)}
-                    />
-                    <div>
-                      <label
-                        className="form-check-label text-sm font-bold text-gray-700"
-                        htmlFor={feature.id}
-                        onClick={() => toggleCheckbox(feature.id)}
-                      >
-                        {feature.label}
-                      </label>
-                    </div>
-                  </div>
+   <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+    <div className="flex justify-between items-center p-6 ">
+      <h1 className="text-3xl font-bold">Status</h1>
+    </div>
+
+    {/* Status Features */}
+    <div className="card p-6 flex border-neutral-500 border rounded-md">
+      <div className="row flex flex-wrap m-2">
+        <div className="card-body flex flex-wrap">
+          {statusFeatures?.map((feature) => (
+            <div key={feature.id} className="col-md-4 mb-5 w-[300px] px-3 py-1">
+              <div className="form-check flex items-start">
+                <input
+                  className="form-check-input mt-2 mx-2"
+                  type="checkbox"
+                  name="selectedStatusFeatures[]"
+                  value={feature.value}
+                  id={feature.id}
+                  checked={carData.statusFeatures.includes(feature.id)}
+                  // checked={(carData?.statusFeatures || "").split(",").includes(feature.id)} // Check if feature is in the selected status features array
+                  onChange={() => toggleCheckbox(feature.id)} // Update the selected status features array
+                />
+                <div>
+                  <label
+                    className="form-check-label text-sm font-bold text-gray-700"
+                    htmlFor={feature.id}
+                    onClick={() => toggleCheckbox(feature.id)} // Toggling on label click
+                  >
+                    {feature.label}
+                  </label>
                 </div>
-              ))}
+              </div>
             </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+     {/* 3rd */}
+{/* Information Details */}
+<div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+  {/* Heading */}
+  <div className="flex justify-between items-center p-6 ">
+    <h1 className="text-3xl font-bold">Information</h1>
+  </div>
+  {/* Content */}
+  <div className="p-6 border-neutral-500 border rounded-md space-y-5 text-sm text-gray-600 w-full h-auto">
+    {/* Shipping Information Section */}
+    <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
+      <h3 className="text-md font-bold">Shipping Information Section</h3>
+      <div className="w-full h-auto justify-start items-center flex gap-5">
+        <label htmlFor="CarrierName" className="w-full gap-3 flex flex-col justify-center items-start ">
+          <p>Carrier</p>
+          <input
+            type="text"
+            id="CarrierName"
+            value={carData?.departure?.carrierNameRef || ""}
+            onChange={(e) =>
+              setCarData({
+                ...carData,
+                departure: { ...carData.departure, carrierNameRef: e.target.value },
+              })
+            }
+            className=" border-neutral-500 border w-full rounded-md p-3"
+            placeholder=" Carrier Name "
+          />
+        </label>
+      </div>
+    </div>
+
+    {/* Departure Section */}
+    <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
+      <h3 className="text-md font-bold">Departure Section</h3>
+      {/* Vessel Name */}
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <label htmlFor="VesselName" className="w-full gap-3 flex flex-col justify-center items-start">
+          <p>Vessel</p>
+          <input
+            type="text"
+            id="VesselName"
+            value={carData?.departure?.departureVesselRef || ""}
+            onChange={(e) =>
+              setCarData({
+                ...carData,
+                departure: { ...carData.departure, departureVesselRef: e.target.value },
+              })
+            }
+            className=" border-neutral-500 border w-full rounded-md p-3"
+            placeholder=" Vessel Name "
+          />
+        </label>
+      </div>
+
+      {/* Part Of Loading and ETD */}
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <div className="flex flex-col w-full gap-2 h-auto">
+          <label htmlFor="PartOfLoading" className="w-full gap-3 flex flex-col justify-center items-start ">
+            <p>Part Of Loading</p>
+            <input
+              type="text"
+              id="PartOfLoading"
+              value={carData?.departure?.departurePartsOfLandingRef || ""}
+              onChange={(e) =>
+                setCarData({
+                  ...carData,
+                  departure: { ...carData.departure, departurePartsOfLandingRef: e.target.value },
+                })
+              }
+              className=" border-neutral-500 border w-full rounded-md p-3"
+              placeholder=" Part Of Loading"
+            />
+          </label>
+        </div>
+        <div className="flex flex-col w-full gap-2 h-auto">
+          <label htmlFor="ETD(Estimated Time of Departure)" className="w-full gap-3 flex flex-col justify-center items-start ">
+            <p>ETD (Estimated Time of Departure)</p>
+            <input
+              type="date"
+              id="ETD(Estimated Time of Departure)"
+              value={carData?.departure?.departureETDRef || ""}
+              onChange={(e) =>
+                setCarData({
+                  ...carData,
+                  departure: { ...carData.departure, departureETDRef: e.target.value },
+                })
+              }
+              className=" border-neutral-500 border w-full rounded-md p-3"
+              placeholder=" ETD (Estimated Time of Departure)"
+            />
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {/* Arrival Section */}
+    <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
+      <h3 className="text-md font-bold ">Arrival Section</h3>
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <label htmlFor="VesselName" className="w-full gap-3 flex flex-col justify-center items-start">
+          <p>Vessel</p>
+          <input
+            type="text"
+            id="VesselName"
+            value={carData?.arrival?.arrivalVesselRef || ""}
+            onChange={(e) =>
+              setCarData({
+                ...carData,
+                arrival: { ...carData.arrival, arrivalVesselRef: e.target.value },
+              })
+            }
+            className=" border-neutral-500 border w-full rounded-md p-3"
+            placeholder=" Vessel Name "
+          />
+        </label>
+      </div>
+
+      {/* Part Of Discharge and ETD */}
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <div className="flex flex-col w-full gap-2 h-auto">
+          <label htmlFor="PartOfDischarge" className="w-full gap-3 flex flex-col justify-center items-start ">
+            <p>Part Of Discharge</p>
+            <input
+              type="text"
+              id="PartOfDischarge"
+              value={carData?.arrival?.arrivalPartsOfLandingRef || ""}
+              onChange={(e) =>
+                setCarData({
+                  ...carData,
+                  arrival: { ...carData.arrival, arrivalPartsOfLandingRef: e.target.value },
+                })
+              }
+              className=" border-neutral-500 border w-full rounded-md p-3"
+              placeholder=" Part Of Discharge"
+            />
+          </label>
+        </div>
+        <div className="flex flex-col w-full gap-2 h-auto">
+          <label htmlFor="ArrivalETD" className="w-full gap-3 flex flex-col justify-center items-start ">
+            <p>ETD (Estimated Time of Arrival)</p>
+            <input
+              type="date"
+              id="ArrivalETD"
+              value={carData?.arrival?.arrivalETDRef || ""}
+              onChange={(e) =>
+                setCarData({
+                  ...carData,
+                  arrival: { ...carData.arrival, arrivalETDRef: e.target.value },
+                })
+              }
+              className=" border-neutral-500 border w-full rounded-md p-3"
+              placeholder=" ETD (Estimated Time of Arrival)"
+            />
+          </label>
+        </div>
+      </div>
+    </div>
+
+{/* 4th Section  */}
+    <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
+      <h3 className="text-md font-bold">Document Section</h3>
+
+      {/* File Input Rows */}
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <EditFileInput
+          label="B/L"
+          fileRef={carData?.bLFileRef}
+          onChange={handleBLFileChange}
+          existingFile={`/blFile/blFile_${carData?.bLFileRef}`}
+        />
+
+        <EditFileInput
+          label="Inspection"
+          fileRef={carData?.inspectionFileRef}
+          onChange={handleInspectionFileChange}
+          existingFile={`/inspection/Inspection_${carData?.inspectionFileRef}`}
+        />
+      </div>
+
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <EditFileInput
+          label="Export Certificate"
+          fileRef={carData?.certificateFileRef}
+          onChange={handleCertificateChange}
+          existingFile={`/certificate/certificate_${carData?.certificateFileRef}`}
+        />
+
+        <EditFileInput
+          label="English Export Certificate"
+          fileRef={carData?.englishCertificateFileRef}
+          onChange={handleEnglishCertificateChange}
+          existingFile={`/english-certificate/english-certificate_${carData?.englishCertificateFileRef}`}
+        />
+      </div>
+
+      <div className="w-full h-auto justify-start items-center flex gap-5 ">
+        <EditFileInput
+          label="Invoice"
+          fileRef={carData?.invoiceFileRef}
+          onChange={handleInvoiceChange}
+          existingFile={`/invoice/invoice_${carData?.invoiceFileRef}`}
+        />
+      </div>
+
+      {/* Enrollment Input */}
+      <div className="w-full h-auto justify-start items-center flex gap-5 mb-9">
+        <div className="imageInput text-sm rounded-md w-full h-auto">
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="Enrollement"
+              className="w-full gap-3 flex flex-col justify-center items-start"
+            >
+              <p>Enrollment</p>
+              <input
+                type="text"
+                id="Enrollement"
+                className="border-neutral-500 border w-full rounded-md p-3"
+                placeholder="Enrollment"
+                value={carData?.document?.documentenrollementRef || ""}
+                onChange={(e) =>
+                  setCarData({
+                    ...carData,
+                    document: {
+                      ...carData.document,
+                      documentenrollementRef: e.target.value,
+                    },
+                  })
+                }
+              />
+            </label>
           </div>
         </div>
       </div>
-
-      {/* 3rd */}
-      {/* Information Details */}
-      <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
-        {/* Heading */}
-        <div className="flex justify-between items-center p-6 ">
-          <h1 className="text-3xl font-bold">Information</h1>
-        </div>
-        {/* Content */}
-        <div className="p-6 border-neutral-500 border rounded-md space-y-5 text-sm text-gray-600 w-full h-auto">
-          {/* first content  */}
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">
-              Shipping Information Section
-            </h3>
-            {/* first input */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <label
-                htmlFor="CarrierName"
-                className="w-full gap-3 flex flex-col justify-center items-start "
-              >
-                <p>Carrier</p>
-                <input
-                  type="text"
-                  id="CarrierName"
-                  value={carData?.departure?.carrierNameRef || ""}
-                  onChange={(e) =>
-                    setCarData({
-                      ...carData,
-                      departure: { ...carData.departure, carrierNameRef: e.target.value } 
-                    })
-                  }
-                  className=" border-neutral-500 border w-full rounded-md p-3"
-                  placeholder=" Carrier Name "
-                />
-              </label>
-            </div>
-          </div>
-
-          {/* 2nd Content  */}
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold">Departure Section</h3>
-            {/* first input */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <label
-                htmlFor="VesselName"
-                className="w-full gap-3 flex flex-col justify-center items-start"
-              >
-                <p>Vessel</p>
-                <input
-                  type="text"
-                  id="VesselName"
-                  value={carData?.departure?.departureVesselRef || ""}
-                  onChange={(e) =>
-                    setCarData({
-                      ...carData,
-                      departure: { ...carData.departure, departureVesselRef: e.target.value } 
-                    })
-                  }
-                  className=" border-neutral-500 border w-full rounded-md p-3"
-                  placeholder=" Vessel Name "
-                />
-              </label>
-            </div>
-            {/* 2nd Inputs */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="PartOfLoading"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Part Of Loading</p>
-                  <input
-                    type="text"
-                    id="PartOfLoading"
-                    value={carData?.departure?.departurePartsOfLandingRef || ""}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        departure: { ...carData.departure, departurePartsOfLandingRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Part Of Loading"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="ETD(Estimated Time of Departure)"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>ETD (Estimated Time of Departure)</p>
-                  <input
-                    type="date"
-                    id="ETD(Estimated Time of Departure)"
-                    value={carData?.departure?.departureETDRef || ""}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        departure: { ...carData.departure, departureETDRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" ETD (Estimated Time of Departure)"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* 3rd Content  */}
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">Arrival Section</h3>
-            {/* first input */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <label
-                htmlFor="VesselName"
-                className="w-full gap-3 flex flex-col justify-center items-start"
-              >
-                <p>Vessel</p>
-                <input
-                  type="text"
-                  id="VesselName"
-                  value={carData?.arrival?.arrivalVesselRef || ""}
-                  onChange={(e) =>
-                    setCarData({
-                      ...carData,
-                      arrival: { ...carData.arrival, arrivalVesselRef: e.target.value } 
-                    })
-                  }
-                  className=" border-neutral-500 border w-full rounded-md p-3"
-                  placeholder=" Vessel Name "
-                />
-              </label>
-            </div>
-            {/* 2nd Inputs */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="PartOfDischarge"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Part Of Discharge</p>
-                  <input
-                    type="text"
-                    id="PartOfDischarge "
-                    value={carData?.arrival?.arrivalPartsOfLandingRef || ""}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        arrival: { ...carData.arrival, arrivalPartsOfLandingRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Part Of Discharge  "
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="ETD(Estimated Time of Departure)"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>ETD (Estimated Time of Departure)</p>
-                  <input
-                    type="date"
-                    id="ETD(Estimated Time of Departure)"
-                    value={carData?.arrival?.arrivalETDRef || ""}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        arrival: { ...carData.arrival, arrivalETDRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" ETD (Estimated Time of Departure)"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* 4th Content */}
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">Document Section</h3>
-            {/* first input */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              {/* First Image input */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  Upload B/L
-                  <label htmlFor="B/L" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300 border-neutral-500 border  border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
-
-                    {/* File Input */}
-                    <input
-                      type="file"
-                      id="B/L"
-                      onChange={(e) => handleBLFileChange(e)}
-                      className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                <div className="existingFile w-full h-auto p-2 text-sm">
-                  <p>Existing B/L File: <Link to={`/blFile/blFile_${carData?.bLFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
-                </div>
-              </div>
-
-              {/* 2nd Image Input  */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  Upload Inspection
-                  <label htmlFor="inspection" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300  border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
-
-                    {/* File Input */}
-                    <input
-                      type="file"
-                      id="inspection"
-                      onChange={handleInspectionFileChange}
-                      className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                <div className="existingFile w-full h-auto p-2 text-sm">
-                  <p>Existing Inspection File: <Link to={`/inspection/Inspection_${carData?.inspectionFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
-                </div>
-              </div>
-            </div>
-
-            {/* second input */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              {/* First Image input */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  Upload Export Certificate
-                  <label htmlFor="certificate" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300  border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
-
-                    {/* File Input */}
-                    <input
-                      type="file"
-                      id="certificate"
-                      onChange={(e) => handleCertificateChange(e)}
-                      className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                <div className="existingFile w-full h-auto p-2 text-sm">
-                  <p>Existing Export Certifcate File: <Link to={`/certificate/certificate_${carData?.certificateFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
-                </div>
-              </div>
-
-              {/* 2nd Image Input  */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  Upload English Export Certificate
-                  <label htmlFor="englishCertificate" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300 border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
-
-                    {/* Hidden Input */}
-                    <input
-                      type="file"
-                      id="englishCertificate"
-                      onChange={(e) => handleEnglishCertificateChange(e)}
-                      className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                <div className="existingFile w-full h-auto p-2 text-sm">
-                  <p>Existing English Export Certificate File: <Link to={`/english-certificate/english-certificate_${carData?.englishCertificateFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
-                </div>
-              </div>
-            </div>
-            {/* third input */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              {/* First Image input */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  Upload Invoice
-                  <label htmlFor="invoice" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300 border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
-
-                    {/* Hidden Input */}
-                    <input
-                      type="file"
-                      id="invoice"
-                      onChange={(e) => handleInvoiceChange(e)}
-                      className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                <div className="existingFile w-full h-auto p-2 text-sm">
-                  <p>Existing Invoice File: <Link to={`/invoice/invoice_${carData?.invoiceFileRef}`} target="_blank"  rel="noopener noreferrer">View </Link> </p>
-                </div>
-              </div>
-
-              {/* 2nd Image Input  */}
-              <div className="imageInpput mb-9  text-sm rounded-md  w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  <label
-                    htmlFor="Enrollement"
-                    className="w-full gap-3  flex flex-col justify-center items-start "
-                  >
-                    <p> Enrollment</p>
-                    <input
-                      type="text"
-                      id="Enrollement"
-                      className=" border-neutral-500 border w-full rounded-md p-3"
-                      placeholder="Enrollment"
-                      value={carData?.document?.documentenrollementRef || ""}
-                      onChange={(e) =>
-                        setCarData({
-                          ...carData,
-                          document: { ...carData.document, documentenrollementRef: e.target.value } 
-                        })
-                      }
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+    </div>
         </div>
       </div>
 
@@ -1357,1024 +1287,258 @@ Object.keys(carData).forEach((key) => {
 
       {/* 5th */}
       {/* Consignee Details */}
-      <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
-        {/* Heading */}
-        <div className="flex justify-between items-center p-6 ">
-          <h1 className="text-3xl font-bold">
-            Consignee/notify party of your request
-          </h1>
-        </div>
-        <div className="p-6 border-neutral-500 border rounded-md text-sm text-gray-600 w-full h-auto">
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">Consignee</h3>
+<div className=" w-full h-auto flex justify-center gap-5 flex-col">
+  {/* Heading */}
+  <div className="flex justify-between items-center p-6">
+    <h1 className="text-3xl font-bold">Consignee/notify party of your request</h1>
+  </div>
 
-            {/* First Content */}
-            <div className="w-full">
-              <label htmlFor="consigneeName" className="w-full">
-                <p>
-                  Name<sup className="text-orange-700">*</sup>
-                </p>
-                <input
-                  type="text"
-                  id="consigneeName"
-                  value={carData?.consignee?.consigneeNameRef}
-                  onChange={(e) =>
-                    setCarData({
-                      ...carData,
-                      consignee: { ...carData.consignee, consigneeNameRef: e.target.value } 
-                    })
-                  }
-                  className="mt-2 w-full border-neutral-500 border rounded-md p-2"
-                  placeholder="Enter name Here"
-                />
-              </label>
-            </div>
-            {/* second Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneeAddress"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Address</p>
-                  <input
-                    type="text"
-                    id="consigneeAddress"
-                    value={carData?.consignee?.consigneeAddressRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneeAddressRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Address"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneeCity"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>City</p>
-                  <input
-                    type="text"
-                    id="consigneeCity"
-                    value={carData?.consignee?.consigneeCityRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneeCityRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" City"
-                  />
-                </label>
-              </div>
-            </div>
+  <div className="p-6 border-neutral-500 border rounded-md text-sm text-gray-600 w-full h-auto">
+    <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
+      <h3 className="text-md font-bold">Consignee</h3>
 
-            {/* third Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneeCountry"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Country</p>
-                  <input
-                    type="text"
-                    id="consigneeCountry"
-                    value={carData?.consignee?.consigneeCountryRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneeCountryRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Country"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneePhoneNumber1"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Phone Number1</p>
-                  <input
-                    type="number"
-                    id="consigneePhoneNumber1"
-                    value={carData?.consignee?.consigneePhoneNumber1Ref}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneePhoneNumber1Ref: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Phone Number1"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* Fourth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneePhoneNumber2"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Phone Number2</p>
-                  <input
-                    type="number"
-                    id="consigneePhoneNumber2"
-                    value={carData?.consignee?.consigneePhoneNumber2Ref}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneePhoneNumber2Ref: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Phone Number2"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneePhoneNumber3"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Phone Number3</p>
-                  <input
-                    type="number"
-                    id="consigneePhoneNumber3"
-                    value={carData?.consignee?.consigneePhoneNumber3Ref}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneePhoneNumber3Ref: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Phone Number3"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* Fifth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneeFaxNumber"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Fax Number</p>
-                  <input
-                    type="number"
-                    id="consigneeFaxNumber"
-                    value={carData?.consignee?.consigneeFaxNumberRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneeFaxNumberRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Fax Number"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="consigneeCellPhoneNumber/Email"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Cell Phone Number/Email</p>
-                  <input
-                    type="number"
-                    id="consigneeCellPhoneNumber/Email"
-                    value={carData?.consignee?.consigneeCellPhoneNumberOREmailRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        consignee: { ...carData.consignee, consigneeCellPhoneNumberOREmailRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Cell Phone Number/Email"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-          {/* 2nd Inputs */}
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            <h3 className="text-md font-bold ">Notify Party</h3>
-
-            {/* First Content */}
-            <div className="w-full">
-              <label htmlFor="notifyPartyName" className="w-full">
-                <p>
-                  Name<sup className="text-orange-700">*</sup>
-                </p>
-                <input
-                  type="text"
-                  id="notifyPartyName"
-                  value={carData?.notifyParty?.notifyPartyNameRef}
-                  onChange={(e) =>
-                    setCarData({
-                      ...carData,
-                      notifyParty: { ...carData.notifyParty, notifyPartyNameRef: e.target.value } 
-                    })
-                  }
-                  className="mt-2 w-full border-neutral-500 border rounded-md p-2"
-                  placeholder="Enter name Here"
-                />
-              </label>
-            </div>
-            {/* second Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyAddress"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Address</p>
-                  <input
-                    type="text"
-                    id="notifyPartyAddress"
-                    value={carData?.notifyParty?.notifyPartyAddressRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyAddressRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Address"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyCity"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>City</p>
-                  <input
-                    type="text"
-                    id="notifyPartyCity"
-                    value={carData?.notifyParty?.notifyPartyCityRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyCityRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" City"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* third Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyCountry"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Country</p>
-                  <input
-                    type="text"
-                    id="notifyPartyCountry"
-                    value={carData?.notifyParty?.notifyPartyCountryRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyCountryRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Country"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyPhoneNumber1"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Phone Number1</p>
-                  <input
-                    type="number"
-                    id="notifyPartyPhoneNumber1"
-                    value={carData?.notifyParty?.notifyPartyPhoneNumber1Ref}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyPhoneNumber1Ref: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Phone Number1"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* Fourth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyPhoneNumber2"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Phone Number2</p>
-                  <input
-                    type="number"
-                    id="notifyPartyPhoneNumber2"
-                    value={carData?.notifyParty?.notifyPartyPhoneNumber2Ref}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyPhoneNumber2Ref: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Phone Number2"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyPhoneNumber3"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Phone Number3</p>
-                  <input
-                    type="number"
-                    id="notifyPartyPhoneNumber3"
-                    value={carData?.notifyParty?.notifyPartyPhoneNumber3Ref}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyPhoneNumber3Ref: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Phone Number3"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* Fifth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyFaxNumber"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Fax Number</p>
-                  <input
-                    type="number"
-                    id="notifyPartyFaxNumber"
-                    value={carData?.notifyParty?.notifyPartyFaxNumberRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyFaxNumberRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Fax Number"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyCellPhoneNumber/Email"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Cell Phone Number/Email</p>
-                  <input
-                    type="number"
-                    id="notifyPartyCellPhoneNumber/Email"
-                    value={carData?.notifyParty?.notifyPartyCellPhoneNumberOREmailRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyCellPhoneNumberOREmailRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Cell Phone Number/Email"
-                  />
-                </label>
-              </div>
-            </div>
+      {/* Reusable Input Component for Consignee and Notify Party */}
+      {consigneeInputData.map(({ label, id, value }) => (
+        <div className="w-full h-auto justify-start items-center flex gap-5" key={id}>
+          <div className="flex flex-col w-full gap-2 h-auto">
+            <label htmlFor={id} className="w-full gap-3 flex flex-col justify-center items-start">
+              <p>{label}</p>
+              <input
+                type="text"
+                id={id}
+                value={value}
+                onChange={(e) => setCarData({ 
+                  ...carData, 
+                  consignee: { 
+                    ...carData.consignee, 
+                    [id]: e.target.value 
+                  } 
+                })}
+                className="border-neutral-500 border w-full rounded-md p-3"
+                placeholder={label}
+              />
+            </label>
           </div>
         </div>
-      </div>
+      ))}
+    </div>
+
+    {/* Notify Party Section */}
+    <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
+      <h3 className="text-md font-bold">Notify Party</h3>
+
+      {/* Reusable Input Component for Notify Party */}
+      {notifyInputData.map(({ label, id, value }) => (
+        <div className="w-full h-auto justify-start items-center flex gap-5" key={id}>
+          <div className="flex flex-col w-full gap-2 h-auto">
+            <label htmlFor={id} className="w-full gap-3 flex flex-col justify-center items-start">
+              <p>{label}</p>
+              <input
+                type="text"
+                id={id}
+                value={value}
+                onChange={(e) => setCarData({ 
+                  ...carData, 
+                  notifyParty: { 
+                    ...carData.notifyParty, 
+                    [id]: e.target.value 
+                  } 
+                })}
+                className="border-neutral-500 border w-full rounded-md p-3"
+                placeholder={label}
+              />
+            </label>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
 
       {/* 6th */}
       {/* Purchased Product */}
-      <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+      <div className=" w-full h-auto flex justify-center gap-5 flex-col">
         {/* Heading */}
         <div className="flex justify-between items-center p-6 ">
           <h1 className="text-3xl font-bold">Purchased Product</h1>
         </div>
         <div className="p-6 border-neutral-500 border rounded-md text-sm text-gray-600 w-full h-auto">
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            {/* First Content */}
-            <div className="w-full">
-              <label htmlFor="notifyPartyProductName" className="w-full">
-                <p>
-                  Product Name<sup className="text-orange-700">*</sup>
-                </p>
-                <input
-                  type="text"
-                  id="notifyPartyProductName"
-                  value={carData?.notifyParty?.notifyPartyProductNameRef}
-                  onChange={(e) =>
-                    setCarData({
-                      ...carData,
-                      notifyParty: { ...carData.notifyParty, notifyPartyProductNameRef: e.target.value } 
-                    })
-                  }
-                  className="mt-2 w-full border-neutral-500 border rounded-md p-2"
-                  placeholder="Enter Product Name Here"
-                />
-              </label>
-            </div>
-            {/* second Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyReferenceNo"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Reference No</p>
-                  <input
-                    type="text"
-                    id="notifyPartyReferenceNo"
-                    value={carData?.notifyParty?.notifyPartyReferenceNoRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyReferenceNoRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Reference No"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyMileage"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Mileage</p>
-                  <input
-                    type="text"
-                    id="notifyPartyMileage"
-                    value={carData?.notifyParty?.notifyPartyMileageRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyMileageRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Mileage"
-                  />
-                </label>
-              </div>
-            </div>
+        <div className="w-full flex flex-col gap-5 p-3 h-auto items-start">
+      <EditInputFeild
+        label="Product Name"
+        id="notifyPartyProductName"
+        value={carData?.notifyParty?.notifyPartyProductNameRef || ""}
+        onChange={(e) => handleChange("notifyPartyProductNameRef", e.target.value)}
+        placeholder="Enter Product Name Here"
+        required
+      />
 
-            {/* third Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyModelCode"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Model Code</p>
-                  <input
-                    type="text"
-                    id="notifyPartyModelCode"
-                    value={carData?.notifyParty?.notifyPartyModelCodeRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyModelCodeRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Model Code"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyRegistrationYear/Month"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Registration Year/Month</p>
-                  <input
-                    type="text"
-                    id="notifyPartyRegistrationYear/Month"
-                    value={carData?.notifyParty?.notifyPartyRegistrationYearORMonthRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyRegistrationYearORMonthRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Registration Year/Month"
-                  />
-                </label>
-              </div>
-            </div>
+      <div className="w-full flex gap-5">
+        <EditInputFeild label="Reference No" id="notifyPartyReferenceNo" value={carData?.notifyParty?.notifyPartyReferenceNoRef || ""} onChange={(e) => handleChange("notifyPartyReferenceNoRef", e.target.value)} placeholder="Reference No" />
+        <EditInputFeild label="Mileage" id="notifyPartyMileage" value={carData?.notifyParty?.notifyPartyMileageRef || ""} onChange={(e) => handleChange("notifyPartyMileageRef", e.target.value)} placeholder="Mileage" />
+      </div>
 
-            {/* Fourth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="ManufactureYear/Month"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Manufacture Year/Month</p>
-                  <input
-                    type="number"
-                    id="ManufactureYear/Month"
-                    value={carData?.notifyParty?.manufactureYearORMonthRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, manufactureYearORMonthRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Manufacture Year/Month"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyModelGrade"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Model Grade</p>
-                  <input
-                    type="text"
-                    id="notifyPartyModelGrade"
-                    value={carData?.notifyParty?.notifyPartyModelGradeRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyModelGradeRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Model Grade"
-                  />
-                </label>
-              </div>
-            </div>
+      <div className="w-full flex gap-5">
+        <EditInputFeild label="Model Code" id="notifyPartyModelCode" value={carData?.notifyParty?.notifyPartyModelCodeRef || ""} onChange={(e) => handleChange("notifyPartyModelCodeRef", e.target.value)} placeholder="Model Code" />
+        <EditInputFeild label="Registration Year/Month" id="notifyPartyRegistrationYearMonth" value={carData?.notifyParty?.notifyPartyRegistrationYearORMonthRef || ""} onChange={(e) => handleChange("notifyPartyRegistrationYearORMonthRef", e.target.value)} placeholder="Registration Year/Month" />
+      </div>
 
-            {/* Fifth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyChassis#"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Chassis #</p>
-                  <input
-                    type="text"
-                    id="notifyPartyChassis#"
-                    value={carData?.notifyParty?.notifyPartyChassisRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyChassisRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Chassis #"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyEngineSize"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Engine Size</p>
-                  <input
-                    type="number"
-                    id="notifyPartyEngineSize"
-                    value={carData?.notifyParty?.notifyPartyEngineSizeRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyEngineSizeRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Engine Size"
-                  />
-                </label>
-              </div>
-            </div>
+      <div className="w-full flex gap-5">
+        <EditInputFeild label="Manufacture Year/Month" id="ManufactureYearMonth" type="number" value={carData?.notifyParty?.manufactureYearORMonthRef || ""} onChange={(e) => handleChange("manufactureYearORMonthRef", e.target.value)} placeholder="Manufacture Year/Month" />
+        <EditInputFeild label="Model Grade" id="notifyPartyModelGrade" value={carData?.notifyParty?.notifyPartyModelGradeRef || ""} onChange={(e) => handleChange("notifyPartyModelGradeRef", e.target.value)} placeholder="Model Grade" />
+      </div>
 
-            {/* Sixth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyDrive"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Drive</p>
-                  <input
-                    type="text"
-                    id="notifyPartyDrive"
-                    value={carData?.notifyParty?.notifyPartyDriveRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyDriveRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Drive"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyExtColor"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Ext. Color</p>
-                  <input
-                    type="number"
-                    id="notifyPartyExtColor"
-                    value={carData?.notifyParty?.notifyPartyExtColorRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyExtColorRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Ext. Color"
-                  />
-                </label>
-              </div>
-            </div>
+      <div className="w-full flex gap-5">
+        <EditInputFeild label="Chassis #" id="notifyPartyChassis" value={carData?.notifyParty?.notifyPartyChassisRef || ""} onChange={(e) => handleChange("notifyPartyChassisRef", e.target.value)} placeholder="Chassis #" />
+        <EditInputFeild label="Engine Size" id="notifyPartyEngineSize" type="number" value={carData?.notifyParty?.notifyPartyEngineSizeRef || ""} onChange={(e) => handleChange("notifyPartyEngineSizeRef", e.target.value)} placeholder="Engine Size" />
+      </div>
 
-            {/* Seventh Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label htmlFor="notifyPartySteering" className="w-full">
-                  <p>
-                    Steering <sup className="text-orange-700">*</sup>
-                  </p>
-                  <select
-                    id="notifyPartySteering"
-                    className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
-                    placeholder="Select Steering"
-                    value={carData?.notifyParty?.notifyPartySteeringRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartySteeringRef: e.target.value } 
-                      })
-                    }
-                  >
-                    <option
-                      value=""
-                      selected
-                      disabled
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
-                    >
-                      Select Steering
-                    </option>
-                    <option
-                      value="Right"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      Right
-                    </option>
-                    <option
-                      value="Left"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      Left
-                    </option>
-                  </select>
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label htmlFor="notifyPartytransmission" className="w-full">
-                  <p>Select Transmission</p>
-                  <select
-                    id="notifyPartytransmission"
-                    className="appearance-none mt-2 w-full border-neutral-500 border rounded-md p-2 outline-0 text-gray-400 "
-                    placeholder="Select transmission"
-                    value={carData?.notifyParty?.notifyPartytransmissionRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartytransmissionRef: e.target.value } 
-                      })
-                    }
-                  >
-                    <option
-                      value=""
-                      selected
-                      disabled
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
-                    >
-                      Select Transmission
-                    </option>
-                    <option
-                      value="AT"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      AT
-                    </option>
-                    <option
-                      value="AUTOMATIC"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      AUTOMATIC
-                    </option>
-                    <option
-                      value="MANUAL"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      AW TS PW TV Airbag Navigation
-                    </option>
-                    <option
-                      value="MT"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      MT
-                    </option>
-                    <option
-                      value="SEMI-AUTOMATIC"
-                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                    >
-                      FRONT WHEEL DRIVE
-                    </option>
-                  </select>
-                </label>
-              </div>
-            </div>
-            {/* Eighth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyFuel"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Fuel</p>
-                  <input
-                    type="text"
-                    id="notifyPartyFuel"
-                    value={carData?.notifyParty?.notifyPartyFuelRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyFuelRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Fuel"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartySeats"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Seats</p>
-                  <input
-                    type="number"
-                    id="notifyPartySeats"
-                    value={carData?.notifyParty?.notifyPartySeatsRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartySeatsRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Seats"
-                  />
-                </label>
-              </div>
-            </div>
+      <div className="w-full flex gap-5">
+        <EditSelectFeild
+          label="Steering"
+          id="notifyPartySteering"
+          value={carData?.notifyParty?.notifyPartySteeringRef || ""}
+          onChange={(e) => handleChange("notifyPartySteeringRef", e.target.value)}
+          options={[{ value: "Right", label: "Right" }, { value: "Left", label: "Left" }]}
+          required
+        />
+        <EditSelectFeild
+          label="Transmission"
+          id="notifyPartyTransmission"
+          value={carData?.notifyParty?.notifyPartytransmissionRef || ""}
+          onChange={(e) => handleChange("notifyPartyTransmissionRef", e.target.value)}
+          options={[{ value: "AT", label: "AT" }, { value: "AUTOMATIC", label: "AUTOMATIC" }, { value: "MT", label: "MT" }]}
+        />
+      </div>
+    </div>
+        
+        {/* Products Features */}
+<div className="productFeatures w-full p-3 h-auto flex flex-col gap-5 justify-center">
+  <div className="flex justify-between items-center p-6">
+    <h1 className="text-3xl font-bold">Option</h1>
+  </div>
 
-            {/* Ninth Content */}
-            <div className="w-full h-auto justify-start items-center flex gap-5 ">
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyDoor"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Door</p>
-                  <input
-                    type="text"
-                    id="notifyPartyDoor"
-                    value={carData?.notifyParty?.notifyPartyDoorRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyDoorRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Door"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-col w-full gap-2 h-auto">
-                <label
-                  htmlFor="notifyPartyEngineNo"
-                  className="w-full gap-3 flex flex-col justify-center items-start "
-                >
-                  <p>Engine No.</p>
-                  <input
-                    type="number"
-                    id="notifyPartyEngineNo"
-                    value={carData?.notifyParty?.notifyPartyEngineNoRef}
-                    onChange={(e) =>
-                      setCarData({
-                        ...carData,
-                        notifyParty: { ...carData.notifyParty, notifyPartyEngineNoRef: e.target.value } 
-                      })
-                    }
-                    className=" border-neutral-500 border w-full rounded-md p-3"
-                    placeholder=" Engine No."
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* Products Features */}
-          <div className="productFeatures w-full h-auto flex justify-center gap-5 flex-col">
-            <div className="flex justify-between items-center p-6 ">
-              <h1 className="text-3xl font-bold">Option</h1>
-            </div>
-            {/* Status Features */}
-            <div className="card p-6 flex  border-neutral-500 rounded-md ">
-              <div className="row flex flex-wrap m-2">
-                <div className="card-body  flex flex-wrap">
-                  {OptionFeatures.map((feature) => (
-                    <div
-                      key={feature.id}
-                      className="col-md-4 mb-5 w-[280px] px-3 py-1"
-                    >
-                      <div className="form-check flex items-start ">
-                        <input
-                          className="form-check-input mt-2 mx-2"
-                          type="checkbox"
-                          name="selectedOptionFeatures[]"
-                          value={feature.value}
-                          id={feature.id}
-                          checked={(carData?.optionFeatures || []).some((item) => item.includes(feature.id))}
-                          onChange={() => toggleOptionCheckbox(feature.id)}
-                        />
-                        <div>
-                          <label
-                            className="form-check-label text-sm font-bold text-gray-700"
-                            htmlFor={feature.id}
-                            // onClick={() => toggleOptionCheckbox(feature.id)}
-                          >
-                            {feature.label}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 4th Content */}
-          <div className="w-full flex flex-col gap-5 p-3 h-auto justify-between items-start">
-            {/* first input */}
-            <div className="w-full h-auto justify-start items-center flex flex-col gap-5 ">
-              {/* First Image input */}
-              <div className="imageInpput text-sm rounded-md w-full h-auto  ">
-                <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-                <div className="flex flex-col gap-2 ">
-                  Upload Featured Image
-                  <label htmlFor="productFeatureImage" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300 border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
-
-                    {/* Hidden Input */}
-                    <input
-                      type="file"
-                      id="productFeatureImage"
-                      file={carData.productFeatureImage || []}
-                      onChange={(e) => handleProductionFeaturedImageChange(e)}
-                      className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                <div
-            id="showFeaturedImage"
-            className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
-          >
-            <div
-              className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
-              // onClick={hiddenFeaturedImage}
-            >
-              ❌
-            </div>
-            <img
-              loading="lazy"
-              src={`http://localhost:5000/${carData?.productFeatureImageRef}`}
-              alt="image"
-              className="w-[160px] h-[160px]"
+  {/* Status Features */}
+  <div className="card p-6 border border-neutral-500 rounded-md">
+    <div className="flex flex-wrap gap-4">
+      {OptionFeatures.map((feature) => (
+        <div key={feature.id} className="w-[230px] px-3 py-1">
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              className="mt-1 mr-2"
+              name="selectedOptionFeatures"
+              value={feature.value}
+              id={feature.id}
+              checked={carData.optionFeatures.includes(feature.id)}
+              onChange={() => toggleOptionCheckbox(feature.id)}
             />
+            <label
+              htmlFor={feature.id}
+              className="text-sm font-bold text-gray-700 cursor-pointer"
+            >
+              {feature.label}
+            </label>
           </div>
         </div>
-              </div>
+      ))}
+    </div>
+  </div>
+</div>
+          {/* 4th Content */}
+          <div className="w-full flex flex-col gap-5 p-3 h-auto items-start">
+  {/* First Image Input */}
+  <div className="w-full flex flex-col gap-5">
+    <div className="imageInput w-full h-auto text-sm rounded-md border p-10">
+      <div className="flex flex-col gap-2">
+        <span>Upload Featured Image</span>
+        <label htmlFor="productFeatureImage" className="w-full flex">
+          {/* Custom Button */}
+          <button
+            type="button"
+            className="bg-neutral-300 border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3 rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+          >
+            Upload File
+          </button>
 
-              {/* 2nd Image Input  */}
-              <div className="imageInpput  text-sm rounded-md w-full h-auto  ">
-                <div className="flex flex-col gap-2 ">
-                  Upload Image
-                  <label htmlFor="productImage" className="w-full h-auto flex">
-                    {/* Custom Button */}
-                    <button
-                      type="button"
-                      className="bg-neutral-300 border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-                    >
-                      Upload File
-                    </button>
+          {/* Hidden Input */}
+          <input
+            type="file"
+            id="productFeatureImage"
+            onChange={handleProductionFeaturedImageChange}
+            className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
+          />
+        </label>
+      </div>
 
-                    {/* Hidden Input */}
-                    <input
-                      type="file"
-                      id="productImage"
-                      onChange={(e) => handleProductImageChange(e)}
-                      className=" border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-                    />
-                  </label>
-                </div>
-                {/* <div className="flex w-auto h-auto p-3">
-            <div
-              id="showGalleryImage"
-              className="showImage w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
-            >
+      {/* Show Uploaded Featured Image */}
+      {carData?.productFeatureImageRef && (
+        <div className="w-[200px] mt-5 h-[200px] flex justify-center items-center relative">
+          <div
+            className="text-xl p-1 shadow-lg rounded-full bg-white hover:bg-red-400 cursor-pointer absolute top-0 right-0 z-10"
+          >
+            ❌
+          </div>
+          <img
+            loading="lazy"
+            src={`http://localhost:5000/${carData.productFeatureImageRef}`}
+            alt="Featured"
+            className="w-[160px] h-[160px] object-cover"
+          />
+        </div>
+      )}
+    </div>
+
+    {/* Multiple Image Upload */}
+    <div className="imageInput w-full h-auto text-sm rounded-md">
+      <div className="flex flex-col gap-2">
+        <span>Upload Images</span>
+        <label htmlFor="productImage" className="w-full flex">
+          {/* Custom Button */}
+          <button
+            type="button"
+            className="bg-neutral-300 border border-neutral-500 border-r-0 hover:bg-neutral-400 w-[120px] p-3 rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+          >
+            Upload Files
+          </button>
+
+          {/* Hidden Multiple Input */}
+          <input
+            type="file"
+            id="productImage"
+            multiple
+            onChange={handleProductImageChange}
+            className="border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
+          />
+        </label>
+      </div>
+
+      {/* Show Uploaded Images
+      {carData?.productImageRef?.length > 0 && (
+        <div className="flex flex-wrap gap-3 mt-5">
+          {carData.productImageRef.map((productImage, index) => (
+            <div key={index} className="relative w-[160px] h-[160px]">
               <div
-                className="crossBtn  text-xl p-1 shadow-lg h-auto w-auto rounded-full bg-white hover:bg-red-400 cursor-pointer  absolute top-0 right-0 z-10"
-                // onClick={hiddenProductImages}
+                className="absolute top-0 right-0 text-xl p-1 shadow-lg rounded-full bg-white hover:bg-red-400 cursor-pointer z-10"
+                // onClick={() => removeImage(index)}
               >
-                {" "}
                 ❌
               </div>
-              {carData?.productImageRef?.map((productImage, index) => (
-      <img
-        key={index}
-        loading="lazy"
-        src={`http://localhost:5000/${productImage}`}
-        alt={`gallery-image-${index}`}
-        className="w-[160px] h-[160px] object-cover"
-      />
-    ))}
+              <img
+                loading="lazy"
+                src={`http://localhost:5000/${productImage}`}
+                alt={`Gallery ${index}`}
+                className="w-full h-full object-cover rounded-md"
+              />
+            </div>
+          ))}
+        </div>
+      )} */}
+    </div>
+  </div>
+</div>
 
-            </div>
-          </div> */}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </form>

@@ -7,8 +7,9 @@ import EditCapLinksForm from "./EditCapLinksForm/EditCapLinksForm"
 import { Link, useParams } from "react-router-dom";
 
 const EditCapLinks = () => {
-  const { id } = useParams(); // Get ID from URL params
-         const [isOpen, setIsOpen] = useState(true);
+  // const { id } = useParams(); // Get ID from URL params
+   
+  const [isOpen, setIsOpen] = useState(true);
          const [carData, setCarData] = useState([]);
 
         
@@ -168,7 +169,7 @@ const EditCapLinks = () => {
   </div>
   
   <div className="right p-3 w-[83%] max-[1300px]:w-full ">
-  <EditCapLinksForm carId={id} />
+  <EditCapLinksForm  />
   </div>
         </div>
       </div>

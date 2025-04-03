@@ -142,7 +142,7 @@ if(response.status === 200){
               .filter((car) => car.carTitle.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
               .map((car, index) => ( 
-                <tr key={car._id} className="border-b">
+                <tr key={car._id} className="border-b ">
                   <td className="p-2 text-center">{indexOfFirstCar + index + 1}</td>
                   <td className="p-2 text-center">
                     <img src={`../../../../admin/${car.featuredImage}`} alt="Car" className="w-10 h-10 object-cover" />
@@ -154,7 +154,7 @@ if(response.status === 200){
                   <td className="p-2 text-center">{car.carYear}</td>
                   <td className="p-2 text-center">{car.createdAt.slice(0,10)}</td>
                   <td className="p-2 text-center">admin</td>
-                  <td className="p-2 justify-center flex space-x-2">
+                  <td className="p-3  justify-center items-center h-auto  flex space-x-2">
                     <button className="text-orange-500" onClick={() => handleEdit(car._id , car.carTitle)}>
                       <FaEdit />
                     </button>

@@ -134,9 +134,9 @@ export const deleteCapLinks =  async (req, res) => {
                 console.log("Files" + files);
       let productFeatureImageRef = JSON.stringify(req.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
       let parsedProductFeatureImageRef = productFeatureImageRef.split('"')[1]
-      let productImageRef = JSON.stringify(req.files['productImageRef'][0].path.replace(/\\/g, '/'));
-      let parsedProductImageRef = productImageRef.split('"')[1]
-      let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
+    let productImageRef = JSON.stringify(req.files['productImageRef'][0].path.replace(/\\/g, '/'));
+    let parsedProductImageRef = productImageRef.split('"')[1]
+       let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
       let parsedBLFileRef = bLFileRef.split('"')[1]
       let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
       let parsedCertificateFileRef = certificateFileRef.split('"')[1]
@@ -249,26 +249,7 @@ export const deleteCapLinks =  async (req, res) => {
           res.status(500).json({ message: "Server Error" });
         }
       };
-      // const arrayFields = [
-      //   "productFeatureImageRef",
-      //   "productImageRef",
-      //   "bLFileRef",
-      //   "certificateFileRef",
-      //   "englishCertificateFileRef",
-      //   "invoiceFileRef"
-      // ];
-      
-      // Pehle saar fields le lo
-      
-      // Phir sirf arrays wali fields ko process karo
-      // arrayFields.forEach(field => {
-      //   if (Array.isArray(req.body[field])) {
-      //     newCapLinkData[field] = req.body[field].flat().ma; // Ensure it's an array os
-      //   } else {
-      //     newCapLinkData[field] = []; // If not an array, set it to an empty array
-      //   }
-      // });
-
+     
 // Update Cap links 
       export const updateCapLinks = async (req, res) => {
         const id = req.params.id;
@@ -355,22 +336,6 @@ export const deleteCapLinks =  async (req, res) => {
 //           const files = JSON.stringify(req.files);
           console.dir("Body " + JSON.stringify(req.body));
           console.log("Files" , req.files);
-          
-//           console.log("Files" + JSON.stringify(req.files));
-// let productFeatureImageRef = JSON.stringify(req.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
-// let parsedProductFeatureImageRef = productFeatureImageRef.split('"')[1]
-// let productImageRef = JSON.stringify(req.files['productImageRef'][0].path.replace(/\\/g, '/'));
-// let parsedProductImageRef = productImageRef.split('"')[1]
-// let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
-// let parsedBLFileRef = bLFileRef.split('"')[1]
-// let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
-// let parsedCertificateFileRef = certificateFileRef.split('"')[1]
-// let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/'));
-// let parsedEnglishCertificateFileRef = englishCertificateFileRef.split('"')[1]
-// let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/'));
-// let parsedInspectionFileRef = inspectionFileRef.split('"')[1]
-// let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/'));
-// let parsedInvoiceFileRef = invoiceFileRef.split('"')[1]
 
 
 const updatedCapLinkData = { 

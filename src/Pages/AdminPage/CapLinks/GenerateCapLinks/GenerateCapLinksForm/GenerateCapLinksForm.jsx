@@ -6,7 +6,7 @@ import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
 
 const GenerateCapLinksForm = () => {
   const [productFeatureImage, setproductFeatureImage] = useState(null);
-  const [productImage, setproductImage] = useState(null);
+  const [productImages, setproductImages] = useState(null);
   const [blImage, setBLImage] = useState(null);
   const [certificateImage, setCertificateImage] = useState(null);
   const [invoiceImage, setInvoiceImage] = useState(null);
@@ -133,7 +133,7 @@ const GenerateCapLinksForm = () => {
   };
   
   const handleProductImageChange = (e) => {
-    setproductImage(e.target.files[0]);
+    setproductImages([...e.target.files]);
   };
   
   const handleBLFileChange = (e) => {
@@ -159,14 +159,15 @@ const GenerateCapLinksForm = () => {
   // Radio Button Function
   const handleNameRadioChange = (e) => {
   setSelectedNameOption(e.target.value);
+  console.log(e.target.value);
+  
  
   };
   const handleForwarderNameRadioChange = (e) => {
      setSelectedForwarderNameOption(e.target.value);
-    
+     console.log(e.target.value);
   };
-
-  console.log(productFeatureImage);
+ 
   
   // Submit All Deatails Function
   const GenerateCapLinks = async (e) => {
@@ -194,7 +195,13 @@ const GenerateCapLinksForm = () => {
     
       // Handle file inputs separately
         formData.append("productFeatureImageRef", productFeatureImage);
-        formData.append("productImageRef", productImage);
+        if (productImages.length > 0) {
+          productImages.forEach((image, index) => {
+            console.log(image);
+            
+              formData.append("productImageRef", image);
+          });
+      }
         formData.append("bLFileRef", blImage);
         formData.append("certificateFileRef", certificateImage);
         formData.append("englishCertificateFileRef", englishCertificateImage);
@@ -412,7 +419,7 @@ try {
 
         {/* 3rd */}
         {/* Information Details */}
-        <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+        <div className=" w-full h-auto flex justify-center gap-5 flex-col">
           {/* Heading */}
           <div className="flex justify-between items-center p-6 ">
             <h1 className="text-3xl font-bold">Information</h1>
@@ -705,7 +712,7 @@ try {
 
         {/* 4th */}
         {/* Document Details */}
-        <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+        <div className=" w-full h-auto flex justify-center gap-5 flex-col">
           {/* Heading */}
           <div className="flex justify-between items-center p-6 ">
             <h1 className="text-3xl font-bold">Documents</h1>
@@ -1073,7 +1080,7 @@ try {
 
         {/* 5th */}
         {/* Consignee Details */}
-        <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+        <div className=" w-full h-auto flex justify-center gap-5 flex-col">
           {/* Heading */}
           <div className="flex justify-between items-center p-6 ">
             <h1 className="text-3xl font-bold">
@@ -1395,7 +1402,7 @@ try {
 
         {/* 6th */}
         {/* Purchased Product */}
-        <div className="statusFeatures w-full h-auto flex justify-center gap-5 flex-col">
+        <div className=" w-full h-auto flex justify-center gap-5 flex-col">
           {/* Heading */}
           <div className="flex justify-between items-center p-6 ">
             <h1 className="text-3xl font-bold">Purchased Product</h1>
@@ -1831,6 +1838,7 @@ try {
                       <input
                         type="file"
                         id="productImage"
+                        multiple
                         onChange={(e) => handleProductImageChange(e)}
                         className=" border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />

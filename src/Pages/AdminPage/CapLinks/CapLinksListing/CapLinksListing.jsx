@@ -61,7 +61,7 @@ if(response.status === 200){
 
   
   const handleEdit = async(id ) => {
-    localStorage.setItem("EditId" , id);
+    localStorage.setItem("EditCapLinksId" , id)   
     window.location.replace(`/cap-links-listing/edit-cap-links-listing/get/${id}`);
   };
 

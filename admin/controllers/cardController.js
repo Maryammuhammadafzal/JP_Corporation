@@ -84,8 +84,10 @@ let featuredImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\
 let parsedFeaturedImage = featuredImage.split('"')[1]
 let galleryImages = JSON.stringify(req.files['galleryImages'][0].path.replace(/\\/g, '/'));
 let parsedgalleryImages = galleryImages.split('"')[1]
-let attachmentImage = JSON.stringify(req.files['attachmentImage'][0].path.replace(/\\/g, '/'));
-let parsedAttachmentImage = attachmentImage.split('"')[1]
+let attachmentImage = req.files['attachmentImage']
+    ? req.files['attachmentImage'][0].path.replace(/\\/g, '/')
+    : null;
+    let parsedAttachmentImage = attachmentImage ? JSON.stringify(attachmentImage).split('"')[1] : null;
           
           // Parse features
           let parsedcarAllFeatures = [];

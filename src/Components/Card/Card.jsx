@@ -88,11 +88,11 @@ fetchCarData()
           <div className="carImage relative overflow-hidden w-auto h-auto">
             <img
               loading="lazy"
-              src={`http://localhost:5000/uploads/${featuredImage}`}
+              src={`http://localhost:5000/${featuredImage}`}
               className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[160px] rounded-2xl"
               alt="Card image"
             />
-            <span className="absolute top-[15px] -left-[30px] -rotate-45 w-[130px] text-center z-50 bg-green-600 py-[1vh] px-[1vw] text-white text-[12px]" >
+            <span className={`absolute top-[10px] -left-[45px] -rotate-45 w-[130px] text-center z-10 ${carAvailability === "Available" ? "bg-green-600": "bg-red-600"} py-[5px] px-[1vw] text-white text-[12px]`} >
               {carAvailability}
             </span>
           </div>
