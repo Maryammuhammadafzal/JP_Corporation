@@ -8,16 +8,16 @@ const router = express.Router();
 router.get("/", getCars);
 router.get("/get", getCarsByQuery);
 router.post("/add", upload.fields([
-  { name: 'featuredImage' },
-   { name: 'galleryImages' },
-   { name: 'attachmentImage'}
+  { name: 'featuredImage', maxCount : 1 },
+   { name: 'galleryImages', maxCount : 20},
+   { name: 'attachmentImage', maxCount : 1}
   ]),
 postCar );
 // UPDATE route for editing car
 router.put('/update/:id', upload.fields([
-  { name: 'featuredImage', maxCount: 1 },
-  { name: 'attachmentImage', maxCount: 1 },
-  { name: 'galleryImages', maxCount: 10 }
+  { name: 'featuredImage', maxCount : 1 },
+  { name: 'galleryImages', maxCount : 20},
+  { name: 'attachmentImage', maxCount : 1}
 ]), updateCar);
 export default router;
 

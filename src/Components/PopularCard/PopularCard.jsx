@@ -61,7 +61,7 @@ fetchCarData()
                 {" "}
                 {truncateText(CarTitle, 22)}{" "}
               </h3>
-              <p className="carPrice font-extrabold text-xl">{carPrice}</p>
+              <p className="carPrice font-extrabold text-xl">${carPrice}</p>
             </div>
             <div className="cardfooter w-full h-auto flex p-2  items-center gap-5">
               <button className="w-fit h-fit py-1 px-2 font-semibold text-md text-white bg-orange-600 rounded-lg">

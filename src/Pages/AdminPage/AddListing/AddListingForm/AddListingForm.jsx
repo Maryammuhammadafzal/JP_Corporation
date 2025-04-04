@@ -4,7 +4,6 @@ import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 
-
 const AddListingForm = () => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [attachmentImage, setAttachmentImage] = useState(null);
@@ -14,7 +13,9 @@ const AddListingForm = () => {
 
   const toggleCheckbox = (featureId) => {
     if (selectedAllFeatures.includes(featureId)) {
-      setSelectedAllFeatures(selectedAllFeatures.filter((id) => id !== featureId));
+      setSelectedAllFeatures(
+        selectedAllFeatures.filter((id) => id !== featureId)
+      );
     } else {
       setSelectedAllFeatures([...selectedAllFeatures, featureId]);
     }
@@ -22,12 +23,14 @@ const AddListingForm = () => {
 
   const toggleSafetyCheckbox = (featureId) => {
     if (selectedSafetyFeatures.includes(featureId)) {
-      setselectedSafetyFeatures(selectedSafetyFeatures.filter((id) => id !== featureId));
+      setselectedSafetyFeatures(
+        selectedSafetyFeatures.filter((id) => id !== featureId)
+      );
     } else {
       setselectedSafetyFeatures([...selectedSafetyFeatures, featureId]);
     }
   };
-  
+
   const titleRef = useRef(null);
   const conditionRef = useRef(null);
   const typeRef = useRef(null);
@@ -46,13 +49,11 @@ const AddListingForm = () => {
   const vinRef = useRef(null);
   const availabilityRef = useRef(null);
   const descriptionRef = useRef(null);
-console.log(descriptionRef);
-
+  console.log(descriptionRef);
 
   const handleFeaturedChange = (e) => {
-      setFeaturedImage(e.target.files[0]); 
-      console.log(e.target.files[0]);
-      
+    setFeaturedImage(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   const handleAttachmentChange = (e) => {
@@ -61,15 +62,16 @@ console.log(descriptionRef);
   };
 
   const handleGalleryChange = (e) => {
-    setGalleryImages([...e.target.files]); 
-    
+    // setGalleryImages([...e.target.files]);
+    setGalleryImages([...e.target.files]);
+
     console.log([...e.target.files]);
   };
+  console.log(galleryImages);
   
- 
 
   const SubmitDetail = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const formData = new FormData();
 
     formData.append("carTitle", titleRef.current.value);
@@ -91,38 +93,39 @@ console.log(descriptionRef);
     formData.append("carAvailability", availabilityRef.current.value);
     formData.append("carDescription", descriptionRef.current.value);
     formData.append("carAllFeatures", JSON.stringify(selectedAllFeatures));
-    formData.append("carSafetyFeatures", JSON.stringify(selectedSafetyFeatures));
+    formData.append(
+      "carSafetyFeatures",
+      JSON.stringify(selectedSafetyFeatures)
+    );
     // Images
-   formData.append("featuredImage", featuredImage);
+    formData.append("featuredImage", featuredImage);
     formData.append("attachmentImage", attachmentImage);
+    
+    for (let i = 0; i < galleryImages.length; i++) {
+      formData.append('galleryImages', galleryImages[i]);
+    }
 
-    if (galleryImages.length > 0) {
-      galleryImages.forEach((image, index) => {
-        console.log(image);
-        
-          formData.append("galleryImages", image);
-      });
-  }
 
-for (let pairs of formData.entries()) {
-  console.log(pairs[0], pairs[1]);
-  }
+    for (let pairs of formData.entries()) {
+      console.log(pairs[0], pairs[1]);
+    }
 
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.post(
-        "http://localhost:5000/api/cards/add", formData ,
+        "http://localhost:5000/api/cards/add",
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
-        });
-      
-        
+          },
+        }
+      );
+
       console.log("Success" + JSON.stringify(response.data));
       alert("Added Succesfully");
 
-      // Reset refs 
+      // Reset refs
       titleRef.current.value = "";
       typeRef.current.value = "";
       availabilityRef.current.value = "";
@@ -140,7 +143,6 @@ for (let pairs of formData.entries()) {
       priceRef.current.value = "";
       modelRef.current.value = "";
       makeRef.current.value = "";
-      
 
       // Reset file inputs
       document.getElementById("image").value = "";
@@ -151,9 +153,8 @@ for (let pairs of formData.entries()) {
         .forEach((checkbox) => {
           checkbox.checked = false;
         });
-       
-          window.location.href = "/dashboard"
-        
+
+      window.location.href = "/dashboard";
     } catch (error) {
       console.error(error);
       alert("Error");
@@ -164,7 +165,10 @@ for (let pairs of formData.entries()) {
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Add Details</h1>
       </div>
-      <form  onSubmit={SubmitDetail} className="form  w-full h-auto p-3  flex flex-col gap-5">
+      <form
+        onSubmit={SubmitDetail}
+        className="form  w-full h-auto p-3  flex flex-col gap-5"
+      >
         <div className="p-6 border rounded-md text-sm text-gray-600 w-full h-auto">
           <div className="w-full">
             <label htmlFor="title" className="w-full">
@@ -331,124 +335,144 @@ for (let pairs of formData.entries()) {
 
             {/* Make Input */}
             <div className="w-[370px] my-3">
-            <label htmlFor="type" className="w-full">
-                <p>
-                  Make
-                </p>
-              <select
-                id="make"
-                className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
-                placeholder="Select make"
-                ref={makeRef}
-              >
-                <option
-                  value=""
-                  selected
-                  disabled
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+              <label htmlFor="type" className="w-full">
+                <p>Make</p>
+                <select
+                  id="make"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
+                  placeholder="Select make"
+                  ref={makeRef}
                 >
-                  Select Make
-                </option>
-                <option
-                  value="BUS"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  BUS
-                </option>
-                <option
-                  value="CONVERTIBLE"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  CONVERTIBLE
-                </option>
-                <option
-                  value="COUPE"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  COUPE
-                </option>
-                <option
-                  value="DUMP-TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  DUMP-TRUCK
-                </option>
-                <option
-                  value="FLAT BODY TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  FLAT BODY TRUCK
-                </option>
-                <option
-                  value="FREEZER BOX"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  FREEZER BOX
-                </option>
-                <option
-                  value="HATCHBACK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  HATCHBACK
-                </option>
-                <option
-                  value="MIN VAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  MIN VAN
-                </option>
-                <option
-                  value="MUV"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  MUV
-                </option>
-                <option
-                  value="PICKUP TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  PICK UP TRUCK
-                </option>
-                <option
-                  value="SEDAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  SEDAN
-                </option>
-                <option
-                  value="STATION WAGON"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  STATION WAGON
-                </option>
-                <option
-                  value="SUV"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  SUV
-                </option>
-                <option
-                  value="VAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  VAN
-                </option>
-                <option
-                  value="WAGON"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  WAGON
-                </option>
-              </select>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Make
+                  </option>
+                  <option
+                    value="AUDI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AUDI
+                  </option>
+                  <option
+                    value="BENTLEY"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BENTLEY
+                  </option>
+                  <option
+                    value="BMW"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BMW
+                  </option>
+                  <option
+                    value="CADILLAC"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CADILLAC
+                  </option>
+                  <option
+                    value="CHEVROLET"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CHEVROLET
+                  </option>
+                  <option
+                    value="FARRARI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FARRARI
+                  </option>
+                  <option
+                    value="FORD"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FORD
+                  </option>
+                  <option
+                    value="HINO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HINO
+                  </option>
+                  <option
+                    value="HONDA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HONDA
+                  </option>
+                  <option
+                    value="ISUZU"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    ISUZU
+                  </option>
+                  <option
+                    value="LEXUS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    LEXUS
+                  </option>
+                  <option
+                    value="MAZDA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MAZDA
+                  </option>
+                  <option
+                    value="MERCEDES-BENZ"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MERCEDES-BENZ
+                  </option>
+                  <option
+                    value="MISTUBISHI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MISTUBISHI
+                  </option>
+                  <option
+                    value="NISSAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    NISSAN
+                  </option>
+                  <option
+                    value="PORCH"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PORCH
+                  </option>
+                  <option
+                    value="SUBARO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUBARO
+                  </option>
+                  <option
+                    value="SUZUKI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUZUKI
+                  </option>
+                  <option
+                    value="TOYOTA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    TOYOTA
+                  </option>
+                </select>
               </label>
             </div>
 
             {/* Model Input */}
             <div className="w-[370px] my-3">
               <label htmlFor="title" className="w-full">
-                <p>
-                  Model
-                </p>
+                <p>Model</p>
                 <select
                   id="condition"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
@@ -464,34 +488,371 @@ for (let pairs of formData.entries()) {
                     Select Model
                   </option>
                   <option
-                    value="ATS"
+                    value="ALLION"
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
                   >
-                    ATS
+                    ALLION
                   </option>
                   <option
-                    value="CT6"
+                    value="ALPHARD"
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
                   >
-                    CT6
+                    ALPHARD
                   </option>
                   <option
-                    value="CTS"
+                    value="IMPREZA"
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
                   >
-                    CTS
+                    IMPREZA
                   </option>
                   <option
-                    value="Escalade"
+                    value="XV"
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
                   >
-                    Escalade
+                    XV
                   </option>
                   <option
-                    value="xt5"
+                    value="TREZIA"
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
                   >
-                    xt5
+                    TREZIA
+                  </option>
+                 
+                  <option
+                    value="CAMRY"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CAMRY
+                  </option>
+                  <option
+                    value="CHR"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CHR
+                  </option>
+                  <option
+                    value="COASTER"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    COASTER
+                  </option>
+                  <option
+                    value="COROLLA AXIO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    COROLLA AXIO
+                  </option>
+                  <option
+                    value="COROOLA FIELDER"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    COROLLA FIELDER
+                  </option>
+                  <option
+                    value="CROWN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CROWN
+                  </option>
+                  <option
+                    value="HARRIER"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HARRIER
+                  </option>
+                  <option
+                    value="HIAZCE VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HIAZCE VAN
+                  </option>
+                  <option
+                    value="HILUX"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HILUX
+                  </option>
+                  <option
+                    value="LAND CRUISER"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    LAND CRUISER
+                  </option>
+                  <option
+                    value="NOAH"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    NOAH
+                  </option>
+                  <option
+                    value="PREMIO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PREMIO
+                  </option>
+                  <option
+                    value="PROBOX"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PROBOX
+                  </option>
+                  <option
+                    value="SUCCEED"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUCCEED
+                  </option>
+                  <option
+                    value="VOXY"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VOXY
+                  </option>
+                  <option
+                    value="RACTICS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    RACTICS
+                  </option>
+                  <option
+                    value="PORTE FTV"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PORTE FTV
+                  </option>
+                  <option
+                    value="HIACE VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HIACE VAN
+                  </option>
+                  <option
+                    value="MARK X"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MARK X
+                  </option>
+                  <option
+                    value="VITZ F"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VITZ F
+                  </option>
+                  <option
+                    value="RAV 4"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    RAV 4
+                  </option>
+                  <option
+                    value="SR-V"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SR-V
+                  </option>
+                  <option
+                    value="FIT"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FIT
+                  </option>
+                  <option
+                    value="VEZEL"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VEZEL
+                  </option>
+                  <option
+                    value="CRV"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CRV
+                  </option>
+                  <option
+                    value="VEZEL Z"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VEZEL Z
+                  </option>
+                  <option
+                    value="BONGO VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BONGO VAN
+                  </option>
+                  <option
+                    value="CX-5"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CX-5
+                  </option>
+                  <option
+                    value="DEMIO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    DEMIO
+                  </option>
+                  <option
+                    value="TITAN 3T"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    TITAN 3T
+                  </option>
+                  <option
+                    value="FAMILIA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FAMILIA
+                  </option>
+                  <option
+                    value="AD"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AD
+                  </option>
+                  <option
+                    value="JUKE"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    JUKE
+                  </option>
+                  <option
+                    value="NV200 VANETTE VAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    NV200 VANETTE VAN
+                  </option>
+                  <option
+                    value="VY12-253667"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    VY12-253667
+                  </option>
+                  <option
+                    value="X-TRAIL"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    X-TRAIL
+                  </option>
+                  <option
+                    value="YF15-601990"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    YF15-601990
+                  </option>
+                  <option
+                    value="GT-R"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    GT-R
+                  </option>
+                  <option
+                    value="SERENA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SERENA
+                  </option>
+                  <option
+                    value="A3"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    A3
+                  </option>
+                  <option
+                    value="A4"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    A4
+                  </option>
+                  <option
+                    value="A5"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    A5
+                  </option>
+                  <option
+                    value="A6"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    A6
+                  </option>
+                  <option
+                    value="A7"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    A7
+                  </option>
+                  <option
+                    value="A8"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    A8
+                  </option>
+                  <option
+                    value="e-tron"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    e-tron
+                  </option>
+                  <option
+                    value="Q2"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Q2
+                  </option>
+                  <option
+                    value="Q3"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Q3
+                  </option>
+                  <option
+                    value="Q5"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Q5
+                  </option>
+                  <option
+                    value="Q7"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Q7
+                  </option>
+                  <option
+                    value="Q8"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    Q8
+                  </option>
+                  <option
+                    value="TT"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    TT
+                  </option>
+                  <option
+                    value="RX"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    RX
+                  </option>
+                  <option
+                    value="RX200"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    RX200
+                  </option>
+                  <option
+                    value="LX570"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    LX570
+                  </option>
+                  <option
+                    value="IS250 VERSION S"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    IS250 VERSION S
                   </option>
                 </select>
               </label>
@@ -959,7 +1320,7 @@ for (let pairs of formData.entries()) {
               </label>
             </div>
           </div>
-{/* Description */}
+          {/* Description */}
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>Description </p>
@@ -971,95 +1332,92 @@ for (let pairs of formData.entries()) {
             </label>
           </div>
         </div>
-     
 
-      <div className="flex justify-between items-center p-6 mb-4">
-        <h1 className="text-3xl font-bold">Feature Image</h1>
-      </div>
-
-      <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-        <div className="flex flex-col gap-2 space-y-4">
-          Upload Featured Image
-          <label htmlFor="" className="w-full h-auto flex">
-            {/* Custom Button */}
-            <button
-              type="button"
-              className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-            >
-              Upload File
-            </button>
-
-            {/* Hidden Input */}
-            <input
-              type="file"
-               id="featuredImage"
-               accept="image/*"
-              onChange={handleFeaturedChange}
-              className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-            />
-          </label>
+        <div className="flex justify-between items-center p-6 mb-4">
+          <h1 className="text-3xl font-bold">Feature Image</h1>
         </div>
 
-      </div>
-      <div className="flex justify-between items-center p-6 mb-4">
-        <h1 className="text-3xl font-bold">Gallery</h1>
-      </div>
+        <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
+          <div className="flex flex-col gap-2 space-y-4">
+            Upload Featured Image
+            <label htmlFor="" className="w-full h-auto flex">
+              {/* Custom Button */}
+              <button
+                type="button"
+                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+              >
+                Upload File
+              </button>
 
-      <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-        <div className="flex flex-col gap-2 space-y-4">
-          Upload Gallery Image
-          <label htmlFor="" className="w-full h-auto flex">
-            <button
-              type="file"
-              className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-            >
-              Upload File
-            </button>
-
-            <input
-              type="file"
-              id="image"
-              multiple
-              onChange={handleGalleryChange}
-              className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-            />
-          </label>
+              {/* Hidden Input */}
+              <input
+                type="file"
+                id="featuredImage"
+                accept="image/*"
+                onChange={handleFeaturedChange}
+                className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
+              />
+            </label>
+          </div>
+        </div>
+        <div className="flex justify-between items-center p-6 mb-4">
+          <h1 className="text-3xl font-bold">Gallery</h1>
         </div>
 
-      </div>
+        <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
+          <div className="flex flex-col gap-2 space-y-4">
+            Upload Gallery Image
+            <label htmlFor="" className="w-full h-auto flex">
+              <button
+                type="file"
+                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+              >
+                Upload File
+              </button>
 
-      <div className="flex justify-between items-center p-6 mb-4">
-        <h1 className="text-3xl font-bold">Attachements</h1>
-      </div>
-
-      <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
-        <div className="flex flex-col gap-2 space-y-4">
-          Upload Attachement
-          <label htmlFor="" className="w-full h-auto flex">
-            <button
-              type="button"
-              className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
-            >
-              Upload File
-            </button>
-
-            <input
-              type="file"
-              id="image"
-              onChange={handleAttachmentChange}
-              className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
-            />
-          </label>
+              <input
+                type="file"
+                id="image"
+                multiple
+                onChange={handleGalleryChange}
+                className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
+              />
+            </label>
+          </div>
         </div>
-            </div>
 
-      <div className="flex justify-between items-center p-6 mb-4">
-        <h1 className="text-3xl font-bold">Features</h1>
-      </div>
+        <div className="flex justify-between items-center p-6 mb-4">
+          <h1 className="text-3xl font-bold">Attachements</h1>
+        </div>
 
-      <div className="card p-6 flex  border rounded-md ">
+        <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
+          <div className="flex flex-col gap-2 space-y-4">
+            Upload Attachement
+            <label htmlFor="" className="w-full h-auto flex">
+              <button
+                type="button"
+                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+              >
+                Upload File
+              </button>
+
+              <input
+                type="file"
+                id="image"
+                onChange={handleAttachmentChange}
+                className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center p-6 mb-4">
+          <h1 className="text-3xl font-bold">Features</h1>
+        </div>
+
+        <div className="card p-6 flex  border rounded-md ">
           <div className="row flex flex-wrap m-2">
-          <div className="card-body p-4 flex flex-wrap">
+            <div className="card-body p-4 flex flex-wrap">
               {AllFeatures.map((feature) => (
                 <div
                   key={feature.id}
@@ -1067,13 +1425,13 @@ for (let pairs of formData.entries()) {
                 >
                   <div className="form-check">
                     <input
-                       className="form-check-input mx-2"
-                       type="checkbox"
-                       name="selectedAllFeatures[]"
-                       value={feature.value}
-                       id={feature.id}
-                       checked={selectedAllFeatures.includes(feature.id)}  
-                       onChange={() => toggleCheckbox(feature.id)}
+                      className="form-check-input mx-2"
+                      type="checkbox"
+                      name="selectedAllFeatures[]"
+                      value={feature.value}
+                      id={feature.id}
+                      checked={selectedAllFeatures.includes(feature.id)}
+                      onChange={() => toggleCheckbox(feature.id)}
                     />
                     <label
                       className="form-check-label"
@@ -1109,8 +1467,8 @@ for (let pairs of formData.entries()) {
                       name="selectedSafetyFeatures[]"
                       value={feature.value}
                       id={feature.id}
-                      checked={selectedAllFeatures.includes(feature.id)}  
-                       onChange={() => toggleSafetyCheckbox(feature.id)}
+                      checked={selectedAllFeatures.includes(feature.id)}
+                      onChange={() => toggleSafetyCheckbox(feature.id)}
                     />
                     <label
                       className="form-check-label"
@@ -1125,11 +1483,10 @@ for (let pairs of formData.entries()) {
             </div>
           </div>
         </div>
-      <div className="button w-full flex justify-start items-center p-6">
-        <Button text="Add Listing" type="submit" />
-      </div>
-        </form>
-
+        <div className="button w-full flex justify-start items-center p-6">
+          <Button text="Add Listing" type="submit" />
+        </div>
+      </form>
     </div>
   );
 };

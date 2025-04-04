@@ -3,9 +3,13 @@ import Heading from "../../Components/Heading/Heading";
 import Card from "../../Components/Card/Card";
 import SocialIcons from "../../Components/SocialIcons/SocialIcons";
 import Button from "../../Components/Button/Button";
-
+import { useNavigate } from "react-router-dom";
 const FeaturedSection = () => {
+let navigate = useNavigate()
 
+  let veiwAllCars = () => {
+    navigate("/search")
+  }
   return (
     <div className="w-full  min-h-screen bg-white flex  justify-center flex-col items-center">
       <div className="w-[95%] max-[900px]:w-[98%] min-h-screen bg-white flex justify-center items-center flex-col ">
@@ -23,7 +27,7 @@ const FeaturedSection = () => {
 
         </div>
         <div className="viewButton max-[600px]:w-full">
-                <Button text="View All"/>
+                <Button text="View All" onClick={veiwAllCars}/>
         </div>
 </div>
       </div>

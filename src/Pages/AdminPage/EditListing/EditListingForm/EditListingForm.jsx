@@ -148,9 +148,9 @@ const EditListingForm = ({ carId }) => {
     if (featuredImage) formData.append("featuredImage", featuredImage);
     if (attachmentImage) formData.append("attachmentImage", attachmentImage);
   
-    galleryImages.forEach((image) => {
-      formData.append("galleryImages", image);
-    });
+    for (let i = 0; i < galleryImages.length; i++) {
+      formData.append('galleryImages', galleryImages[i]);
+    }
   
     try {
       const token = localStorage.getItem("adminToken");
@@ -183,6 +183,9 @@ const EditListingForm = ({ carId }) => {
       alert("Error");
     }
   };
+  
+  console.log(carData.attachmentImage);
+
   
 
   return (
@@ -1113,7 +1116,7 @@ const EditListingForm = ({ carId }) => {
             </div>
             <img
               loading="lazy"
-              src={`http://localhost:5000/uploads/${carData.featuredImage}`}
+              src={`http://localhost:5000/${carData.featuredImage}`}
               alt="image"
               className="w-[160px] h-[160px]"
             />
@@ -1160,7 +1163,7 @@ const EditListingForm = ({ carId }) => {
       <img
         key={index}
         loading="lazy"
-        src={`http://localhost:5000/uploads/${galleryImage}`}
+        src={`http://localhost:5000/${galleryImage}`}
         alt={`gallery-image-${index}`}
         className="w-[160px] h-[160px] object-cover"
       />
@@ -1194,7 +1197,14 @@ const EditListingForm = ({ carId }) => {
             </label>
           </div>
 
-          <div
+         {carData.attachmentImage == null ? (
+          <>
+          <h3 className="text-neutral-700 text-2xl font-bold">Uploaded Image </h3>
+          <p className="p-2 text-md">No Image Uploaded</p>
+          </>
+         ) : (
+          <>
+           <div
             id="showAttachmentImage"
             className="showImage p-3 w-[200px] mt-5 h-[200px] flex justify-center items-center relative"
           >
@@ -1206,11 +1216,13 @@ const EditListingForm = ({ carId }) => {
             </div>
             <img
               loading="lazy"
-              src={`http://localhost:5000/uploads/${carData.attachmentImage}`}
+              src={`http://localhost:5000/${carData.attachmentImage}`}
               alt="image"
               className="w-[160px] h-[160px]"
             />
           </div>
+          </>
+         )}
         </div>
 
         <div className="flex justify-between items-center p-6 mb-4">

@@ -11,6 +11,8 @@ import CardCarousel from "../CardCarousel/CardCarousel";
 import { FaEnvelope } from "react-icons/fa";
 import axios from "axios";
 const ProductPreview = () => {
+  const [isActive , setIsActive] = useState(false);
+  const [activeImage , setActiveImage] = useState("");
   let cardId = localStorage.getItem("cardId");
   const [cardData, setCardData] = useState([]);
 
@@ -33,6 +35,10 @@ const ProductPreview = () => {
 
   console.log(cardData);
 
+  let activeImageFunction = (e)=>{
+    setActiveImage(e.target.src)
+  }
+  
   return (
     <div className="bg-white w-full">
       <div className=" pt-3 max-[1200px]:flex-col flex w-full rounded-lg">
@@ -46,13 +52,13 @@ const ProductPreview = () => {
         <div className="min-[1200px]:hidden  max-[500px]:my-0 p-3   border-b border-gray-400 ">
           <div className="flex my-4  max-[500px]:my-1 gap-5">
             <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px] marker:text-orange-600  tracking-tight text-gray-400">
-              {/* {model} */}
+              {cardData.carModel}
             </li>
             <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px]  marker:text-orange-600 tracking-tight text-gray-400">
-              {/* {miles} */}
+              {cardData.carMake}
             </li>
             <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px]  marker:text-orange-600 tracking-tight text-gray-400">
-              {/* {transition} */}
+              {cardData.carTransmission}
             </li>
           </div>
         </div>
@@ -62,36 +68,21 @@ const ProductPreview = () => {
         <div className="w-[60%]  max-[1200px]:w-full h-auto  rounded-lg flex flex-col  p-3 ">
           <img
             // src={image}
-            src={`http://localhost:5000/uploads/${cardData.featuredImage}`}
+            src={activeImage || `http://localhost:5000/${cardData.featuredImage}`}
             alt="Two each of gray, white, and black shirts laying flat."
             className=" w-full h-full rounded-lg"
           />
           <div className="flex  gap-2 p-3">
+{cardData && cardData?.galleryImages?.map((image , index) => (
+
             <img
-              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg"
+            key={index}
+              src={`http://localhost:5000/${image}`}
+              onClick={(e) => activeImageFunction(e)}
               alt="Model wearing plain black basic tee."
-              className="w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100 rounded-lg object-cover"
+              className="activeImage w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100 rounded-lg object-cover"
             />
-            <img
-              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg"
-              alt="Model wearing plain gray basic tee."
-              className="w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100 rounded-lg object-cover"
-            />
-            <img
-              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
-              alt="Model wearing plain white basic tee."
-              className="w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100  object-cover rounded-lg "
-            />
-            <img
-              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
-              alt="Model wearing plain white basic tee."
-              className="w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100  object-cover rounded-lg "
-            />
-            <img
-              src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
-              alt="Model wearing plain white basic tee."
-              className="w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100  object-cover rounded-lg "
-            />
+))}
           </div>
         </div>
 
@@ -122,7 +113,7 @@ const ProductPreview = () => {
             <form className="w-full">
               <div className="price w-full">
                 <h3 className="carPrice font-extrabold text-4xl text-orange-600">
-                  {cardData.carPrice}
+                  ${cardData.carPrice}
                 </h3>
               </div>
               <div className="features w-full mt-5  rounded-2xl bg-blue-50 max-[700px]:p-1 p-3 flex-col flex">
@@ -301,28 +292,12 @@ const ProductPreview = () => {
       <div className="features w-full  p-3">
         <h2 className="font-bold text-3xl mt-5 p-3 text-gray-900">Features</h2>
         <ul className="features w-[60%] max-[1200px]:w-full list-disc p-3 marker:text-orange-600 gap-3  flex flex-wrap ">
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 "></li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            ABS
+          {cardData && cardData?.carAllFeatures?.map((feature , index) => (
+
+          <li key={index} className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
+            {feature}
           </li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            ABS Air Conditioner
-          </li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            Back Camera
-          </li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            NAVIGATION
-          </li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            Power Steering
-          </li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            Power Steering Power Window
-          </li>
-          <li className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
-            PS PW AB ABS AC
-          </li>
+          ))}
         </ul>
       </div>
 
@@ -332,16 +307,16 @@ const ProductPreview = () => {
         </h2>
 
         <div className="flex gap-3 items-center p-3">
-          {cardData.attachmentImage === "" ? (
+          {cardData.attachmentImage ==  null ? (
             <>
-              <img src={Jpg} className="w-[50px]" alt="jpg" />
+              <img src={Jpg } className="w-[50px]" alt="jpg" />
               <p className="text-lg max-[360px]:text-[15px] hover:text-orange-600">
                 No Attachment Found
               </p>
             </>
           ) : (
             <img
-              src={`http://localhost:5000/uploads/${cardData.attachmentImage}`}
+              src={`http://localhost:5000/${cardData.attachmentImage}`}
               className="w-[100px]"
               alt="jpg"
             />

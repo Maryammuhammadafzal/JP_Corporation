@@ -13,63 +13,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const CardCarousel = () => {
-
         const sliderRef = useRef(null);
-  // const cardData = [
-  //   {
-  //     id: 1,
-  //     title: "NISSAN NOTE X-DIG-S 2016",
-  //     image: CardImage1,
-  //     miles: "80,000 miles",
-  //     price: "$2,260",
-  //     transition: "AT",
-  //     model: "2016",
-  //     fuel: "petrol",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "TOYOTA VITZ F 2010",
-  //     image: CardImage2,
-  //     miles: "87,428 miles",
-  //     price: "$1,230",
-  //     transition: "AT",
-  //     model: "2010",
-  //     fuel: "petrol",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "MAZDA FAMILIA 2002",
-  //     image: CardImage3,
-  //     miles: "83,318 miles",
-  //     price: "$3,130",
-  //     transition: "AT",
-  //     model: "2002",
-  //     fuel: "petrol",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "MAZDA FAMILIA 2002",
-  //     image: CardImage4,
-  //     miles: "83,318 miles",
-  //     price: "$3,130",
-  //     transition: "AT",
-  //     model: "2002",
-  //     fuel: "petrol",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "MAZDA FAMILIA 2002",
-  //     image: CardImage2,
-  //     miles: "83,318 miles",
-  //     price: "$3,130",
-  //     transition: "AT",
-  //     model: "2002",
-  //     fuel: "petrol",
-  //   },
-  // ];
-
-  // Slick settings
-
  
   const [cardData, setCardData] = useState([]);
   const navigate = useNavigate();
@@ -139,7 +83,7 @@ fetchCarData()
                 <div className="relative">
                   <img
                     loading="lazy"
-                    src={`http://localhost:5000/uploads/${featuredImage}`}
+                    src={`http://localhost:5000/${featuredImage}`}
                     alt={CarTitle}
                     className="w-full h-[200px] object-cover"
                   />
@@ -151,9 +95,9 @@ fetchCarData()
                 </div>
                 <div className="p-4">
                   <p className="text-2xl font-extrabold text-orange-600">
-                    {carPrice}
+                    ${carPrice}
                   </p>
-                  <div className="flex justify-start gap-5 text-gray-400 text-sm mt-2">
+                  <div className="flex justify-start gap-5 text-gray-400 text-xs mt-2">
                     <span>{carMileage}</span>
                     <span>{carTransmission}</span>
                     <span>{carModel}</span>

@@ -1,6 +1,6 @@
 import React, {useState , useEffect} from 'react'
 import Footer from '../Footer/Footer'
-import Navbar from '../../Components/Navbar/NAvbar'
+import Navbar from '../../Components/Navbar/Navbar'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
@@ -31,7 +31,7 @@ const SearchPage = () => {
   const [filteredCars, setFilteredCars] = useState([]);
   
   // Fetch Api 
-  let fetchApi = async () => {
+  let fetchFromTypeApi = async () => {
     try {
     const response = await fetch(`http://localhost:5000/api/cards/get?type=${type}`);
     const data = await response.json();
@@ -65,13 +65,29 @@ const SearchPage = () => {
     }
   }
   
+  // Fetch Search Api 
+  let fetchApi = async () => {
+    try {
+      
+      const response = await fetch(`http://localhost:5000/api/cards/`);
+      const data = await response.json();
+      setFilteredCars(data);
+      console.log(data);
+        
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
   
   useEffect(() => {
     if (typeFromQuery) {
-      fetchApi(); // type ke saath
+      fetchFromTypeApi(); // type ke saath
     } else if (makeFromQuery || modelFromQuery || minYearFromQuery || maxYearFromQuery) {
       fetchFromSearchApi(); // search ke saath
-    }
+    } else {
+      fetchApi(); // default
+      }
   }, [typeFromQuery, makeFromQuery, modelFromQuery, minYearFromQuery, maxYearFromQuery]);
 
   // Pagination state
@@ -373,7 +389,9 @@ const SearchPage = () => {
           <div key={index} className="bg-white p-4 rounded-xl hover:border border-orange-500  flex justify-between items-center hover:shadow-md transition">
             <div className="flex items-center gap-4">
               {/* Placeholder for Car Image */}
-              <div className="w-[230px] h-[130px] bg-gray-200 rounded-xl"></div>
+              <div className="w-[230px] h-[130px] bg-gray-200 rounded-xl">
+                <img src={`http://localhost:5000/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
+              </div>
 
               <div>
                 <h3 className="font-bold text-2xl uppercase">{car.carMake} {car.carModel} {car.carYear}</h3>

@@ -20,49 +20,6 @@ const Card = () => {
   useEffect( () => {
 fetchCarData()
   }, []);
-  
-  console.log(cards);
-  
-  
-
-
-  //   {
-  //     id: 1,
-  //     title: "NISSAN NOTE X-DIG-S 2016",
-  //     image: CardImage1,
-  //     miles: "80,000 miles",
-  //     price: "$ 2,260",
-  //     transition: "AT",
-  //     model: "2016",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "TOYOTA VITZ F 2010",
-  //     image: CardImage2,
-  //     miles: "87,428 miles",
-  //     price: "$ 1,230",
-  //     transition: "AT",
-  //     model: "2010",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "MAZDA FAMILIA 2002",
-  //     image: CardImage3,
-  //     miles: "83,318 miles",
-  //     price: "$ 3,130",
-  //     transition: "AT",
-  //     model: "2002",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "TOYOTA HIACE VAN GL SUPPER LONG 2012",
-  //     image: CardImage4,
-  //     miles: "198,621 miles",
-  //     price: "$ 6,728",
-  //     transition: "AT",
-  //     model: "2012",
-  //   },
-  // ];
 
   const handleCardClick = (id)=>{
     localStorage.setItem("cardId" , id);
@@ -102,7 +59,7 @@ fetchCarData()
                 
                 {truncateText(CarTitle, 22)}
               </h3>
-              <p className="carPrice font-extrabold text-xl">{carPrice}</p>
+              <p className="carPrice font-extrabold text-xl">${carPrice}</p>
             </div>
             <div className="cardfooter w-full h-auto flex p-2  items-center gap-5">
               <button className="w-fit h-fit py-1 px-2 font-semibold text-md text-white bg-orange-600 rounded-lg">
