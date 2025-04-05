@@ -133,12 +133,12 @@ const SearchPage = () => {
         <div className="navbar w-full h-[120px]">
           <Navbar bg="gray-800" />
         </div>
-        <div className="name w-[90%] gap-3 flex p-3">
+        <div className="name w-[90%] gap-3 flex p-3 mb-3">
                 <p>Homepage </p> - <p className='text-orange-500'>Search</p>
         </div>
     <div className=" w-full min-h-screen">
       {/* Filter Section */}
-      <div className="flex bg-blue-50 w-full p-3 py-10 justify-center flex-wrap gap-4 mb-8">
+      <div className="flex bg-neutral-50 w-full p-3 py-10 justify-center flex-wrap gap-4 mb-8">
         <select onChange={e => setMakeFilter(e.target.value)} 
         id="make"
                 className="appearance-none bg-white  border rounded-md p-3 w-48 outline-0 text-gray-400 "
@@ -386,15 +386,15 @@ const SearchPage = () => {
       <div className="space-y-4 mx-auto p-2 w-[90%]">
 
         {currentCars && currentCars.length > 0 ? currentCars?.map((car, index) => (
-          <div key={index} className="bg-white p-4 rounded-xl hover:border border-orange-500  flex justify-between items-center hover:shadow-md transition">
-            <div className="flex items-center gap-4">
+          <div key={index} className="bg-white p-4 rounded-xl hover:border border-orange-500  flex justify-between items-end hover:shadow-md transition">
+            <div className="flex items-center gap-4 ">
               {/* Placeholder for Car Image */}
               <div className="w-[230px] h-[130px] bg-gray-200 rounded-xl">
                 <img src={`http://localhost:5000/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
               </div>
 
               <div>
-                <h3 className="font-bold text-2xl uppercase">{car.carMake} {car.carModel} {car.carYear}</h3>
+                <h3 className="font-bold text-2xl uppercase">{carTitle}</h3>
                 <p className="text-gray-500 text-md mb-2">{car.carFeatures}</p>
 
                 <div className="flex items-center gap-3 text-sm text-gray-500">
@@ -410,7 +410,7 @@ const SearchPage = () => {
               </div>
             </div>
 
-            <div className="text-[#ff4800] text-2xl font-bold">
+            <div className="text-[#ff4800]  text-[2rem] font-extrabold">
               ${car.carPrice}
             </div>
           </div>
@@ -418,7 +418,7 @@ const SearchPage = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-8 space-x-2">
+      <div className="flex justify-center mb-5 mt-8 space-x-2">
         {Array.from({ length: totalPages }, (_, index) => (
           <button key={index} onClick={() => paginate(index + 1)} className={`px-4 py-2 rounded border ${currentPage === index + 1 ? 'bg-[#ff4800] text-white' : 'bg-white text-gray-700'}`}>
             {index + 1}

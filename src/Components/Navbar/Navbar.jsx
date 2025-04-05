@@ -39,22 +39,26 @@ const Navbar = ({bg}) => {
         </div>
         <div className="tabs w-auto h-[auto] flex justify-center items-center">
           <ul className="flex items-center justify-center gap-3  w-full h-auto">
-            <li className="w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 hover:border-t-2 hover:border-orange-600 ">
+            <li className="nav-tab relative group cursor-pointer w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 ">
+         <span className="hoverBorder"></span>
               <Link to="/" className="text-[16px] font-semibold">
                 Home
               </Link>
             </li>
-            <li className="w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 hover:border-t-2 hover:border-orange-600 ">
+            <li className="nav-tab relative group cursor-pointer  w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 ">
+            <span className="hoverBorder"></span>
               <Link to="/about" className="text-[16px] font-semibold">
                 About us{" "}
               </Link>
             </li>
-            <li className="w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 hover:border-t-2 hover:border-orange-600 ">
+            <li className="nav-tab relative group cursor-pointer  w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 ">
+            <span className="hoverBorder"></span>
               <Link to="/faq" className="text-[16px] font-semibold">
                 FAQ
               </Link>
             </li>
-            <li className="w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 hover:border-t-2 hover:border-orange-600 ">
+            <li className="nav-tab relative group cursor-pointer  w-fit h-fit p-3 m-3 hover:text-orange-600 active:text-orange-600 ">
+            <span className="hoverBorder"></span>
               <Link to="/contact" className="text-[16px] font-semibold">
                 Contact
               </Link>

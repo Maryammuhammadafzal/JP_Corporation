@@ -39,7 +39,7 @@ fetchCarData()
   
   return (
     <>
-      {cards.map(({ _id, CarTitle, featuredImage, carAvailability, carYear , carPrice, carTransmission, carModel }) => (
+      {cards.map(({ _id, carTitle, featuredImage, carAvailability, carYear , carFuelType , carMileage , carPrice, carTransmission, carModel }) => (
         <div
           key={_id}
           onClick={() => handleCardClick(_id)}
@@ -48,28 +48,28 @@ fetchCarData()
           <div className="carImage relative overflow-hidden w-auto h-auto">
             <img
               src={`http://localhost:5000/${featuredImage}`}
-              className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[160px] rounded-2xl"
+              className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />
             <span className="absolute top-[15px] -left-[30px] -rotate-45 w-[130px] text-center z-10 bg-green-600 py-[1vh] px-[1vw] text-white text-[12px]" >
               {carAvailability}
             </span>
           </div>
-          <div className="cardContent w-full p-3 h-auto flex flex-col">
-            <div className="cardbody w-full h-auto flex px-2 py-2 flex-col border-b border-b-gray-600 justify-center">
-              <h3 id="carName" className="carName text-lg ">
+          <div className="cardContent w-full h-auto flex flex-col">
+            <div className="cardbody w-full h-auto flex p-4 gap-2 flex-col border-b border-b-gray-600 justify-center">
+              <h3 id="carName" className="carName text-lg font-semibold tracking-wider ">
                 {" "}
-                {truncateText(CarTitle, 22)}{" "}
+                {truncateText(carTitle, 30)}{" "}
               </h3>
-              <p className="carPrice font-extrabold text-xl">${carPrice}</p>
+              <p className="carPrice font-extrabold text-2xl ">${carPrice}</p>
             </div>
-            <div className="cardfooter w-full h-auto flex p-2  items-center gap-5">
-              <button className="w-fit h-fit py-1 px-2 font-semibold text-md text-white bg-orange-600 rounded-lg">
+            <div className="cardfooter w-full h-auto flex p-4  items-center gap-5">
+              <button className="w-fit h-fit py-2 px-3 font-semibold text-md text-white bg-orange-600 rounded-lg">
                 {carYear}
               </button>
-              <p className="miles text-gray-500">12356</p>
+              <p className="miles text-gray-500">{carMileage} miles</p>
               <p className="transmission text-gray-500">{carTransmission}</p>
-              <p className="transmission text-gray-500">{carModel}</p>
+              <p className="transmission text-gray-500">{carFuelType}</p>
             </div>
           </div>
         </div>

@@ -1,11 +1,12 @@
-import React from "react";
-import Navbar from "../../Components/Navbar/NAvbar";
+import React, { useState , useEffect , useRef } from "react";
+import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import About_Image1 from "../../assets/Images/about_image1.jpeg";
 import About_Image2 from "../../assets/Images/about_image2.jpeg";
 import Heading from "../../Components/Heading/Heading";
-
+import CounterItem from "../../Components/CounterItem/CounterItem"
 const AboutPage = () => {
+  
   return (
     <div className="about w-full min-h-screen flex flex-col overflow-x-hidden justify-center items-center">
       <div className="navbar w-full h-[120px]">
@@ -51,9 +52,9 @@ const AboutPage = () => {
                 requirements. We are eager to assist you!
               </p>
               <div className="para2 w-full h-auto flex flex-col gap-3">
-                <h4 className="border-l-4 h-[50px] pl-5 text-2xl font-bold border-orange-600">
+                <h3 className="border-l-4 h-[50px] pl-5 text-2xl font-bold border-orange-600">
                   Our mission statement
-                </h4>
+                </h3>
                 <p className="mt-5 text-neutral-500 tracking-wide text-[16px] max-[450px]:text-[14px] max-[350px]:text-[12px]">
                   Our goal at JP Corporation is to completely transform the
                   automobile-purchasing process by offering a flawless online
@@ -70,9 +71,9 @@ const AboutPage = () => {
                 </p>
               </div>
               <div className="para2 w-full h-auto flex flex-col gap-3">
-                <h4 className="border-l-4 h-[50px] pl-5 text-2xl font-bold border-orange-600">
+                <h3 className="border-l-4 h-[50px] pl-5 text-2xl font-bold border-orange-600">
                   Our vision
-                </h4>
+                </h3>
                 <p className="mt-5 text-neutral-500 tracking-wide text-[16px] max-[450px]:text-[14px] max-[350px]:text-[12px]">
                   Our goal at JP Corporation is to be the go-to place for auto
                   shoppers looking for a simple, clear, and pleasurable online
@@ -102,32 +103,26 @@ const AboutPage = () => {
           </div>
         </div>
         <div className="rating w-[95%] justify-center my-5 h-auto max-[900px]:flex-col max-[900px]:items-center flex ">
-          <div className="ratingLeft w-[50%] max-[900px]:w-full ml-5 h-auto flex gap-3 max-[900px]:flex-col  justify-start items-center">
-            <h4 className="text-[9rem] max-[450px]:text-[8rem] max-[350px]:text-[7rem] max-[450px]:h-[145px] max-[350px]:h-[125px]  h-[170px] font-extrabold text-orange-600">15</h4>
-            <p className="text-4xl font-bold text-black tracking-wide">
+          <div className="ratingLeft w-[50%] max-[900px]:w-full min-[900Px]:border-r max-[900px]:border-b border-neutral-400 ml-10 h-auto flex gap-3 max-[900px]:flex-col  justify-start items-center">
+          <CounterItem target={15} />
+            <p className="text-4xl font-extrabold text-black tracking-wide">
               Years in <br /> Business
             </p>
           </div>
-          <hr className="text-gray-300 my-5 w-[140px] "/>
+          {/* <hr className="text-gray-300 my-5 w-[140px] "/> */}
           <div className="ratingright w-[50%] max-[450px]:flex-col max-[900px]:w-full h-auto flex justify-evenly items-center ">
             <div className="1 w-auto h-auto flex flex-col gap-2 text-center">
-              <h4 className="text-6xl font-extrabold text-black tracking-wide">
-                158
-              </h4>
+            <CounterItem target={158} />
               <h5 className="subheading text-xl text-orange-600 ">
                 Specialist
               </h5>
             </div>
             <div className="1 w-auto h-auto flex flex-col gap-2 text-center">
-              <h4 className="text-6xl font-extrabold text-black tracking-wide">
-                50k
-              </h4>
+            <CounterItem target={50} />
               <h5 className="subheading text-xl text-orange-600 ">Car Sold</h5>
             </div>
             <div className="1 w-auto h-auto flex flex-col gap-2 text-center">
-              <h4 className="text-6xl font-extrabold text-black tracking-wide">
-                8
-              </h4>
+            <CounterItem target={8} />
               <h5 className="subheading text-xl text-orange-600 ">
                 Localization
               </h5>

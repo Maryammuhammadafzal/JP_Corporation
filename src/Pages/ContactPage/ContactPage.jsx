@@ -1,8 +1,11 @@
 import React from "react";
-import Navbar from "../../Components/Navbar/NAvbar";
+import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import Heading from "../../Components/Heading/Heading";
 import ContactForm from "../../Components/ContactForm/ContactForm";
+import { FaFacebookF } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaYoutube } from "react-icons/fa";
 
 const ContactPage = () => {
   return (
@@ -45,6 +48,24 @@ const ContactPage = () => {
               <p className="address text-[18px] max-[1000px]:text-[16px]  max-[360px]:text-[12px] max-[500px]:text-[14px] font-semibold">
                 Fax : +06-6264-2093
               </p>
+            </div>
+          </div>
+
+          <div className="socialIcon flex w-[90%] gap-4 my-5 max-[1000px]:my-2 max-[360px]:w-full max-[360px]:items-center  tracking-wide  flex-wrap h-auto">
+            <div className="facebook shakeAnimation bg-blue-900 w-[60px] h-[60px] shadow-md rounded flex justify-center items-center ">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-facebook elementor-animation-buzz elementor-repeater-item-1e94673" target="_blank">
+																	<FaFacebookF  size={25} color="white"/>
+																		</a>
+            </div>
+            <div className="twitter shakeAnimation bg-blue-500 w-[60px] h-[60px] shadow-md rounded flex justify-center items-center ">
+            <a class=" bg-elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-animation-buzz elementor-repeater-item-630529d" target="_blank">
+            <FaXTwitter  size={25} color="white"/>
+																		</a>
+            </div>
+            <div className="Youtube shakeAnimation bg-red-500 w-[60px] h-[60px] shadow-md rounded flex justify-center items-center ">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-youtube elementor-animation-buzz elementor-repeater-item-d9cd114" target="_blank">
+            <FaYoutube  size={25} color="white"/>
+																		</a>
             </div>
           </div>
         </div>

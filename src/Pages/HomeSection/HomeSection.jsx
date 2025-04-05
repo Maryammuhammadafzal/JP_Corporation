@@ -13,7 +13,7 @@ const HomeSection = () => {
             <div className="navbar w-full h-[100px] flex p-4 justify-start items-center">
               <Navbar />
             </div>
-            <div className="heroSection w-full h-auto justify-center items-center">
+            <div className="heroSection w-full min-h-[600px] flex  justify-center items-center">
             <HeroSection/>
             </div>
           </section>

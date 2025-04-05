@@ -13,7 +13,7 @@ const Card = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("http://localhost:5000/api/dashboard?page=1&limit=5")
+   let res = await axios.get("http://localhost:5000/api/dashboard?page=1&limit=4")
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
@@ -36,37 +36,38 @@ fetchCarData()
 
   return (
     <>
-      {cards.map(({ _id, CarTitle, featuredImage, carAvailability, carYear , carPrice, carTransmission, carModel }) => (
+      {cards.map(({ _id, carTitle, featuredImage, carAvailability, carMileage , carYear , carPrice, carTransmission, carFuelType }) => (
         <div
           key={_id}
           onClick={() => handleCardClick(_id)}
-          className="card w-[24%] max-[1160px]:w-[32%] max-[900px]:w-[49%] max-[600px]:w-[95%] max-[360px]:w-full h-auto bg-gray-800 rounded-2xl text-white flex flex-col"
+          className="card w-[23%]  cursor-pointer max-[1160px]:w-[32%] max-[900px]:w-[49%] max-[600px]:w-[95%] max-[360px]:w-full h-auto bg-gray-800 rounded-2xl text-white flex flex-col"
         >
-          <div className="carImage relative overflow-hidden w-auto h-auto">
+          <div className="carImage inline-block relative overflow-hidden w-auto h-auto">
             <img
               loading="lazy"
               src={`http://localhost:5000/${featuredImage}`}
-              className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[160px] rounded-2xl"
+              className="cardImage cursor-pointer relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />
-            <span className={`absolute top-[10px] -left-[45px] -rotate-45 w-[130px] text-center z-10 ${carAvailability === "Available" ? "bg-green-600": "bg-red-600"} py-[5px] px-[1vw] text-white text-[12px]`} >
+            <span className={`absolute top-[10px] -left-[45px] -rotate-45 w-[130px] text-center z-10 ${carAvailability === "Available" ? "bg-green-600": "bg-red-600"} py-[5px] px-[1vw]  text-white text-[12px]`} >
               {carAvailability}
             </span>
           </div>
-          <div className="cardContent w-full p-3 h-auto flex flex-col">
-            <div className="cardbody w-full h-auto flex px-2 py-2 flex-col border-b border-b-gray-600 justify-center">
-              <h3 id="carName" className="carName text-lg ">
+          <div className="cardContent w-full h-auto flex flex-col">
+            <div className="cardbody w-full h-auto flex gap-1 p-4 flex-col border-b border-b-gray-600 justify-center">
+              <h3 id="carName" className="carName text-lg tracking-wider font-semibold">
                 
-                {truncateText(CarTitle, 22)}
+                {truncateText(carTitle, 25)}
               </h3>
-              <p className="carPrice font-extrabold text-xl">${carPrice}</p>
+              <p className="carPrice font-extrabold text-2xl">${carPrice}</p>
             </div>
-            <div className="cardfooter w-full h-auto flex p-2  items-center gap-5">
+            <div className="cardfooter w-full h-auto flex p-4 text-sm items-center gap-5">
               <button className="w-fit h-fit py-1 px-2 font-semibold text-md text-white bg-orange-600 rounded-lg">
                 {carYear}
               </button>
-              <p className="miles text-gray-500">car</p>
+              <p className="miles text-gray-500">{carMileage} miles</p>
               <p className="transmission text-gray-500">{carTransmission}</p>
+              <p className="transmission text-gray-500">{carFuelType}</p>
             </div>
           </div>
         </div>

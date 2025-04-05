@@ -29,13 +29,13 @@ const handleSearch = ()=>{
     navigate(`/search/?type=${type}`);
   }
   return (
-    <div className="hero w-full h-auto justify-center flex-col gap-3   items-center  p-4 flex ">
+    <div className="hero w-full h-auto  justify-center flex-col gap-3   items-center  p-4 flex ">
       <div className="heading w-fit h-fit my-3">
-        <h1 className="text-7xl font-extrabold max-[550px]:text-3xl max-[360px]:text-2xl text-white max-[900px]:text-4xl">
+        <h1 className="text-7xl font-extrabold  max-[550px]:text-3xl max-[360px]:text-2xl text-white max-[900px]:text-4xl">
           Find Your <span className="text-orange-600">Perfect</span> Car
         </h1>
       </div>
-      <div className="input w-[700px] h-[100px]  max-[550px]:w-[97%] my-3 max-[900px]:h-auto  max-[900px]:w-[500px]">
+      <div className="input w-[700px] h-[100px]  max-[550px]:w-[97%] my-5 max-[900px]:h-auto  max-[900px]:w-[500px]">
         <div className="bg-white shadow-[0px_12px_1px_rgba(0,0,0,0.1)] max-[900px]:py-5 max-[900px]:px-3  shadow-gray-300 w-full h-full rounded-2xl flex max-[900px]:flex-col max-[900px]:h-auto justify-center gap-3 items-center">
           <select
             name="makes"
@@ -308,7 +308,7 @@ const handleSearch = ()=>{
 
       <div className="CarsCard w-[600px] h-auto my-4 max-[900px]:w-auto max-[900px]:h-auto flex flex-wrap justify-between max-[550px]:flex max-[572px]:justify-center ">
         {/* Card 1 */}
-        <div className="card1 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
+        <div className="card1 w-fit h-[180px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div  className="cardImage cur border-2 w-[80px] h-[80px]  hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
             <button
               onClick={()=>{
@@ -375,7 +375,7 @@ const handleSearch = ()=>{
           </div>
         </div>
         {/* Card 2 */}
-        <div className="card2 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
+        <div className="card2 w-fit h-[180px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
             <button
                onClick={()=>{
@@ -460,7 +460,7 @@ const handleSearch = ()=>{
           </div>
         </div>
         {/* Card 3 */}
-        <div className="card3 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
+        <div className="card3 w-fit h-[180px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
             <button
                onClick={()=>{
@@ -531,7 +531,7 @@ const handleSearch = ()=>{
           </div>
         </div>
         {/* Card 4 */}
-        <div className="card4 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
+        <div className="card4 w-fit h-[180px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
             <button
               onClick={()=>{
@@ -609,7 +609,7 @@ const handleSearch = ()=>{
           </div>
         </div>
         {/* Card 5 */}
-        <div className="card5 w-fit h-[200px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
+        <div className="card5 w-fit h-[180px] p-3 max-[900px]:h-[130px]  flex flex-col items-center justify-between">
           <div className="cardImage border-2 w-[80px] h-[80px] hover:border hover:border-orange-500  border-white rounded-full flex justify-center items-center">
             <button
                onClick={()=>{
