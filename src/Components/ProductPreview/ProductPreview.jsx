@@ -10,9 +10,11 @@ import Button from "../../Components/Button/Button";
 import CardCarousel from "../CardCarousel/CardCarousel";
 import { FaEnvelope } from "react-icons/fa";
 import axios from "axios";
+import ImagePreview from "../ImagePreview/ImagePreview";
+
+import SendButton from "../SendButton/SendButton";
+
 const ProductPreview = () => {
-  const [isActive , setIsActive] = useState(false);
-  const [activeImage , setActiveImage] = useState("");
   let cardId = localStorage.getItem("cardId");
   const [cardData, setCardData] = useState([]);
 
@@ -23,7 +25,7 @@ const ProductPreview = () => {
         const res = await axios.get(
           `http://localhost:5000/api/dashboard/get/${cardId}`
         );
-        const car = res.data;
+        const car = await res.data;
         console.log(car);
         setCardData(car);
       } catch (err) {
@@ -33,24 +35,21 @@ const ProductPreview = () => {
     fetchCar();
   }, [cardId]);
 
-  console.log(cardData);
+  console.log(cardData);;
 
-  let activeImageFunction = (e)=>{
-    setActiveImage(e.target.src)
-  }
-  
+
   return (
     <div className="bg-white w-full">
       <div className=" pt-3 max-[1200px]:flex-col flex w-full rounded-lg">
         <div className="min-[1200px]:hidden p-3">
-          <h1 className="text-5xl font-semibold tracking-wide text-gray-900  max-[500px]:text-3xl  max-[360px]:text-2xl">
+          <h1 className="min-[500px]:text-4xl font-semibold tracking-wide text-gray-900  max-[500px]:text-2xl  max-[360px]:text-2xl">
             {cardData.carTitle}
           </h1>
         </div>
 
         {/* <!-- Options --> */}
         <div className="min-[1200px]:hidden  max-[500px]:my-0 p-3   border-b border-gray-400 ">
-          <div className="flex my-4  max-[500px]:my-1 gap-5">
+          <div className="flex  max-[500px]:my-1 gap-5">
             <li className="text-lg  max-[360px]:text-[14px]  max-[500px]:text-[16px] marker:text-orange-600  tracking-tight text-gray-400">
               {cardData.carModel}
             </li>
@@ -65,38 +64,20 @@ const ProductPreview = () => {
 
         {/* <!-- Image gallery --> */}
 
-        <div className="w-[60%]  max-[1200px]:w-full h-auto  rounded-lg flex flex-col  p-3 ">
-          <img
-            // src={image}
-            src={activeImage || `http://localhost:5000/${cardData.featuredImage}`}
-            alt="Two each of gray, white, and black shirts laying flat."
-            className=" w-full h-full rounded-lg"
-          />
-          <div className="flex  gap-2 p-3">
-{cardData && cardData?.galleryImages?.map((image , index) => (
 
-            <img
-            key={index}
-              src={`http://localhost:5000/${image}`}
-              onClick={(e) => activeImageFunction(e)}
-              alt="Model wearing plain black basic tee."
-              className="activeImage w-[19%] active:border-2 h-[130px] active:border-orange-600 opacity-50 hover:opacity-100 active:opacity-100 focus:opacity-100 rounded-lg object-cover"
-            />
-))}
-          </div>
-        </div>
+       <ImagePreview featuredImage={cardData.featuredImage} galleryImages={cardData?.galleryImages}/>
 
         {/* <!-- Product info --> */}
         <div className="px-4 max-[500px]:px-1 gap-3 flex-col  max-[500px]:items-center flex max-[1300px]:w-[40%]  max-[700px]:w-full max-[1200px]:w-[95%] w-[35%] ">
           <div className="w-auto max-[700px]:w-full h-auto p-3 max-[500px]:p-2 gap-3 flex flex-col min-[1200px]:items-start items-center ">
             <div className="max-[1200px]:hidden">
-              <h1 className="text-5xl font-semibold tracking-wide text-gray-900 ">
+              <h1 className="text-3xl font-semibold tracking-wide text-gray-900 ">
                 {cardData.carTitle}
               </h1>
             </div>
 
             {/* <!-- Options --> */}
-            <div className="my-4 max-[1200px]:hidden  border-b border-gray-400 ">
+            <div className=" w-full max-[1200px]:hidden  border-b border-gray-400 ">
               <div className="flex my-4 gap-5">
                 <li className="text-lg marker:text-orange-600  tracking-tight text-gray-400">
                   {cardData.carModel}
@@ -332,13 +313,14 @@ const ProductPreview = () => {
           <div className="w-[50%] p-3 max-[900px]:w-[98%] h-[350px]">
             <textarea
               name="message"
-              placeholder="I'm interested in HONDA FIT GE6 G 10TH ANNIVERSARY 2011"
+              placeholder={`I'm interested in ${cardData.carTitle}`}
+              value={`I'm interested in ${cardData.carTitle}`}
               className="p-3 max-[360px]:text-[14px] border border-gray-100 bg-white rounded-xl w-[90%] max-[1200px]:w-full h-[280px]"
               id="message"
             ></textarea>
             <div className="button w-[90%] max-[900px]:w-[98%] h-auto p-3 flex justify-end">
-              <Button text="Send" />
-            </div>
+          <SendButton/>
+          </div>
           </div>
           <div className="w-[50%] max-[900px]:w-[98%] flex justify-center h-auto p-3  max-[360px]:p-1">
             <div className="w-[74%] max-[1200px]:w-[95%] max-[900px]:w-full h-[300px] bg-white rounded-xl flex flex-col">

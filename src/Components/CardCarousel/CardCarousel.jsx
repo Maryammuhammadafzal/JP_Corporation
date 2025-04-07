@@ -72,10 +72,18 @@ fetchCarData()
       },
     ],
   };
+
+    // Function to truncate text
+    const truncateText = (text, maxLength) => {
+      if (text?.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    };
   return (
     <div className="w-full p-3 max-[500px]:p-0 flex flex-col gap-3">
       <Slider ref={sliderRef} {...settings}>
-          {cardData.map(({ _id, CarTitle, featuredImage, carAvailability, carFuelType , carMileage, carYear , carPrice, carTransmission, carModel }) => (
+          {cardData.map(({ _id, carTitle, featuredImage, carAvailability, carFuelType , carMileage, carYear , carPrice, carTransmission, carModel }) => (
             <div key={_id} 
             onClick={() => handleCardClick(_id)} 
              className="px-3 max-[360px]:px-1">
@@ -84,16 +92,14 @@ fetchCarData()
                   <img
                     loading="lazy"
                     src={`http://localhost:5000/${featuredImage}`}
-                    alt={CarTitle}
-                    className="w-full h-[200px] object-cover"
+                    alt={carTitle}
+                    className="cardImage w-full h-[180px] object-cover"
                   />
-                  <div className="absolute inset-0 bg-black opacity-20"></div>
-                  {/* Light black overlay */}
-                  <div className="absolute bottom-4 left-4 text-white text-lg font-bold">
-                    {CarTitle}
-                  </div>
-                </div>
+                </div> 
                 <div className="p-4">
+                  <div className=" text-white text-md font-semibold">
+                  {truncateText(carTitle, 25)}
+                  </div>
                   <p className="text-2xl font-extrabold text-orange-600">
                     ${carPrice}
                   </p>
@@ -108,6 +114,42 @@ fetchCarData()
             </div>
           )
         )}
+        {/* {cardData.map(({ _id, carTitle, featuredImage, carAvailability, carMileage , carYear , carPrice, carTransmission, carFuelType }) => (
+        <div
+          key={_id}
+          onClick={() => handleCardClick(_id)}
+          className="card w-[22%] cursor-pointer max-[1160px]:w-[32%] max-[900px]:w-[49%] max-[600px]:w-[95%] max-[360px]:w-full h-auto bg-gray-800 rounded-2xl text-white flex flex-col"
+        >
+          <div className="carImage inline-block relative overflow-hidden w-full h-auto">
+            <img
+              loading="lazy"
+              src={`http://localhost:5000/${featuredImage}`}
+              className="cardImage cursor-pointer relative max-[1160px]:h-[1890px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
+              alt="Card image"
+            />
+            <span className={`absolute top-[10px] -left-[45px] -rotate-45 w-[130px] text-center z-10 ${carAvailability === "Available" ? "bg-green-600": "bg-red-600"} py-[5px] px-[1vw]  text-white text-[12px]`} >
+              {carAvailability}
+            </span>
+          </div>
+          <div className="cardContent w-full h-auto flex flex-col">
+            <div className="cardbody w-full h-auto flex gap-1 p-4 flex-col border-b border-b-gray-600 justify-center">
+              <h3 id="carName" className="carName text-lg tracking-wider font-semibold">
+                
+                {truncateText(carTitle, 25)}
+              </h3>
+              <p className="carPrice font-extrabold text-2xl">${carPrice}</p>
+            </div>
+            <div className="cardfooter w-full h-auto flex p-4 text-sm items-center gap-5">
+              <button className="w-fit h-fit py-1 px-2 font-semibold text-md text-white bg-orange-600 rounded-lg">
+                {carYear}
+              </button>
+              <p className="miles text-gray-500">{carMileage} miles</p>
+              <p className="transmission text-gray-500">{carTransmission}</p>
+              <p className="transmission text-gray-500">{carFuelType}</p>
+            </div>
+          </div>
+        </div>
+      ))} */}
       </Slider>
       <div className="btns flex justify-between p-4 max-[500px]:flex-col max-[500px]:items-center max-[500px]:w-full gap-3 w-full">
         <div className="flex gap-6 w-[80px]  max-[500px]:h-[70px] ml-4 max-[500px]:justify-center relative">
