@@ -97,15 +97,15 @@ const ProductPreview = () => {
                   ${cardData.carPrice}
                 </h3>
               </div>
-              <div className="features w-full mt-5  rounded-2xl bg-blue-50 max-[700px]:p-1 p-3 flex-col flex">
+              <div className="features w-full mt-4  rounded-2xl bg-blue-50 max-[700px]:p-1 p-3 flex-col flex">
                 <div className="flex w-full p-2  justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Makes
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {" "}
                       {cardData.carMake}
                     </p>
@@ -113,12 +113,12 @@ const ProductPreview = () => {
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Color:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {" "}
                       {cardData.carColour}
                     </p>
@@ -126,12 +126,12 @@ const ProductPreview = () => {
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Transmission:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {" "}
                       {cardData.carTransmission}
                     </p>
@@ -139,12 +139,12 @@ const ProductPreview = () => {
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Condition:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {" "}
                       {cardData.carCondition}
                     </p>
@@ -152,12 +152,12 @@ const ProductPreview = () => {
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Year:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {" "}
                       {cardData.carYear}
                     </p>
@@ -165,36 +165,36 @@ const ProductPreview = () => {
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Mileage:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {cardData.carMileage}
                     </p>
                   </div>
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Fuel Type:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {cardData.carFuelType}
                     </p>
                   </div>
                 </div>
                 <div className="flex w-full p-2 justify-between">
                   <div className="w-[50%] ">
-                    <h4 className="text-lg  max-[500px]:text-[14px] font-semibold ">
+                    <h4 className="text-md  max-[500px]:text-[14px] font-semibold ">
                       Doors:
                     </h4>
                   </div>
                   <div className="w-[50%]">
-                    <p className="text-lg  max-[500px]:text-[14px] ">
+                    <p className="text-md  max-[500px]:text-[14px] ">
                       {cardData.carDoor}
                     </p>
                   </div>
@@ -237,7 +237,7 @@ const ProductPreview = () => {
         </div>
       </div>
 
-      <div className="vehicleHistory max-[1200px]:w-[95%] max-[890px]:w-[99%] flex items-end max-[700px]:justify-center max-[1200px]:mx-auto w-[60%] h-[300px] rounded-2xl bg-gray-200">
+      <div className="vehicleHistory max-[1200px]:w-[95%] max-[890px]:w-[99%] flex items-end max-[700px]:justify-center max-[1200px]:mx-auto w-[60%] h-[280px] ml-2 rounded-2xl bg-gray-200">
         <div className="pl-4 border-t items-center border-gray-100 max-[700px]:flex-col  max-[700px]:gap-3 flex  justify-between">
           <div className="w-[32%] max-[700px]:w-[80%] max-[700px]:items-center  max-[700px]:justify-center p-3 flex flex-col gap-5 ">
             <h4 className="text-2xl font-bold ">Vehicle History</h4>

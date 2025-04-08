@@ -155,10 +155,10 @@ if (req.body.carSafetyFeatures) {
 export const updateCar = async (req, res) => {
   try {
     const { id } = req.params;
-
+    console.log('Headers:', req.headers['content-type']);
     console.log('Updating car with ID:', id);
     console.log('BODY:', req.body);
-    console.log('FILES:', req.files);
+    console.log('FILES:', JSON.stringify(req.files));
 
     const {
       carTitle,
@@ -179,9 +179,6 @@ export const updateCar = async (req, res) => {
       carVin,
       carAvailability,
       carDescription,
-      featuredImage,
-      galleryImages,
-      attachmentImage,
       carAllFeatures,
       carSafetyFeatures,
     } = req.body;
@@ -193,9 +190,10 @@ export const updateCar = async (req, res) => {
       parsedCarAllFeatures = JSON.parse(carAllFeatures);
     }
     let parsedCarSafetyFeatures = [];
-    if (carAllFeatures) {
-      parsedCarSafetyFeatures = JSON.parse(carAllFeatures);
+    if (carSafetyFeatures) {
+      parsedCarSafetyFeatures = JSON.parse(carSafetyFeatures);
     }
+    
 
       //  Prepare updated 
       const updatedFields = {
@@ -217,9 +215,6 @@ export const updateCar = async (req, res) => {
         carVin,
         carAvailability,
         carDescription,
-        featuredImage,
-        galleryImages,
-        attachmentImage,
         carAllFeatures,
         carSafetyFeatures,
       };
@@ -232,18 +227,26 @@ export const updateCar = async (req, res) => {
       updatedFields.carSafetyFeatures = parsedCarSafetyFeatures;
     }
 
-    // Handle Images
-    if (req.files?.featuredImage) {
-      updatedFields.featuredImage = req.files.featuredImage[0].filename;
-    }
+    let parsedFeaturedImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
+    updatedFields.featuredImage = parsedFeaturedImage.split('"')[1]
+let parsedgalleryImages = req.files['galleryImages'].map((image) => image.path.replace(/\\/g, '/'));
+  updatedFields.galleryImages = parsedgalleryImages;
+let parsedAttachmentImage = req.files['attachmentImage'] ? req.files['attachmentImage'][0].path.replace(/\\/g, '/') : null;
+   updatedFields.attachmentImage = parsedAttachmentImage ? JSON.stringify(parsedAttachmentImage).split('"')[1] : null;
+          
 
-    if (req.files?.attachmentImage) {
-      updatedFields.attachmentImage = req.files.attachmentImage[0].filename;
-    }
+    // // Handle Images
+    // if (req.files?.featuredImage) {
+    //   updatedFields.featuredImage = req.files.featuredImage[0].filename;
+    // }
 
-    if (req.files?.galleryImages) {
-      updatedFields.galleryImages = req.files.galleryImages.map((file) => file.filename);
-    }
+    // if (req.files?.attachmentImage) {
+    //   updatedFields.attachmentImage = req.files.attachmentImage[0].filename;
+    // }
+
+    // if (req.files?.galleryImages) {
+    //   updatedFields.galleryImages = req.files.galleryImages.map((file) => file.filename);
+    // }
 
 // findByIdAndUpdate 
 const updatedCar = await Car.findByIdAndUpdate(id, updatedFields, { new: true });

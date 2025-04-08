@@ -95,11 +95,12 @@ const SearchPage = () => {
   const carsPerPage = 5;
 
   const handleSearch = () => {
+    
     let results = filteredCars;
+    console.log(results);
 
     if (makeFilter) {
       results = results.filter(car => car.carMake?.toLowerCase().includes(makeFilter?.toLowerCase()));
-    
     }
     if (typeFilter) {
       results = results.filter(car => car.carModel?.toLowerCase().includes(typeFilter?.toLowerCase()));
@@ -111,12 +112,17 @@ const SearchPage = () => {
       results = results.filter(car => car.carPrice <= parseInt(maxPrice));
     }
     if (condition) {
-      results = results.filter(car => car.carCondition?.toLowerCase().includes(carCondition?.toLowerCase()));
+      results = results.filter(car => car.carCondition?.toLowerCase().includes(condition?.toLowerCase()));
     }
+
+    console.log(results);
+    
 
     setFilteredCars(results);
     setCurrentPage(1);
   };
+  console.log(filteredCars);
+  
 
   // Pagination Logic
   const indexOfLastCar = currentPage * carsPerPage;
@@ -394,7 +400,7 @@ const SearchPage = () => {
               </div>
 
               <div>
-                <h3 className="font-bold text-2xl uppercase">{carTitle}</h3>
+                <h3 className="font-bold text-2xl uppercase">{car.carTitle}</h3>
                 <p className="text-gray-500 text-md mb-2">{car.carFeatures}</p>
 
                 <div className="flex items-center gap-3 text-sm text-gray-500">

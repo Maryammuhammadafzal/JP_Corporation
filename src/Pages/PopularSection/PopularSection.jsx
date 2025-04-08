@@ -3,8 +3,14 @@ import Heading from "../../Components/Heading/Heading";
 import PopularCard from "../../Components/PopularCard/PopularCard";
 import SocialIcons from "../../Components/SocialIcons/SocialIcons";
 import Button from "../../Components/Button/Button";
+import { useNavigate } from "react-router-dom";
 
 const PopularSection = () => {
+  let navigate = useNavigate()
+
+  let veiwAllCars = () => {
+    navigate("/search")
+  }
   return (
     <div className="w-full  min-h-screen bg-gray-100 flex  justify-center flex-col items-center">
       <div className="w-[95%] max-[900px]:w-[98%] min-h-screen bg-gray-100 flex justify-center items-center flex-col ">
@@ -16,7 +22,7 @@ const PopularSection = () => {
 </div>
 <div className="viewSection flex justify-end max-[768px]:justify-center max-[700px]:gap-5 max-[700px]:mt-0  mt-3 w-full h-auto p-3 items-center">
         <div className="viewButton max-[700px]:w-full">
-                <Button text="View All"/>
+                <Button text="View All"  onClick={veiwAllCars}/>
         </div>
 </div>
       </div>

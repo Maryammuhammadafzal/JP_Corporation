@@ -11,26 +11,27 @@ const AddListingForm = () => {
   const [selectedAllFeatures, setSelectedAllFeatures] = useState([]);
   const [selectedSafetyFeatures, setselectedSafetyFeatures] = useState([]);
 
-  const toggleCheckbox = (featureId) => {
-    if (selectedAllFeatures.includes(featureId)) {
+  // Handle Features 
+  const toggleCheckbox = (featureValue) => {
+    if (selectedAllFeatures.includes(featureValue)) {
       setSelectedAllFeatures(
-        selectedAllFeatures.filter((id) => id !== featureId)
+        selectedAllFeatures.filter((value) => value !== featureValue)
       );
     } else {
-      setSelectedAllFeatures([...selectedAllFeatures, featureId]);
+      setSelectedAllFeatures([...selectedAllFeatures, featureValue]);
     }
   };
-
-  const toggleSafetyCheckbox = (featureId) => {
-    if (selectedSafetyFeatures.includes(featureId)) {
+  const toggleSafetyCheckbox = (featureValue) => {
+    if (selectedSafetyFeatures.includes(featureValue)) {
       setselectedSafetyFeatures(
-        selectedSafetyFeatures.filter((id) => id !== featureId)
+        selectedSafetyFeatures.filter((value) => value !== featureValue)
       );
     } else {
-      setselectedSafetyFeatures([...selectedSafetyFeatures, featureId]);
+      setselectedSafetyFeatures([...selectedSafetyFeatures, featureValue]);
     }
   };
 
+  // Handle Input Reference
   const titleRef = useRef(null);
   const conditionRef = useRef(null);
   const typeRef = useRef(null);
@@ -49,31 +50,26 @@ const AddListingForm = () => {
   const vinRef = useRef(null);
   const availabilityRef = useRef(null);
   const descriptionRef = useRef(null);
-  console.log(descriptionRef);
 
+  // Handle Images
   const handleFeaturedChange = (e) => {
     setFeaturedImage(e.target.files[0]);
     console.log(e.target.files[0]);
   };
-
   const handleAttachmentChange = (e) => {
     setAttachmentImage(e.target.files[0]);
     console.log(e.target.files[0]);
   };
-
   const handleGalleryChange = (e) => {
-    // setGalleryImages([...e.target.files]);
     setGalleryImages([...e.target.files]);
-
-    console.log([...e.target.files]);
   };
-  console.log(galleryImages);
-  
 
+// Submit Listing Form
   const SubmitDetail = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
+    // All Inputs
     formData.append("carTitle", titleRef.current.value);
     formData.append("carCondition", conditionRef.current.value);
     formData.append("carType", typeRef.current.value);
@@ -100,16 +96,16 @@ const AddListingForm = () => {
     // Images
     formData.append("featuredImage", featuredImage);
     formData.append("attachmentImage", attachmentImage);
-    
-    for (let i = 0; i < galleryImages.length; i++) {
-      formData.append('galleryImages', galleryImages[i]);
-    }
 
+    for (let i = 0; i < galleryImages.length; i++) {
+      formData.append("galleryImages", galleryImages[i]);
+    }
 
     for (let pairs of formData.entries()) {
       console.log(pairs[0], pairs[1]);
     }
 
+    // Post Api Call
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.post(
@@ -145,7 +141,9 @@ const AddListingForm = () => {
       makeRef.current.value = "";
 
       // Reset file inputs
-      document.getElementById("image").value = "";
+      document.getElementById("featuredImage").value = "";
+      document.getElementById("galleryImages").value = "";
+      document.getElementById("attachmentImage").value = "";
 
       // Reset checkboxes
       document
@@ -154,7 +152,9 @@ const AddListingForm = () => {
           checkbox.checked = false;
         });
 
+        // Redirect to dashboard
       window.location.href = "/dashboard";
+
     } catch (error) {
       console.error(error);
       alert("Error");
@@ -162,14 +162,18 @@ const AddListingForm = () => {
   };
   return (
     <div className="w-full flex flex-col mx-auto rounded-md p-3">
+      {/* Add Listing Heading */}
       <div className="flex justify-between items-center p-6 mb-4">
         <h1 className="text-3xl font-bold">Add Details</h1>
       </div>
+
+      {/* Add Listing Form */}
       <form
         onSubmit={SubmitDetail}
-        className="form  w-full h-auto p-3  flex flex-col gap-5"
+        className="form w-full h-auto p-3 flex flex-col gap-5"
       >
         <div className="p-6 border rounded-md text-sm text-gray-600 w-full h-auto">
+          {/* Title Input */}
           <div className="w-full">
             <label htmlFor="title" className="w-full">
               <p>
@@ -185,8 +189,9 @@ const AddListingForm = () => {
             </label>
           </div>
           <div className="w-full flex justify-between flex-wrap my-3">
+            {/* Condition Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
+              <label htmlFor="condition" className="w-full">
                 <p>
                   Condition <sup className="text-orange-700">*</sup>
                 </p>
@@ -226,7 +231,7 @@ const AddListingForm = () => {
                   Type <sup className="text-orange-700">*</sup>
                 </p>
                 <select
-                  id="condition"
+                  id="type"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Type"
                   ref={typeRef}
@@ -335,7 +340,7 @@ const AddListingForm = () => {
 
             {/* Make Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="type" className="w-full">
+              <label htmlFor="make" className="w-full">
                 <p>Make</p>
                 <select
                   id="make"
@@ -471,10 +476,10 @@ const AddListingForm = () => {
 
             {/* Model Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="title" className="w-full">
+              <label htmlFor="model" className="w-full">
                 <p>Model</p>
                 <select
-                  id="condition"
+                  id="model"
                   className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
                   placeholder="Select Model"
                   ref={modelRef}
@@ -517,7 +522,7 @@ const AddListingForm = () => {
                   >
                     TREZIA
                   </option>
-                 
+
                   <option
                     value="CAMRY"
                     className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
@@ -1288,7 +1293,7 @@ const AddListingForm = () => {
 
             {/* Availabilty Input */}
             <div className="w-[370px] my-3">
-              <label htmlFor="avaialability" className="w-full">
+              <label htmlFor="availability" className="w-full">
                 <p>Availability</p>
                 <select
                   id="availability"
@@ -1322,7 +1327,7 @@ const AddListingForm = () => {
           </div>
           {/* Description */}
           <div className="w-full">
-            <label htmlFor="title" className="w-full">
+            <label htmlFor="description" className="w-full">
               <p>Description </p>
               <textarea
                 id="description"
@@ -1333,14 +1338,14 @@ const AddListingForm = () => {
           </div>
         </div>
 
+        {/* Featured Image */}
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Feature Image</h1>
         </div>
-
         <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
           <div className="flex flex-col gap-2 space-y-4">
             Upload Featured Image
-            <label htmlFor="" className="w-full h-auto flex">
+            <label htmlFor="featuredImage" className="w-full h-auto flex">
               {/* Custom Button */}
               <button
                 type="button"
@@ -1360,14 +1365,15 @@ const AddListingForm = () => {
             </label>
           </div>
         </div>
+
+        {/* Gallery Images */}
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Gallery</h1>
         </div>
-
         <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
           <div className="flex flex-col gap-2 space-y-4">
             Upload Gallery Image
-            <label htmlFor="" className="w-full h-auto flex">
+            <label htmlFor="galleryImages" className="w-full h-auto flex">
               <button
                 type="file"
                 className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
@@ -1377,7 +1383,7 @@ const AddListingForm = () => {
 
               <input
                 type="file"
-                id="image"
+                id="galleryImages"
                 multiple
                 onChange={handleGalleryChange}
                 className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
@@ -1386,14 +1392,14 @@ const AddListingForm = () => {
           </div>
         </div>
 
+        {/* Attachment Image */}
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Attachements</h1>
         </div>
-
         <div className="imageInpput border text-sm rounded-md w-full h-auto p-10 ">
           <div className="flex flex-col gap-2 space-y-4">
             Upload Attachement
-            <label htmlFor="" className="w-full h-auto flex">
+            <label htmlFor="attachmentImage" className="w-full h-auto flex">
               <button
                 type="button"
                 className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
@@ -1403,7 +1409,7 @@ const AddListingForm = () => {
 
               <input
                 type="file"
-                id="image"
+                id="attachmentImage"
                 onChange={handleAttachmentChange}
                 className="border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
               />
@@ -1411,10 +1417,10 @@ const AddListingForm = () => {
           </div>
         </div>
 
+        {/* All Features */}
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Features</h1>
         </div>
-
         <div className="card p-6 flex  border rounded-md ">
           <div className="row flex flex-wrap m-2">
             <div className="card-body p-4 flex flex-wrap">
@@ -1429,14 +1435,14 @@ const AddListingForm = () => {
                       type="checkbox"
                       name="selectedAllFeatures[]"
                       value={feature.value}
-                      id={feature.id}
-                      checked={selectedAllFeatures.includes(feature.id)}
-                      onChange={() => toggleCheckbox(feature.id)}
+                      id={feature.value}
+                      checked={selectedAllFeatures.includes(feature.value)}
+                      onChange={() => toggleCheckbox(feature.value)}
                     />
                     <label
                       className="form-check-label"
-                      htmlFor={feature.id}
-                      onClick={() => toggleCheckbox(feature.id)}
+                      htmlFor={feature.value}
+                      onClick={() => toggleCheckbox(feature.value)}
                     >
                       {feature.label}
                     </label>
@@ -1451,7 +1457,6 @@ const AddListingForm = () => {
         <div className="flex justify-between items-center p-6 mb-4">
           <h1 className="text-3xl font-bold">Safety Features</h1>
         </div>
-
         <div className="card p-6 flex  border rounded-md ">
           <div className="row flex flex-wrap m-2">
             <div className="card-body p-4 flex flex-wrap">
@@ -1466,14 +1471,14 @@ const AddListingForm = () => {
                       type="checkbox"
                       name="selectedSafetyFeatures[]"
                       value={feature.value}
-                      id={feature.id}
-                      checked={selectedAllFeatures.includes(feature.id)}
-                      onChange={() => toggleSafetyCheckbox(feature.id)}
+                      id={feature.value}
+                      checked={selectedSafetyFeatures.includes(feature.value)}
+                      onChange={() => toggleSafetyCheckbox(feature.value)}
                     />
                     <label
                       className="form-check-label"
-                      htmlFor={feature.id}
-                      onClick={() => toggleSafetyCheckbox(feature.id)}
+                      htmlFor={feature.value}
+                      onClick={() => toggleSafetyCheckbox(feature.value)}
                     >
                       {feature.label}
                     </label>
@@ -1483,6 +1488,8 @@ const AddListingForm = () => {
             </div>
           </div>
         </div>
+
+        {/* Add Listing Button */}
         <div className="button w-full flex justify-start items-center p-6">
           <Button text="Add Listing" type="submit" />
         </div>
