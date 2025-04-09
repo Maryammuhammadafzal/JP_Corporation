@@ -1,12 +1,8 @@
 import React, {useState , useEffect} from 'react'
 import Footer from '../Footer/Footer'
 import Navbar from '../../Components/Navbar/Navbar'
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
 
 const SearchPage = () => {
-  const location = useLocation();
   const queryParams = new URLSearchParams(window.location.search);
   const typeFromQuery = queryParams.get('type');
   let type = typeFromQuery?.toUpperCase()

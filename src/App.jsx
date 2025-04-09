@@ -1,6 +1,4 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React from "react";
 import "./App.css";
 import Home from "./Pages/Home/Home";
 import AboutPage from "./Pages/AboutPage/AboutPage";
@@ -13,13 +11,8 @@ import AdminLogin from "./Pages/AdminPage/AdminLogin/AdminLogin";
 import AdminDashboard from "./Pages/AdminPage/AdminDashboard/AdminDashboard";
 import AddListing from "./Pages/AdminPage/AddListing/AddListing";
 import EditListing from "./Pages/AdminPage/EditListing/EditListing";
-import ManageModal from "./Pages/AdminPage/ManageModal/ManageModal";
-import ModalForm from "./Pages/AdminPage/ManageModal/ModalForm/ModalForm";
 import ModalListing from "./Pages/AdminPage/ManageModal/ModalListing/ModalListing";
-import EditModalForm from "./Pages/AdminPage/ManageModal/EditModal/EditModalForm/EditModalForm";
 import EditModal from "./Pages/AdminPage/ManageModal/EditModal/EditModal";
-import CapLinks from "./Pages/AdminPage/CapLinks/CapLinks";
-import CapLinksListing from "./Pages/AdminPage/CapLinks/CapLinksListing/CapLinksListing";
 import EditCapLinks from "./Pages/AdminPage/CapLinks/EditCapLinks/EditCapLinks";
 import SearchPage from "./Pages/SearchPage/SearchPage";
 import GenerateCapLinks from "./Pages/AdminPage/CapLinks/GenerateCapLinks/GenerateCapLinks";
@@ -40,10 +33,10 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/listing/add-listing" element={<AddListing />} />
           <Route path="/listing/edit-listing/get/:id" element={<EditListing />} />
-          <Route path="/dashboard/manage-modal" element={<ManageModal />} />
+          <Route path="/dashboard/manage-modal" element={<AdminDashboard />} />
           <Route path="/model-listing/add-model-listing" element={<ModalListing />} />
           <Route path="/modal-listing/edit-modal-listing/get/:id" element={<EditModal />} />
-          <Route path="/dashboard/cap-links" element={<CapLinks />} />
+          <Route path="/dashboard/cap-links" element={<AdminDashboard />} />
           <Route path="/cap-links-listing/add-cap-links-listing" element={<GenerateCapLinks />} />
           <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<EditCapLinks />} />
         </Routes>
