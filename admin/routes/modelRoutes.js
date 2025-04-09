@@ -1,6 +1,6 @@
 import express from 'express';
 import verifyToken from '../middlewares/tokenVerify.js';
-import { addModal , getModal , deleteModal , getModalById , updateModal  } from '../controllers/modelController.js'
+import { addModal , getModal , deleteModal , getModalById , updateModal , getModalByMake  } from '../controllers/modelController.js'
 
 const router = express.Router();
 
@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/add' , addModal);
 router.get('/' , getModal);
 router.get('/get/:id' , getModalById);
+router.get('/getModal/:modalMake' , getModalByMake);
 router.put('/update/:id' , updateModal);
 router.delete('/delete/:id', deleteModal);
 

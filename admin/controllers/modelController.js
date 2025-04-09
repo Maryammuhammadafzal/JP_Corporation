@@ -32,6 +32,28 @@ export const getModalById = async (req, res) => {
             res.status(500).json({ message: "Server error" });
           }
     };
+
+    // Get Modal By Make
+export const getModalByMake = async (req, res) => {
+  try {
+    const make = req.params.modalMake;
+    console.log("Make" , make);
+  
+    const getModalByMake = await Modal.find({ modalMake : make});     
+        
+            if (!getModalByMake) {
+              return res.status(404).json({ message: "modal not found" });
+            }
+
+            console.log(getModalByMake);
+            
+        
+            res.status(200).json(getModalByMake);
+          } catch (error) {
+            console.error("Error fetching modal by Make:", error);
+            res.status(500).json({ message: "Server error" });
+          }
+    };
     
     // Delete Modal
 export const deleteModal =  async (req, res) => {

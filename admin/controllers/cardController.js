@@ -83,11 +83,6 @@ export const postCar = async (req, res) => {
 let featuredImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
 let parsedFeaturedImage = featuredImage.split('"')[1]
 let parsedgalleryImages = req.files['galleryImages'].map((image) => image.path.replace(/\\/g, '/'));
-console.log(parsedgalleryImages);
-// req.files['galleryImages'].map((file) =>
-//   file.path.replace(/\\/g, '/')
-// );
-// let parsedgalleryImages = galleryImages.split('"')[1]
 let attachmentImage = req.files['attachmentImage']
     ? req.files['attachmentImage'][0].path.replace(/\\/g, '/')
     : null;
@@ -101,6 +96,8 @@ if (req.body.carAllFeatures) {
   console.log('No allFeatures provided');
 }
           let parsedCarSafetyFeatures = [];
+          console.log(req.body.carSafetyFeatures);
+          
 if (req.body.carSafetyFeatures) {
   parsedCarSafetyFeatures = JSON.parse(req.body.carSafetyFeatures);
 } else {

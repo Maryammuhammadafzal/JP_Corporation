@@ -12,6 +12,8 @@ const EditListingForm = ({ carId }) => {
   const [carSafetyFeatures, setCarSafetyFeatures] = useState([]);
   const [carData, setCarData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [make, setMake] = useState(null);
+  const [modals, setModals] = useState("");
 
   // Fetch car data on mount
   useEffect(() => {
@@ -62,7 +64,7 @@ const EditListingForm = ({ carId }) => {
       } else {
         safetyFeaturesArray = []; // Default fallback if null or unexpected type
       }
-      // Set Call All Features
+      // Set Car All Features
       setCarSafetyFeatures(safetyFeaturesArray);
     }
   }, [carData]);
@@ -166,6 +168,22 @@ const EditListingForm = ({ carId }) => {
       });
     }
   };
+
+  // Fetch Modal By Make Api Call
+  const fetchModalByMake = async (make) => {
+    const response = await axios.get(
+      `http://localhost:5000/api/model/getModal/${make}`
+    );
+    const data = await response.data;
+    console.log(data);
+    setModals(data);
+  };
+  const handleMake = (e) => {
+    setMake(e.target.value);
+    console.log(e.target.value);
+    fetchModalByMake(e.target.value);
+  };
+
   //  Update Listing Function
   const updateDetail = async () => {
     const formData = new FormData();
@@ -270,9 +288,9 @@ const EditListingForm = ({ carId }) => {
             </label>
           </div>
 
-          <div className="w-full flex justify-between flex-wrap my-3">
+          <div className="w-full grid justify-start gap-2 grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 my-3">
             {/* Condition */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="condition" className="w-full">
                 <p>
                   Condition <sup className="text-orange-700">*</sup>
@@ -311,7 +329,7 @@ const EditListingForm = ({ carId }) => {
               </label>
             </div>
             {/* Type */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="type" className="w-full">
                 <p>
                   Type <sup className="text-orange-700">*</sup>
@@ -428,20 +446,15 @@ const EditListingForm = ({ carId }) => {
               </label>
             </div>
             {/* Make Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto  my-3">
               <label htmlFor="make" className="w-full">
-                <p>
-                  Make <sup className="text-orange-700">*</sup>
-                </p>
+                <p>Make</p>
                 <select
                   id="make"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-700 "
                   placeholder="Select make"
                   ref={makeRef}
-                  value={carData.carMake || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carMake: e.target.value })
-                  }
+                  onChange={(e) => handleMake(e)}
                 >
                   <option
                     value=""
@@ -569,66 +582,54 @@ const EditListingForm = ({ carId }) => {
               </label>
             </div>
 
+
+           
             {/* Model Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto mx-2 my-3">
               <label htmlFor="model" className="w-full">
-                <p>
-                  Model <sup className="text-orange-700">*</sup>
-                </p>
+                <p>Model</p>
                 <select
                   id="model"
-                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 "
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-700 "
                   placeholder="Select Model"
                   ref={modelRef}
-                  value={carData.carModel || ""}
-                  onChange={(e) =>
-                    setCarData({ ...carData, carModel: e.target.value })
-                  }
                 >
-                  <option
-                    value=""
-                    selected
-                    disabled
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
-                  >
-                    Select Model
-                  </option>
-                  <option
-                    value="ATS"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    ATS
-                  </option>
-                  <option
-                    value="CT6"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    CT6
-                  </option>
-                  <option
-                    value="CTS"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    CTS
-                  </option>
-                  <option
-                    value="Escalade"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    Escalade
-                  </option>
-                  <option
-                    value="xt5"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    xt5
-                  </option>
+                  {makeRef.current === null ? (
+                    <option
+                      value=""
+                      selected
+                      disabled
+                      className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                    >
+                      Select Make First
+                    </option>
+                  ) : (
+                    <>
+                      <option
+                        value=""
+                        selected
+                        disabled
+                        className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                      >
+                        Select Model
+                      </option>
+                      {modals &&
+                        modals.map(({modalTitle} , index) => (
+                          <option
+                          key={index}
+                            value={modalTitle}
+                            className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                          >
+                            {modalTitle}
+                          </option>
+                        ))}
+                    </>
+                  )}
                 </select>
               </label>
             </div>
-
             {/*Price Input  */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="price" className="w-full">
                 <p>Price (USD)</p>
                 <input
@@ -644,7 +645,7 @@ const EditListingForm = ({ carId }) => {
               </label>
             </div>
             {/* Year Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="year" className="w-full">
                 <p>
                   Year <sup className="text-orange-700">*</sup>
@@ -663,7 +664,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Drive Type Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="driveType" className="w-full">
                 <p>Drive Type</p>
                 <select
@@ -725,7 +726,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Transmission Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="transmission" className="w-full">
                 <p>Select Transmission</p>
                 <select
@@ -781,7 +782,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Fuel Type Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="fuelType" className="w-full">
                 <p>Fuel Type</p>
                 <select
@@ -832,18 +833,12 @@ const EditListingForm = ({ carId }) => {
                   >
                     PETROL
                   </option>
-                  <option
-                    value="PETROL"
-                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                  >
-                    PETROL
-                  </option>
                 </select>
               </label>
             </div>
 
             {/* Mileage Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="mileage" className="w-full">
                 <p>Mileage</p>
                 <input
@@ -861,7 +856,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Engine Size Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="engineSize" className="w-full">
                 <p>Enter Engine Size</p>
                 <input
@@ -878,7 +873,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Cylinder Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="cylinder" className="w-full">
                 <p>Select Cylinders</p>
                 <select
@@ -922,7 +917,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Colours Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="colours" className="w-full">
                 <p>Select Colours</p>
                 <select
@@ -1027,7 +1022,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Door Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="door" className="w-full">
                 <p>Doors</p>
                 <select
@@ -1083,7 +1078,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Vin Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="vin" className="w-full">
                 <p>Vin</p>
                 <input
@@ -1101,7 +1096,7 @@ const EditListingForm = ({ carId }) => {
             </div>
 
             {/* Availabilty Input */}
-            <div className="w-[370px] my-3">
+            <div className="w-auto my-3">
               <label htmlFor="availability" className="w-full">
                 <p>Availability</p>
                 <select
@@ -1308,16 +1303,16 @@ const EditListingForm = ({ carId }) => {
         </div>
 
         {/* All Features */}
-        <div className="flex justify-between items-center p-6 mb-4">
+        <div className="flex justify-between items-center p-3 mb-4">
           <h1 className="text-3xl font-bold">Features</h1>
         </div>
-        <div className="card p-6 flex  border rounded-md ">
+        <div className="card pt-3 flex  border rounded-md ">
           <div className="row flex flex-wrap m-2">
-            <div className="card-body p-4 flex flex-wrap">
+            <div className="card-body p-3 grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
               {AllFeatures.map((feature) => (
                 <div
                   key={feature.id}
-                  className="col-md-4 mb-3 w-[360px] px-3 py-1"
+                  className="col-md-4 mb-3 w-auto text-sm font-semibold text-neutral-700 px-3 py-1"
                 >
                   <div className="form-check">
                     <input
@@ -1342,16 +1337,16 @@ const EditListingForm = ({ carId }) => {
         </div>
 
         {/* Safety Features */}
-        <div className="flex justify-between items-center p-6 mb-4">
+        <div className="flex justify-between items-center p-3 mb-4">
           <h1 className="text-3xl font-bold">Safety Features</h1>
         </div>
-        <div className="card p-6 flex  border rounded-md ">
+        <div className="card pt-3 flex  border rounded-md ">
           <div className="row flex flex-wrap m-2">
-            <div className="card-body p-4 flex flex-wrap">
+            <div className="card-body p-3 grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
               {safetyFeatures.map((feature) => (
                 <div
                   key={feature.id}
-                  className="col-md-4 mb-3 w-[360px] px-3 py-1"
+                  className="col-md-4 mb-3 w-auto text-sm font-semibold text-neutral-700  px-3 py-1"
                 >
                   <div className="form-check">
                     <input

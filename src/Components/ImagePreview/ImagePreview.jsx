@@ -170,7 +170,7 @@ const GalleryCarousel = ({ galleryImages = [] }) => {
               <img
                 src={`http://localhost:5000/${image}`}
                 alt={image}
-                className="w-full h-[400px] object-cover rounded-lg"
+                className="w-full h-[500px] object-cover rounded-lg"
               />
             </div>
           ))}
@@ -185,7 +185,7 @@ const GalleryCarousel = ({ galleryImages = [] }) => {
               <img
                 src={`http://localhost:5000/${image}`}
                 alt={`Thumb ${index}`}
-                className="w-full opacity-50 hover:opacity-100 h-[130px] object-cover rounded-lg border-2 active:border-orange-600 border-gray-300 hover:border-orange-600 transition"
+                className="w-full opacity-50 hover:opacity-100 h-[150px] object-cover rounded-lg border-2 active:border-orange-600 border-gray-300 hover:border-orange-600 transition"
               />
             </div>
           ))}

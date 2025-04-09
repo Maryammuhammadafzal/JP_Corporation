@@ -6,8 +6,6 @@ import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 
 
 const ModalForm = () => {
-        const detailsArray = [];
-        const [details, setDetails] = useState(detailsArray);
 
 
   const titleRef = useRef(null);
@@ -16,11 +14,10 @@ const ModalForm = () => {
   
 
   const submitModal = async () => {
-    const formData = new FormData();
   
   const payload = {
-        modalMake: makeRef.current.value,
-        modalTitle: titleRef.current.value
+        modalMake: makeRef.current.value.toUpperCase(),
+        modalTitle: titleRef.current.value.toUpperCase()
       };
     console.log(payload);
     
@@ -75,115 +72,138 @@ const ModalForm = () => {
 
            {/* Make Input */}
            <div className="w-1/2 my-3">
-           <label htmlFor="title" className="w-full">
-              <p>
-                Modal Make <sup className="text-orange-700">*</sup>
-              </p>
-              <select
-                id="make"
-                className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
-                placeholder="Select make"
-                ref={makeRef}
-              >
-                <option
-                  value=""
-                  selected
-                  disabled
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+              <label htmlFor="make" className="w-full">
+                <p>Make</p>
+                <select
+                  id="make"
+                  className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-400 "
+                  placeholder="Select make"
+                  ref={makeRef}
+                  onChange={(e) =>handleMake(e)}
                 >
-                  Select Make
-                </option>
-                <option
-                  value="BUS"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  BUS
-                </option>
-                <option
-                  value="CONVERTIBLE"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  CONVERTIBLE
-                </option>
-                <option
-                  value="COUPE"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  COUPE
-                </option>
-                <option
-                  value="DUMP-TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  DUMP-TRUCK
-                </option>
-                <option
-                  value="FLAT BODY TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  FLAT BODY TRUCK
-                </option>
-                <option
-                  value="FREEZER BOX"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  FREEZER BOX
-                </option>
-                <option
-                  value="HATCHBACK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  HATCHBACK
-                </option>
-                <option
-                  value="MIN VAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  MIN VAN
-                </option>
-                <option
-                  value="MUV"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  MUV
-                </option>
-                <option
-                  value="PICKUP TRUCK"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  PICK UP TRUCK
-                </option>
-                <option
-                  value="SEDAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  SEDAN
-                </option>
-                <option
-                  value="STATION WAGON"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  STATION WAGON
-                </option>
-                <option
-                  value="SUV"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  SUV
-                </option>
-                <option
-                  value="VAN"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  VAN
-                </option>
-                <option
-                  value="WAGON"
-                  className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
-                >
-                  WAGON
-                </option>
-              </select>
+                  <option
+                    value=""
+                    selected
+                    disabled
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                  >
+                    Select Make
+                  </option>
+                  <option
+                    value="AUDI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    AUDI
+                  </option>
+                  <option
+                    value="BENTLEY"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BENTLEY
+                  </option>
+                  <option
+                    value="BMW"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    BMW
+                  </option>
+                  <option
+                    value="CADILLAC"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CADILLAC
+                  </option>
+                  <option
+                    value="CHEVROLET"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    CHEVROLET
+                  </option>
+                  <option
+                    value="FARRARI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FARRARI
+                  </option>
+                  <option
+                    value="FORD"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    FORD
+                  </option>
+                  <option
+                    value="HINO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HINO
+                  </option>
+                  <option
+                    value="HONDA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    HONDA
+                  </option>
+                  <option
+                    value="ISUZU"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    ISUZU
+                  </option>
+                  <option
+                    value="LEXUS"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    LEXUS
+                  </option>
+                  <option
+                    value="MAZDA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MAZDA
+                  </option>
+                  <option
+                    value="MERCEDES-BENZ"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MERCEDES-BENZ
+                  </option>
+                  <option
+                    value="MISTUBISHI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    MISTUBISHI
+                  </option>
+                  <option
+                    value="NISSAN"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    NISSAN
+                  </option>
+                  <option
+                    value="PORCH"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    PORCH
+                  </option>
+                  <option
+                    value="SUBARO"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUBARO
+                  </option>
+                  <option
+                    value="SUZUKI"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    SUZUKI
+                  </option>
+                  <option
+                    value="TOYOTA"
+                    className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                  >
+                    TOYOTA
+                  </option>
+                </select>
               </label>
             </div>
 
