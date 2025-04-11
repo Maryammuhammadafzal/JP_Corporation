@@ -3,8 +3,8 @@
 export const statusFeatures = [
         {
           id: "feature-1",
-          label: "Your Cap is now available",
-          value: "Your Cap is now available",
+          label: "Your Cap is now available.",
+          value: "Your Cap is now available.",
         },
         {
           id: "feature-2",

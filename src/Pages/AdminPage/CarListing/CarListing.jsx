@@ -1,11 +1,12 @@
 import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios"
+import Copyright from "../../../Components/Copyright/Copyright";
 
 
 const CarListings = () => {
   const [search, setSearch] = useState("");
-  const [entriesPerPage, setEntriesPerPage] = useState(15);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [carData , setCarData] = useState([]);
 
@@ -30,12 +31,10 @@ fetchCarData()
 
  // Filter search
  const filteredCars = allCars.map((car) =>
- {
-  car?.carTitle?.toLowerCase()?.includes(search?.toLowerCase())
- } 
+ {car?.carTitle?.toLowerCase()?.includes(search?.toLowerCase()) } 
   
  );
-
+ console.log(filteredCars);
   // Pagination Logic
   const indexOfLastCar = currentPage * entriesPerPage;
   const indexOfFirstCar = indexOfLastCar - entriesPerPage;
@@ -85,8 +84,9 @@ if(response.status === 200){
   };
 
   return (
-   <div className="w-full h-auto p-10 bg-white rounded-tr-[50px]">
-     <div className=" w-full bg-white h-auto border rounded-md  py-3">
+  <div className="w-full h-full rounded-tr-[50px] flex flex-col overflow-y-auto ">
+   <div className="w-full min-h-[1450px] flex flex-col gap-4 p-5 items-start">
+   <div className="w-full bg-white h-auto border rounded-md my-5 py-3">
       <div className=" flex justify-between items-center border-b p-6 mb-4">
         <h1 className="text-3xl font-bold">Car Listings</h1>
         <button className="bg-orange-600 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={ShowAddListingForm}>Add Listing</button>
@@ -101,7 +101,7 @@ if(response.status === 200){
             onChange={handleEntriesChange}
             className="border p-1 px-2 mx-3 border-gray-400 text-gray-500 rounded"
           >
-            <option value={15}>15</option>
+            <option value={10}>10</option>
             <option value={30}>30</option> 
             <option value={50}>50</option>
             <option value={100}>100</option>
@@ -118,8 +118,8 @@ if(response.status === 200){
         />
       </div>
 
-      <div>
-        <table className="w-full p-3 overflow-x-auto whitespace-nowrap bg-white rounded-lg ">
+      <div className="overflow-x-auto whitespace-nowrap"> 
+        <table className="w-full p-3 bg-white rounded-lg ">
           <thead className="p-3 border-b ">
             <tr >
               <th className="p-3 text-sm">S.No</th>
@@ -164,11 +164,11 @@ if(response.status === 200){
         </table>
       </div>
 
-      <div className=" flex p-6 justify-between items-center">
-        <div className="dataNumber w-auto text-sm text-neutral-600 font-semibold ">
+      <div className=" flex w-full p-6 justify-between items-center">
+        <div className="dataNumber w-auto text-sm text-neutral-600 flex justify-start font-semibold ">
 <p>{`Showing ${indexOfFirstCar} to ${indexOfLastCar} of ${allCars.length} entries`}</p>
         </div>
-<div className="w-auto h-auto ">
+<div className="w-auto flex-justify-end h-auto ">
 <button
     className={`px-2 py-2 mx-1 text-2xl rounded text-neutral-400 font-bold ${currentPage === 1 && 'disabled cursor-not-allowed' }`}
     onClick={goToPreviousPage}
@@ -181,7 +181,7 @@ if(response.status === 200){
   {[...Array(totalPages)].map((_, index) => (
     <button
       key={index + 1}
-      className={`px-4 py-2 mx-1 rounded ${
+      className={`px-4 py-2 mx-1  rounded ${
         currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-300'
       }`}
       onClick={() => goToPage(index + 1)}
@@ -202,9 +202,12 @@ if(response.status === 200){
 </div>
 </div>
     </div>
+
+   <Copyright/>
+   </div>
    </div>
   );
-};
+}
 
 export default CarListings;
 

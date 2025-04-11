@@ -1,4 +1,5 @@
-export const OptionFeatures = [
+
+ const optionFeatures = [
         {
                 id: "feature-1",
                 label: "A/C",
@@ -75,3 +76,5 @@ export const OptionFeatures = [
                 value: "ESC",
               },
 ]
+
+export default optionFeatures

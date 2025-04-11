@@ -16,6 +16,7 @@ import EditModal from "./Pages/AdminPage/ManageModal/EditModal/EditModal";
 import EditCapLinks from "./Pages/AdminPage/CapLinks/EditCapLinks/EditCapLinks";
 import SearchPage from "./Pages/SearchPage/SearchPage";
 import GenerateCapLinks from "./Pages/AdminPage/CapLinks/GenerateCapLinks/GenerateCapLinks";
+import Downloads from "./Components/Downloads/Downloads";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/dashboard/cap-links" element={<AdminDashboard />} />
           <Route path="/cap-links-listing/add-cap-links-listing" element={<GenerateCapLinks />} />
           <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<EditCapLinks />} />
+          <Route path="downloads/:filepath/uploads/:filename" element={<Downloads />} />
         </Routes>
       </BrowserRouter>
     </div>

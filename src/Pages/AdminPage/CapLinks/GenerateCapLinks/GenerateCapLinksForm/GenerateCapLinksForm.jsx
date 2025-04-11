@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import Button from "../../../../../Components/Button/Button";
 import axios from "axios";
 import { statusFeatures } from "../../../../../Components/statusFeatures.js";
-import { OptionFeatures } from "../../../../../Components/optionFeatures.js";
+import  optionFeatures from "../../../../../Components/optionFeatures.js";
 
 const GenerateCapLinksForm = () => {
   const [productFeatureImage, setproductFeatureImage] = useState(null);
@@ -53,7 +53,7 @@ const GenerateCapLinksForm = () => {
     },
     arrival: {
       arrivalVesselRef: useRef(null),
-      ArrivalPartOfDischargeRef: useRef(null),
+      arrivalPartOfDischargeRef: useRef(null),
       arrivalETDRef: useRef(null),
     },
     document: {
@@ -195,13 +195,9 @@ const GenerateCapLinksForm = () => {
     
       // Handle file inputs separately
         formData.append("productFeatureImageRef", productFeatureImage);
-        if (productImages.length > 0) {
-          productImages.forEach((image, index) => {
-            console.log(image);
-            
-              formData.append("productImageRef", image);
-          });
-      }
+        for (let i = 0; i < productImages.length; i++) {
+          formData.append("productImageRef", productImages[i]);
+        }
         formData.append("bLFileRef", blImage);
         formData.append("certificateFileRef", certificateImage);
         formData.append("englishCertificateFileRef", englishCertificateImage);
@@ -397,14 +393,14 @@ try {
                         name="selectedStatusFeatures[]"
                         value={feature.value}
                         id={feature.id}
-                        checked={selectedStatusFeatures.includes(feature.id)}
-                        onChange={() => toggleCheckbox(feature.id)}
+                        checked={selectedStatusFeatures.includes(feature.value)}
+                        onChange={() => toggleCheckbox(feature.value)}
                       />
                       <div>
                         <label
                           className="form-check-label text-sm font-bold text-gray-700"
                           htmlFor={feature.id}
-                          onClick={() => toggleCheckbox(feature.id)}
+                          onClick={() => toggleCheckbox(feature.value)}
                         >
                           {feature.label}
                         </label>
@@ -532,8 +528,8 @@ try {
                     <p>Part Of Discharge</p>
                     <input
                       type="text"
-                      id="PartOfDischarge "
-                      ref={refs.arrival.ArrivalPartOfDischargeRef}
+                      id="PartOfDischarge"
+                      ref={refs.arrival.arrivalPartOfDischargeRef}
                       className=" border-neutral-500 border w-full rounded-md p-3"
                       placeholder=" Part Of Discharge  "
                     />
@@ -705,6 +701,7 @@ try {
                     </label>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -1759,7 +1756,7 @@ try {
               <div className="card p-6 flex  border-neutral-500 rounded-md ">
                 <div className="row flex flex-wrap m-2">
                   <div className="card-body  flex flex-wrap">
-                    {OptionFeatures.map((feature) => (
+                    {optionFeatures.map((feature) => (
                       <div
                         key={feature.id}
                         className="col-md-4 mb-5 w-[280px] px-3 py-1"
@@ -1772,15 +1769,15 @@ try {
                             value={feature.value}
                             id={feature.id}
                             checked={selectedOptionFeatures.includes(
-                              feature.id
+                              feature.value
                             )}
-                            onChange={() => toggleOptionCheckbox(feature.id)}
+                            onChange={() => toggleOptionCheckbox(feature.value)}
                           />
                           <div>
                             <label
                               className="form-check-label text-sm font-bold text-gray-700"
                               htmlFor={feature.id}
-                              onClick={() => toggleOptionCheckbox(feature.id)}
+                              onClick={() => toggleOptionCheckbox(feature.value)}
                             >
                               {feature.label}
                             </label>
@@ -1839,7 +1836,7 @@ try {
                         type="file"
                         id="productImage"
                         multiple
-                        onChange={(e) => handleProductImageChange(e)}
+                        onChange={handleProductImageChange}
                         className=" border-neutral-500 border rounded-br-xl p-3 rounded-tr-xl w-[90%]"
                       />
                     </label>

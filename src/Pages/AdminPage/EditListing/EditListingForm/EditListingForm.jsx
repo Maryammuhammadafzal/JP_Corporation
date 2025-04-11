@@ -112,7 +112,6 @@ const EditListingForm = ({ carId }) => {
   };
   const handleGalleryChange = (e) => {
     newGalleryImages = [...e.target.files];
-    console.log(newGalleryImages);
     
     if (newGalleryImages.length > 0) {
     setGalleryImages(newGalleryImages);
@@ -138,26 +137,10 @@ const EditListingForm = ({ carId }) => {
     let image = document.getElementById("showAttachmentImage");
     image.classList.add("hidden");
   };
-
-  // Handle Features Change
-  const handleFeatureChange = (e, type) => {
-    const { value, checked } = e.target;
-    console.log(e.target);
-    
-    if (type === "allFeatures") {
-      setCarAllFeatures((prevFeatures) => {
-        if (checked) {
-          return [...prevFeatures, value]; //Added ,If Checked
-        } else {
-          return prevFeatures.filter((item) => item !== value); // Removed ,If Not Checked
-        }
-      });
-    }
-  };
+ 
   // Handle Safety Features Change
   const handleSafetyFeatureChange = (e, type) => {
     const { value, checked } = e.target;
-    console.log(e.target);
     if (type === "safetyFeatures") {
       setCarSafetyFeatures((prevSafetyFeatures) => {
         if (checked) {
@@ -175,12 +158,10 @@ const EditListingForm = ({ carId }) => {
       `http://localhost:5000/api/model/getModal/${make}`
     );
     const data = await response.data;
-    console.log(data);
     setModals(data);
   };
   const handleMake = (e) => {
     setMake(e.target.value);
-    console.log(e.target.value);
     fetchModalByMake(e.target.value);
   };
 
@@ -219,9 +200,9 @@ const EditListingForm = ({ carId }) => {
       formData.append("galleryImages", galleryImages[i]);
     }
 
-    for (let pairs of formData.entries()) {
-      console.log(pairs[0], pairs[1]);
-    }
+    // for (let pairs of formData.entries()) {
+    //   console.log(pairs[0], pairs[1]);
+    // }
 
     // Edit Listing Api Call
     try {

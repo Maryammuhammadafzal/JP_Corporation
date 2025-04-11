@@ -19,15 +19,17 @@ export const getCapLinksById = async (req, res) => {
   
   try {
           const id = req.params.id;
+          console.log(id);
+          
             const capLinks = await CapLinks.findById(id);     
         
             if (!capLinks) {
               return res.status(404).json({ message: "CapLinks not found" });
             }
         
-            console.log("CapLink" + capLinks);
+            console.log("CapLink" , {data: capLinks});
             
-            res.status(200).json(capLinks);
+            res.status(200).json({data: capLinks});
           } catch (error) {
             console.error("Error fetching CapLinks by ID:", error);
             res.status(500).json({ message: "Server error" });
@@ -132,10 +134,9 @@ export const deleteCapLinks =  async (req, res) => {
                 const files = JSON.stringify(req.files);
                 console.dir("Body " + JSON.stringify(req.body));
                 console.log("Files" + files);
-      let productFeatureImageRef = JSON.stringify(req.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
+      let productFeatureImageRef = JSON.stringify(req?.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
       let parsedProductFeatureImageRef = productFeatureImageRef.split('"')[1]
-    let productImageRef = JSON.stringify(req.files['productImageRef'][0].path.replace(/\\/g, '/'));
-    let parsedProductImageRef = productImageRef.split('"')[1]
+      let parsedProductImageRef = req.files['productImageRef'].map((image) => image.path.replace(/\\/g, '/'));
        let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
       let parsedBLFileRef = bLFileRef.split('"')[1]
       let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
@@ -323,19 +324,27 @@ export const deleteCapLinks =  async (req, res) => {
             forwarderName,
             companyName,
             optionFeatures,
-            statusFeatures,
-            productFeatureImageRef,
-            productImageRef,
-            bLFileRef,
-            certificateFileRef,
-            englishCertificateFileRef,
-            invoiceFileRef,
-            inspectionFileRef
+            statusFeatures
           } = req.body || {};
        
 //           const files = JSON.stringify(req.files);
           console.dir("Body " + JSON.stringify(req.body));
           console.log("Files" , req.files);
+
+          let productFeatureImageRef = JSON.stringify(req?.files['productFeatureImageRef'][0]?.path?.replace(/\\/g, '/'));
+          let parsedProductFeatureImageRef = productFeatureImageRef?.split('"')[1]
+          let parsedProductImageRef = req.files['productImageRef'].map((image) => image.path.replace(/\\/g, '/'));
+           let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
+          let parsedBLFileRef = bLFileRef.split('"')[1]
+          let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
+          let parsedCertificateFileRef = certificateFileRef.split('"')[1]
+          let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/'));
+          let parsedEnglishCertificateFileRef = englishCertificateFileRef.split('"')[1]
+          let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/'));
+          let parsedInspectionFileRef = inspectionFileRef.split('"')[1]
+          let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/'));
+          let parsedInvoiceFileRef = invoiceFileRef.split('"')[1]
+    
 
 
 const updatedCapLinkData = { 
@@ -417,13 +426,13 @@ const updatedCapLinkData = {
   misc: {
     descriptionRef,
   },
-  productFeatureImageRef ,
-  productImageRef ,
-  bLFileRef ,
-  certificateFileRef ,
-  englishCertificateFileRef ,
-  invoiceFileRef ,
-  inspectionFileRef,
+  productFeatureImageRef : parsedProductFeatureImageRef,
+  productImageRef : parsedProductImageRef,
+  bLFileRef : parsedBLFileRef,
+  certificateFileRef : parsedCertificateFileRef,
+  englishCertificateFileRef : parsedEnglishCertificateFileRef,
+  invoiceFileRef : parsedInvoiceFileRef,
+  inspectionFileRef : parsedInspectionFileRef,
   forwarderName,
   companyName,
   optionFeatures,

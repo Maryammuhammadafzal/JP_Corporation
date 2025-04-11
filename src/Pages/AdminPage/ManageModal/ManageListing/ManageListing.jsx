@@ -1,11 +1,11 @@
 import React ,{ useState , useEffect} from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios"
-
+import Copyright from "../../../../Components/Copyright/Copyright";
 
 const ManageListing = () => {
   const [search, setSearch] = useState("");
-  const [entriesPerPage, setEntriesPerPage] = useState(15);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalData , setModalData] = useState([]);
 
@@ -42,7 +42,7 @@ console.log(allModals);
   // Pagination Logic
   const indexOfLastModal = currentPage * entriesPerPage;
   const indexOfFirstModal = indexOfLastModal - entriesPerPage;
-  const currentModal = filteredModals.slice(indexOfFirstModal, indexOfLastModal);
+  const currentModal = allModals.slice(indexOfFirstModal, indexOfLastModal);
   const totalPages = Math.ceil(filteredModals.length / entriesPerPage);
 
   const handleDelete = async(id , title) => {
@@ -86,7 +86,13 @@ if(response.status === 200){
     goToPage(currentPage - 1);
   };
 
+  console.log(currentModal);
+  
+
   return (
+
+    <div className="w-full h-full rounded-tr-[50px] flex flex-col overflow-y-auto ">
+   <div className="w-full  min-h-[1450px] max-h-fit flex flex-col gap-4 p-5 items-start">
     <div className="w-[95%] mx-auto border rounded-md py-3">
       <div className="flex justify-between items-center border-b p-6 mb-4">
         <h1 className="text-3xl font-bold">Manage Modal</h1>
@@ -102,7 +108,7 @@ if(response.status === 200){
             onChange={handleEntriesChange}
             className="border p-1 mx-2 border-gray-400 text-gray-500 rounded"
           >
-            <option value={15}>15</option>
+            <option value={10}>10</option>
             <option value={30}>30</option> 
             <option value={50}>50</option>
             <option value={100}>100</option>
@@ -132,7 +138,7 @@ if(response.status === 200){
             </tr>
           </thead>
           <tbody>
-            {modalData 
+            {currentModal 
               .filter((modal) => modal.modalTitle.toLowerCase().includes(search.toLowerCase()))
               .slice(0, entriesPerPage)
               .map((modal, index) => ( 
@@ -158,20 +164,24 @@ if(response.status === 200){
         </table>
       </div>
 
-      <div className="flex justify-center my-4">
-  <button
-    className={`px-4 py-2 mx-1 rounded ${currentPage === 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300'}`}
+      <div className=" flex w-full p-6 justify-between items-center">
+        <div className="dataNumber w-auto text-sm text-neutral-600 flex justify-start font-semibold ">
+<p>{`Showing ${indexOfFirstModal} to ${indexOfLastModal} of ${allModals.length} entries`}</p>
+        </div>
+<div className="w-auto flex-justify-end h-auto ">
+<button
+    className={`px-2 py-2 mx-1 text-2xl rounded text-neutral-400 font-bold ${currentPage === 1 && 'disabled cursor-not-allowed' }`}
     onClick={goToPreviousPage}
     disabled={currentPage === 1}
   >
-    Previous
+    &laquo;
   </button>
 
   {/* Page Numbers */}
   {[...Array(totalPages)].map((_, index) => (
     <button
       key={index + 1}
-      className={`px-4 py-2 mx-1 rounded ${
+      className={`px-4 py-2 mx-1  rounded ${
         currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-300'
       }`}
       onClick={() => goToPage(index + 1)}
@@ -181,16 +191,21 @@ if(response.status === 200){
   ))}
 
   <button
-    className={`px-4 py-2 mx-1 rounded ${
-      currentPage === totalPages ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300'
+    className={`px-4 py-2 mx-1 font-bold text-2xl text-neutral-400 rounded ${
+      currentPage === totalPages && 'disabled cursor-not-allowed'
     }`}
     onClick={goToNextPage}
     disabled={currentPage === totalPages}
   >
-    Next
+      &raquo;
   </button>
 </div>
+</div>
+
     </div>
+     <Copyright/>
+   </div>
+   </div>
   );
 };
 

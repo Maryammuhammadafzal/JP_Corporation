@@ -87,10 +87,10 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Body */}
-      <div className="body gap-3 bg-white w-full h-auto rounded-tr-[15rem] rounded-tl-[5rem]  flex">
-        <div className="w-full h-auto flex justify-between">
-          <div className="left w-[110px] bg-fuchsia-300 ">
-            <div className="side w-fit fixed max-[1300px]:hidden">
+      <div className="body gap-3 bg-white w-full fixed h-screen flex">
+        <div className="w-full fixed bg-white rounded-tl-4xl rounded-tr-4xl h-screen  flex justify-start">
+          <div className="left w-[10%] h-auto">
+            <div className="side  w-fit fixed max-[1300px]:hidden">
               {isOpen ? (
                 <div
                   id="sideNav"
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
                   <div className="tabs w-full h-auto flex p-3 gap-3 flex-col ">
                     <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-400">
                       <Link to="/dashboard" className="flex gap-3 items-center">
-                        <BsList />{" "}
+                        <BsList />
                         <p className="hover:text-white text-md">Listings</p>
                       </Link>
                     </div>
@@ -155,7 +155,7 @@ const AdminDashboard = () => {
                         to="/dashboard/manage-modal"
                         className="flex gap-3 items-center"
                       >
-                        <BsCarFrontFill f size={30} />
+                        <BsCarFrontFill size={30} />
                       </Link>
                     </div>
                   </div>
@@ -164,9 +164,9 @@ const AdminDashboard = () => {
             </div>
             <div
               id="sideNavIcon"
-              className=" w-[100px] bg-white p-3  rounded-tl-4xl rounded-2xl h-screen fixed  shadow-md"
+              className=" w-[100px] bg-white p-3  rounded-tl-4xl min-[1300px]:hidden rounded-2xl h-screen fixed  shadow-md"
             >
-              <div className="tabs w-full bg-white h-auto flex p-1 gap-3 flex-col ">
+              <div className="tabs w-full bg-white h-auto flex p-3 gap-3 flex-col ">
                 <div className="tab w-full h-auto hover:text-white p-3 rounded-xl hover:bg-orange-400">
                   <Link
                     to="/dashboard"
@@ -195,7 +195,7 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="right w-fix  flex flex-col gap-3  justify-end ">
+          <div className="right w-[90%] h-screen flex gap-3 overflow-hidden justify-end ">
             {(location.pathname === "/dashboard" && <CarListings />) ||
               (location.pathname === "/dashboard/cap-links" && (
                 <CapLinksListing />
@@ -203,15 +203,6 @@ const AdminDashboard = () => {
               (location.pathname === "/dashboard/manage-modal" && (
                 <ManageListing />
               ))}
-            <div className="copyright w-full p-2 border-t border-gray-400 flex justify-center items-center">
-              <p>
-                Copyright{" "}
-                <a href="" className="text-orange-400">
-                  JP Corporation
-                </a>{" "}
-                © 2024. All rights reserved.
-              </p>
-            </div>
           </div>
         </div>
       </div>

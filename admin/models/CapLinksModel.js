@@ -80,7 +80,7 @@ const CapLinksSchema = new mongoose.Schema({
     descriptionRef: String,
   },
   productFeatureImageRef: String,
-  productImageRef: String,
+  productImageRef: [String],
   bLFileRef: String,
   certificateFileRef: String,
   englishCertificateFileRef: String,
