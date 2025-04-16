@@ -134,19 +134,24 @@ export const deleteCapLinks =  async (req, res) => {
                 const files = JSON.stringify(req.files);
                 console.dir("Body " + JSON.stringify(req.body));
                 console.log("Files" + files);
-      let productFeatureImageRef = JSON.stringify(req?.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
-      let parsedProductFeatureImageRef = productFeatureImageRef.split('"')[1]
-      let parsedProductImageRef = req.files['productImageRef'].map((image) => image.path.replace(/\\/g, '/'));
-       let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
-      let parsedBLFileRef = bLFileRef.split('"')[1]
-      let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
-      let parsedCertificateFileRef = certificateFileRef.split('"')[1]
-      let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/'));
-      let parsedEnglishCertificateFileRef = englishCertificateFileRef.split('"')[1]
-      let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/'));
-      let parsedInspectionFileRef = inspectionFileRef.split('"')[1]
-      let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/'));
-      let parsedInvoiceFileRef = invoiceFileRef.split('"')[1]
+
+                // let newCompanyName = req.body.companyName;
+                // console.log("Company Name" ,newCompanyName);
+                
+
+      let productFeatureImageRef =  JSON.stringify(req?.files['productFeatureImageRef'][0].path.replace(/\\/g, '/'));
+      let parsedProductFeatureImageRef =  productFeatureImageRef.split('"')[1] ;
+      let parsedProductImageRef = req.files['productImageRef'].map((image) => image.path.replace(/\\/g, '/')) ;
+       let bLFileRef = req.files['bLFileRef'] ? JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/')) : null;
+      let parsedBLFileRef = bLFileRef ? bLFileRef.split('"')[1] : null;
+      let certificateFileRef = req.files['certificateFileRef'] ?  JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'))  : null;
+      let parsedCertificateFileRef = certificateFileRef ? certificateFileRef.split('"')[1] : null;
+      let englishCertificateFileRef = req.files['englishCertificateFileRef'] ?  JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/'))  : null;
+      let parsedEnglishCertificateFileRef = englishCertificateFileRef ? englishCertificateFileRef.split('"')[1] : null;
+      let inspectionFileRef = req.files['inspectionFileRef'] ?  JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/'))  : null;
+      let parsedInspectionFileRef = inspectionFileRef ? inspectionFileRef.split('"')[1] : null;
+      let invoiceFileRef = req.files['invoiceFileRef'] ?  JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/')) : null;
+      let parsedInvoiceFileRef = invoiceFileRef ? invoiceFileRef.split('"')[1] : null;
 
 
 
@@ -326,24 +331,25 @@ export const deleteCapLinks =  async (req, res) => {
             optionFeatures,
             statusFeatures
           } = req.body || {};
-       
-//           const files = JSON.stringify(req.files);
+
           console.dir("Body " + JSON.stringify(req.body));
           console.log("Files" , req.files);
+          console.log("Image" , req.body.productFeatureImageRef[0]);
+        
 
-          let productFeatureImageRef = JSON.stringify(req?.files['productFeatureImageRef'][0]?.path?.replace(/\\/g, '/'));
-          let parsedProductFeatureImageRef = productFeatureImageRef?.split('"')[1]
-          let parsedProductImageRef = req.files['productImageRef'].map((image) => image.path.replace(/\\/g, '/'));
-           let bLFileRef = JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/'));
-          let parsedBLFileRef = bLFileRef.split('"')[1]
-          let certificateFileRef = JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/'));
-          let parsedCertificateFileRef = certificateFileRef.split('"')[1]
-          let englishCertificateFileRef = JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/'));
-          let parsedEnglishCertificateFileRef = englishCertificateFileRef.split('"')[1]
-          let inspectionFileRef = JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/'));
-          let parsedInspectionFileRef = inspectionFileRef.split('"')[1]
-          let invoiceFileRef = JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/'));
-          let parsedInvoiceFileRef = invoiceFileRef.split('"')[1]
+          let productFeatureImageRef = req?.files['productFeatureImageRef'] && JSON.stringify(req?.files['productFeatureImageRef'][0]?.path?.replace(/\\/g, '/')) ;
+          let parsedProductFeatureImageRef = productFeatureImageRef ? productFeatureImageRef?.split('"')[1] : req.body.productFeatureImageRef[0];
+          let parsedProductImageRef =  req.files['productImageRef'] ? req.files['productImageRef'].map((image) => image.path.replace(/\\/g, '/')) : req.body.productImageRef;
+           let bLFileRef = req.files['bLFileRef'] ? JSON.stringify(req.files['bLFileRef'][0].path.replace(/\\/g, '/')) : null;
+          let parsedBLFileRef = bLFileRef ? bLFileRef.split('"')[1] :null
+          let certificateFileRef =  req.files['certificateFileRef'] ? JSON.stringify(req.files['certificateFileRef'][0].path.replace(/\\/g, '/')) : null;
+          let parsedCertificateFileRef = certificateFileRef ? certificateFileRef.split('"')[1] :null
+          let englishCertificateFileRef = req.files['englishCertificateFileRef'] ? JSON.stringify(req.files['englishCertificateFileRef'][0].path.replace(/\\/g, '/')) : null;
+          let parsedEnglishCertificateFileRef = englishCertificateFileRef ?  englishCertificateFileRef.split('"')[1] :null
+          let inspectionFileRef = req.files['inspectionFileRef'] ?  JSON.stringify(req.files['inspectionFileRef'][0].path.replace(/\\/g, '/')) : null;
+          let parsedInspectionFileRef = inspectionFileRef ? inspectionFileRef.split('"')[1] :null
+          let invoiceFileRef = req.files['invoiceFileRef'] ?  JSON.stringify(req.files['invoiceFileRef'][0].path.replace(/\\/g, '/')) : null;
+          let parsedInvoiceFileRef = invoiceFileRef ? invoiceFileRef.split('"')[1] :null 
     
 
 

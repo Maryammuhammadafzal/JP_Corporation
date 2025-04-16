@@ -83,9 +83,7 @@ export const postCar = async (req, res) => {
 let featuredImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
 let parsedFeaturedImage = featuredImage.split('"')[1]
 let parsedgalleryImages = req.files['galleryImages'].map((image) => image.path.replace(/\\/g, '/'));
-let attachmentImage = req.files['attachmentImage']
-    ? req.files['attachmentImage'][0].path.replace(/\\/g, '/')
-    : null;
+let attachmentImage = req.files['attachmentImage'] ? req.files['attachmentImage'][0].path.replace(/\\/g, '/'): null;
     let parsedAttachmentImage = attachmentImage ? JSON.stringify(attachmentImage).split('"')[1] : null;
           
           // Parse features
@@ -181,6 +179,7 @@ export const updateCar = async (req, res) => {
     } = req.body;
 
 
+
     // Parse features if exists
     let parsedCarAllFeatures = [];
     if (carAllFeatures) {
@@ -224,10 +223,10 @@ export const updateCar = async (req, res) => {
       updatedFields.carSafetyFeatures = parsedCarSafetyFeatures;
     }
 
-    let parsedFeaturedImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
-    updatedFields.featuredImage = parsedFeaturedImage.split('"')[1]
-let parsedgalleryImages = req.files['galleryImages'].map((image) => image.path.replace(/\\/g, '/'));
-  updatedFields.galleryImages = parsedgalleryImages;
+    let parsedFeaturedImage =  req.files['featuredImage'] && JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
+    updatedFields.featuredImage = parsedFeaturedImage ? parsedFeaturedImage.split('"')[1] : req.body.featuredImage;
+let parsedgalleryImages =  req.files['galleryImage'] && req.files['galleryImages'].map((image) => image.path.replace(/\\/g, '/'));
+  updatedFields.galleryImages = parsedgalleryImages === undefined ? req.body.galleryImages : parsedgalleryImages;
 let parsedAttachmentImage = req.files['attachmentImage'] ? req.files['attachmentImage'][0].path.replace(/\\/g, '/') : null;
    updatedFields.attachmentImage = parsedAttachmentImage ? JSON.stringify(parsedAttachmentImage).split('"')[1] : null;
           

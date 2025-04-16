@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const CapLinksSchema = new mongoose.Schema({
   departure: {
-    carrierNameRef: String,
+    carrierNameRef: {type : String , required: true },
     departureVesselRef: String,
     departurePartsOfLandingRef: String,
     departureETDRef: String,
@@ -74,7 +74,7 @@ const CapLinksSchema = new mongoose.Schema({
     notifyPartyPhoneNumber2Ref: String,
     notifyPartyPhoneNumber3Ref: String,
     notifyPartyProductNameRef: String,
-    manufactureYearORMonthRef: String,
+    manufactureYearORMonthRef: {type : String , required: true },
   },
   misc: {
     descriptionRef: String,
@@ -86,8 +86,8 @@ const CapLinksSchema = new mongoose.Schema({
   englishCertificateFileRef: String,
   invoiceFileRef: String,
   inspectionFileRef : String,
-  forwarderName:  String,
-  companyName:  String,
+  forwarderName:  {type : String , required: true },
+  companyName:  {type : String , required: true },
   optionFeatures: [{ type: String}],
   statusFeatures: [{ type: String}],
   

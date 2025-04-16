@@ -9,14 +9,9 @@ import BankDetailPage from "./Pages/BankDetailPage/BankDetailPage";
 import CardPage from "./Pages/CardPage/CardPage";
 import AdminLogin from "./Pages/AdminPage/AdminLogin/AdminLogin";
 import AdminDashboard from "./Pages/AdminPage/AdminDashboard/AdminDashboard";
-import AddListing from "./Pages/AdminPage/AddListing/AddListing";
-import EditListing from "./Pages/AdminPage/EditListing/EditListing";
-import ModalListing from "./Pages/AdminPage/ManageModal/ModalListing/ModalListing";
-import EditModal from "./Pages/AdminPage/ManageModal/EditModal/EditModal";
-import EditCapLinks from "./Pages/AdminPage/CapLinks/EditCapLinks/EditCapLinks";
 import SearchPage from "./Pages/SearchPage/SearchPage";
-import GenerateCapLinks from "./Pages/AdminPage/CapLinks/GenerateCapLinks/GenerateCapLinks";
 import Downloads from "./Components/Downloads/Downloads";
+import AddListingForm from "./Pages/AdminPage/CarListing/AddListingForm/AddListingForm";
 
 function App() {
   return (
@@ -32,15 +27,15 @@ function App() {
           <Route path="/listing/:id" element={<CardPage />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
-          <Route path="/listing/add-listing" element={<AddListing />} />
-          <Route path="/listing/edit-listing/get/:id" element={<EditListing />} />
+          <Route path="/listing/add-listing" element={<AdminDashboard />} />
+          <Route path="/listing/edit-listing/get/:id" element={<AdminDashboard />}/>
           <Route path="/dashboard/manage-modal" element={<AdminDashboard />} />
-          <Route path="/model-listing/add-model-listing" element={<ModalListing />} />
-          <Route path="/modal-listing/edit-modal-listing/get/:id" element={<EditModal />} />
+          <Route path="/model-listing/add-model-listing" element={<AdminDashboard />}/>
+          <Route path="/modal-listing/edit-modal-listing/get/:id"element={<AdminDashboard />} />
           <Route path="/dashboard/cap-links" element={<AdminDashboard />} />
-          <Route path="/cap-links-listing/add-cap-links-listing" element={<GenerateCapLinks />} />
-          <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<EditCapLinks />} />
-          <Route path="downloads/:filepath/uploads/:filename" element={<Downloads />} />
+          <Route path="/cap-links-listing/add-cap-links-listing" element={<AdminDashboard />}/>
+          <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<AdminDashboard />}/>
+          <Route path="downloads/:filepath/uploads/:filename" element={<Downloads />}/>
         </Routes>
       </BrowserRouter>
     </div>
