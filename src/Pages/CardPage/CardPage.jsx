@@ -1,6 +1,6 @@
 import React from "react";
 import Heading from "../../Components/Heading/Heading";
-import Navbar from "../../Components/Navbar/NAvbar";
+import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import Button from "../../Components/Button/Button";
 import ProductPreview from "../../Components/ProductPreview/ProductPreview";
