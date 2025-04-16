@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../../Components/Navbar/NAvbar";
+import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import Heading from "../../Components/Heading/Heading";
 import About_Image1 from "../../assets/Images/about_image1.jpeg";

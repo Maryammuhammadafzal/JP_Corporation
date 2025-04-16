@@ -941,13 +941,13 @@ const EditCapLinksForm = () => {
                           <div className="flex flex-col gap-2">
                             <label
                               htmlFor="Enrollement"
-                              className="w-full gap-3 flex flex-col justify-center items-start"max-sm:text-xs
+                              className="w-full gap-3 flex flex-col justify-center items-start max-sm:text-xs"
                             >
                               <p>Enrollment</p>
                               <input
                                 type="text"
                                 id="Enrollement"
-                                className="border-neutral-500 border w-full max-sm:text-xs rounded-md p-3 max-sm:p-2 max-sm:text-xs"
+                                className="border-neutral-500 border w-full rounded-md p-3 max-sm:p-2 max-sm:text-xs"
                                 placeholder="Enrollment"
                                 value={
                                   capLink?.document?.documentenrollementRef ||
