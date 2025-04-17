@@ -21,6 +21,7 @@ const Card = () => {
 fetchCarData()
   }, []);
 
+   
   const handleCardClick = (id)=>{
     localStorage.setItem("cardId" , id);
     navigate(`/listing/${id}`)

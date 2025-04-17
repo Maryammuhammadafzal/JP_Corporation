@@ -7,6 +7,8 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js"
 import modelRoutes from "./routes/modelRoutes.js"
 import capLinksRoutes from "./routes/capLinksRoutes.js"
+import contactRoutes from "./routes/contactRoutes.js"
+import connectToDb from "./db/db.js";
 const app = express();
 dotenv.config();
 
@@ -14,6 +16,7 @@ const allowedOrigins = [
   "http://localhost:5174",
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://jp-corporation-o2co.vercel.app/"
 ];
 
 const corsOptions = {
@@ -38,16 +41,16 @@ app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
 app.use("/api/capLinks" , capLinksRoutes)
 app.use("/api/model" , modelRoutes)
+app.use("/api/contact" , contactRoutes)
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+// connect to db
+connectToDb();
 
 // Routes Example
-app.get("/", (req, res) => {
-  res.send("API is running...");
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
 
 // Server Start
 app.listen(5000, () => {

@@ -11,6 +11,7 @@ export const getCars =  async (req, res) => {
                 .limit(limit);
 
         res.json(getCar);
+        
 };
 
 
