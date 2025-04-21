@@ -24,6 +24,8 @@ const AdminDashboard = () => {
   
   // Handle Form Submission
   const handleForm = async (e) => {
+    console.log("run");
+    
     e.preventDefault();
 
     let username = document.getElementById("name").value
@@ -38,7 +40,7 @@ const AdminDashboard = () => {
     
     try {
       
-      const response = await fetch("http://localhost:5000/api/admin", {
+      const response = await fetch("https://jpcorporation-production.up.railway.app/api/admin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -127,7 +129,8 @@ const AdminDashboard = () => {
                 </div>
               </label>
               <div className="button w-[90%] flex justify-center items-center h-auto">
-                <Button text="Sign me in" />
+              <button className='w-fit max-[600px]:w-full h-fit py-3 px-5 font-semibold text-lg text-white bg-orange-600 rounded-xl cursor-pointer' onClick={handleForm}>Sign me in</button>
+                {/* <Button text="Sign me in" onClick={handleForm} /> */}
               </div>
             </form>
           </div>

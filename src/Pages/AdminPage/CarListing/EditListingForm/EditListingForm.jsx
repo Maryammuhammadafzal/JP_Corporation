@@ -22,7 +22,7 @@ const EditListingForm = ({ carId }) => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/dashboard/get/${carId}`
+          `https://jpcorporation-production.up.railway.app/api/dashboard/get/${carId}`
         );
         const car = res.data;
         setCarData(car);
@@ -173,7 +173,7 @@ const EditListingForm = ({ carId }) => {
   // Fetch Modal By Make Api Call
   const fetchModalByMake = async (make) => {
     const response = await axios.get(
-      `http://localhost:5000/api/model/getModal/${make}`
+      `https://jpcorporation-production.up.railway.app/api/model/getModal/${make}`
     );
     const data = await response.data;
     setModals(data);
@@ -246,7 +246,7 @@ const EditListingForm = ({ carId }) => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.put(
-        `http://localhost:5000/api/cards/update/${carId}`,
+        `https://jpcorporation-production.up.railway.app/api/cards/update/${carId}`,
         formData,
         {
           headers: {
@@ -1215,7 +1215,7 @@ const EditListingForm = ({ carId }) => {
             </div>
             <img
               loading="lazy"
-              src={`http://localhost:5000/${carData.featuredImage}`}
+              src={`https://jpcorporation-production.up.railway.app/${carData.featuredImage}`}
               alt="image"
               className="w-[160px] h-[160px] rounded-lg max-[780px]:w-[140px] max-[780px]:h-[140px] object-cover"
             />
@@ -1264,7 +1264,7 @@ const EditListingForm = ({ carId }) => {
                   </div>
                   <img
                     loading="lazy"
-                    src={`http://localhost:5000/${galleryImage}`}
+                    src={`https://jpcorporation-production.up.railway.app/${galleryImage}`}
                     alt={`gallery-image-${index}`}
                     className="w-[160px] h-[160px] rounded-lg max-[780px]:w-[140px] max-[780px]:h-[140px] object-cover"
                   />
@@ -1319,7 +1319,7 @@ const EditListingForm = ({ carId }) => {
                 </div>
                 <img
                   loading="lazy"
-                  src={`http://localhost:5000/${carData.attachmentImage}`}
+                  src={`https://jpcorporation-production.up.railway.app/${carData.attachmentImage}`}
                   alt="image"
                   className="w-[160px] h-[160px] rounded-lg"
                 />

@@ -12,7 +12,7 @@ const CapLinksListing = () => {
 
   const fetchCapLinks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/capLinks/");
+      const res = await axios.get("https://jpcorporation-production.up.railway.app/api/capLinks/");
       const data = await res.data;
       setCapLinksData(data);
     } catch (error) {

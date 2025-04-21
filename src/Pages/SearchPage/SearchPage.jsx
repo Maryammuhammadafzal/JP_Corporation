@@ -29,7 +29,7 @@ const SearchPage = () => {
   // Fetch Api 
   let fetchFromTypeApi = async () => {
     try {
-    const response = await fetch(`http://localhost:5000/api/cards/get?type=${type}`);
+    const response = await fetch(`https://jpcorporation-production.up.railway.app/api/cards/get?type=${type}`);
     const data = await response.json();
     setFilteredCars(data);
     console.log(data);
@@ -51,7 +51,7 @@ const SearchPage = () => {
   let fetchFromSearchApi = async () => {
     try {
       
-      const response = await fetch(`http://localhost:5000/api/cards/get?${queryString}`);
+      const response = await fetch(`https://jpcorporation-production.up.railway.app/api/cards/get?${queryString}`);
       const data = await response.json();
       setFilteredCars(data);
       console.log(data);
@@ -65,7 +65,7 @@ const SearchPage = () => {
   let fetchApi = async () => {
     try {
       
-      const response = await fetch(`http://localhost:5000/api/cards/`);
+      const response = await fetch(`https://jpcorporation-production.up.railway.app/api/cards/`);
       const data = await response.json();
       setFilteredCars(data);
       console.log(data);
@@ -392,7 +392,7 @@ const SearchPage = () => {
             <div className="flex items-center gap-4 ">
               {/* Placeholder for Car Image */}
               <div className="w-[230px] h-[130px] bg-gray-200 rounded-xl">
-                <img src={`http://localhost:5000/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
+                <img src={`https://jpcorporation-production.up.railway.app/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
               </div>
 
               <div>

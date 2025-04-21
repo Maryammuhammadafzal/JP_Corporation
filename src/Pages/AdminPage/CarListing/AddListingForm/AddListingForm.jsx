@@ -70,7 +70,7 @@ const AddListingForm = () => {
   // Fetch Modal By Make Api Call
   const fetchModalByMake = async (make) => {
     const response = await axios.get(
-      `http://localhost:5000/api/model/getModal/${make}`
+      `https://jpcorporation-production.up.railway.app/api/model/getModal/${make}`
     );
     const data = await response.data;
 
@@ -144,7 +144,7 @@ const AddListingForm = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.post(
-          "http://localhost:5000/api/cards/add",
+          "https://jpcorporation-production.up.railway.app/api/cards/add",
           formData,
           {
             headers: {
