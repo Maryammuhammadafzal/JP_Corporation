@@ -13,7 +13,7 @@ const Card = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("http://localhost:5000/api/dashboard?page=1&limit=4")
+   let res = await axios.get(`https://jpcorporation-production.up.railway.app/api/dashboard?page=1&limit=4`)
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }

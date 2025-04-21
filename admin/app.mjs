@@ -7,13 +7,19 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js"
 import modelRoutes from "./routes/modelRoutes.js"
 import capLinksRoutes from "./routes/capLinksRoutes.js"
+const PORT = process.env.PORT || 8800;
+import path from 'path';
 const app = express();
 dotenv.config();
 
 const allowedOrigins = [
-  "http://localhost:5174",
-  "http://localhost:5173",
-  "http://localhost:3000",
+  "https://jpcorporation-production.up.railway.app/api",
+  // "http://localhost:5173",
+  // "http://localhost:3000",
+  // "http://localhost:5000",
+  // "http://localhost:8000",
+  // "http://localhost:8800",
+  "https://jp-corporation-o2co.vercel.app/"
 ];
 
 const corsOptions = {
@@ -29,6 +35,10 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }
 app.use(cors(corsOptions));
+const __dirname = path.resolve();
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../dist')));
 
 app.use("/api/cards", carRoutes);
 app.use(express.json())
@@ -45,12 +55,12 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.log(err));
 
 // Routes Example
-app.get("/", (req, res) => {
-  res.send("API is running...");
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
 
 // Server Start
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
 });
 
