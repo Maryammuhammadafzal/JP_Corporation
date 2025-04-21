@@ -13,7 +13,7 @@ const Card = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get(`${import.meta.env.VITE_API_URL}/api/dashboard?page=1&limit=4`)
+   let res = await axios.get(`${import.meta.env.API_URL}/api/dashboard?page=1&limit=4`)
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
