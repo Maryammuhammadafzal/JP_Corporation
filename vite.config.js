@@ -5,9 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    proxy: {
-      '/api': 'http://localhost:8800',
-    },
+    proxy: process.env.NODE_ENV === 'development' ? {
+      '/api': 'http://localhost:5000', // Use local backend during development
+    } : {}, 
   },
   plugins: [react()  ,tailwindcss(),],
   base : "./"

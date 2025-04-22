@@ -16,18 +16,18 @@ dotenv.config();
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected"))
+.then(() => console.log(`${process.env.MONGO_URI} MongoDB Connected`))
 .catch((err) => console.log(err));
 
 const allowedOrigins = [
-  // "https://jpcorporation-production.up.railway.app",
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:3000",
-  "http://localhost:5000",
-  "http://localhost:8000",
-  "http://localhost:8800",
-  // "https://jp-corporation-o2co.vercel.app/"
+  "https://jpcorporation-production.up.railway.app/",
+  // "http://localhost:5173",
+  // "http://localhost:5174",
+  // "http://localhost:3000",
+  // "http://localhost:5000",
+  // "http://localhost:8000",
+  // "http://localhost:8800",
+  "https://jp-corporation-o2co.vercel.app/"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
