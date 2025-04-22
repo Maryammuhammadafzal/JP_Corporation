@@ -56,10 +56,17 @@ app.use("/api/model" , modelRoutes)
 const __dirname = path.resolve();
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../dist')));
-// Routes Example
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../dist', 'index.html'));
-});
+
+
+// Serve frontend only for non-API routes
+app.get('*', (req, res, next) => {
+  console.log(req.path);
+  
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ message: 'API route not found' });
+  }
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+});;
 
 // Server Start
 app.listen(PORT, () => {
