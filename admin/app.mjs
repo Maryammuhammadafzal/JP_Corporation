@@ -62,13 +62,19 @@ app.use(express.static(path.join(__dirname, '../dist')));
 
 // Serve frontend only for non-API routes
 app.get('*', (req, res, next) => {
-  console.log(req.path);
+  console.log(`Serving: ${req.path}`);
   
-  // if (req.path.startsWith('/api')) {
-  //   return res.status(404).json({ message: 'API route not found' });
-  // }
+  if (req.path.startsWith('/api')) {
+    return next(); 
+  }
+
   res.sendFile(path.join(__dirname, '../dist', 'index.html'));
-});;
+});
+
+// Define an API route for testing
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API route is working' });
+});
 
 // Server Start
 app.listen(PORT, () => {
