@@ -7,6 +7,7 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js"
 import modelRoutes from "./routes/modelRoutes.js"
 import capLinksRoutes from "./routes/capLinksRoutes.js"
+import contactRoutes from "./routes/contactRoutes.js"
 const PORT = process.env.PORT || 8800;
 import path from 'path';
 const app = express();
@@ -51,6 +52,7 @@ app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
 app.use("/api/capLinks" , capLinksRoutes)
 app.use("/api/model" , modelRoutes)
+app.use("/api/contact" , contactRoutes)
 
 
 const __dirname = path.resolve();
