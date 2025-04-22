@@ -27,7 +27,7 @@ const allowedOrigins = [
   // "http://localhost:5000",
   // "http://localhost:8000",
   // "http://localhost:8800",
-  "https://jp-corporation-o2co.vercel.app/"
+  "https://jp-corporation-o2co.vercel.app"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -64,9 +64,9 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.get('*', (req, res, next) => {
   console.log(req.path);
   
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ message: 'API route not found' });
-  }
+  // if (req.path.startsWith('/api')) {
+  //   return res.status(404).json({ message: 'API route not found' });
+  // }
   res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });;
 

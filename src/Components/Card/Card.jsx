@@ -38,7 +38,7 @@ fetchCarData()
 
   return (
     <>
-      {cards.map(({ _id, carTitle, featuredImage, carAvailability, carMileage , carYear , carPrice, carTransmission, carFuelType }) => (
+      {Array.isArray(cards) && cards.map(({ _id, carTitle, featuredImage, carAvailability, carMileage , carYear , carPrice, carTransmission, carFuelType }) => (
         <div
           key={_id}
           onClick={() => handleCardClick(_id)}
