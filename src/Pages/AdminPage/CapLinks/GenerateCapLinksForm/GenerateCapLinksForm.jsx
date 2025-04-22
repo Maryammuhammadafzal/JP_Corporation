@@ -245,7 +245,7 @@ try {
   }
 
   const response = await axios.post(
-    "https://jpcorporation-production.up.railway.app/api/capLinks/add",
+    "/api/capLinks/add",
     formData,
     {
       headers: {

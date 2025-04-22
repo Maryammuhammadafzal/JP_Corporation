@@ -19,7 +19,7 @@ const EditModalForm = () => {
     const fetchModalById = async () => {
       try {
         const res = await axios.get(
-          `https://jpcorporation-production.up.railway.app/api/model/get/${id}`
+          `/api/model/get/${id}`
         );
         const modal = await res.data;
         console.log(modal);
@@ -52,7 +52,7 @@ const EditModalForm = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.put(
-          `https://jpcorporation-production.up.railway.app/api/model/update/${id}`,
+          `/api/model/update/${id}`,
           payload,
           {
             headers: {

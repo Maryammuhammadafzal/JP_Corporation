@@ -12,7 +12,7 @@ const ManageListing = () => {
 
   const fetchModalData = async () => {
     try {
-      const res = await axios.get("https://jpcorporation-production.up.railway.app/api/model");
+      const res = await axios.get("/api/model");
       const data = await res.data;
       setModalData(data);
     } catch (error) {
@@ -40,7 +40,7 @@ const ManageListing = () => {
 
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `https://jpcorporation-production.up.railway.app/api/model/delete/${id}`
+      `/api/model/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);

@@ -19,14 +19,14 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.log(err));
 
 const allowedOrigins = [
-  "https://jpcorporation-production.up.railway.app",
+  // "https://jpcorporation-production.up.railway.app",
   "http://localhost:5173",
   "http://localhost:5174",
-  // "http://localhost:3000",
-  // "http://localhost:5000",
-  // "http://localhost:8000",
-  // "http://localhost:8800",
-  "https://jp-corporation-o2co.vercel.app/"
+  "http://localhost:3000",
+  "http://localhost:5000",
+  "http://localhost:8000",
+  "http://localhost:8800",
+  // "https://jp-corporation-o2co.vercel.app/"
 ];
 const corsOptions = {
   origin: function (origin, callback) {

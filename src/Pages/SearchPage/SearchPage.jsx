@@ -1,6 +1,7 @@
 import React, {useState , useEffect} from 'react'
 import Footer from '../Footer/Footer'
 import Navbar from '../../Components/Navbar/Navbar'
+import { useNavigate } from 'react-router-dom';
 
 const SearchPage = () => {
   const queryParams = new URLSearchParams(window.location.search);
@@ -24,12 +25,13 @@ const SearchPage = () => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [condition, setCondition] = useState('');
+  const [allCars, setAllCars] = useState('');
   const [filteredCars, setFilteredCars] = useState([]);
   
   // Fetch Api 
   let fetchFromTypeApi = async () => {
     try {
-    const response = await fetch(`https://jpcorporation-production.up.railway.app/api/cards/get?type=${type}`);
+    const response = await fetch(`/api/cards/get?type=${type}`);
     const data = await response.json();
     setFilteredCars(data);
     console.log(data);
@@ -51,7 +53,7 @@ const SearchPage = () => {
   let fetchFromSearchApi = async () => {
     try {
       
-      const response = await fetch(`https://jpcorporation-production.up.railway.app/api/cards/get?${queryString}`);
+      const response = await fetch(`/api/cards/get?${queryString}`);
       const data = await response.json();
       setFilteredCars(data);
       console.log(data);
@@ -65,9 +67,10 @@ const SearchPage = () => {
   let fetchApi = async () => {
     try {
       
-      const response = await fetch(`https://jpcorporation-production.up.railway.app/api/cards/`);
+      const response = await fetch(`/api/cards/`);
       const data = await response.json();
       setFilteredCars(data);
+      setAllCars(data)
       console.log(data);
         
     } catch (error) {
@@ -90,16 +93,16 @@ const SearchPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const carsPerPage = 5;
 
+  
   const handleSearch = () => {
-    
     let results = filteredCars;
-    console.log(results);
+    
 
     if (makeFilter) {
       results = results.filter(car => car.carMake?.toLowerCase().includes(makeFilter?.toLowerCase()));
     }
     if (typeFilter) {
-      results = results.filter(car => car.carModel?.toLowerCase().includes(typeFilter?.toLowerCase()));
+      results = results.filter(car => car.carType?.toLowerCase().includes(typeFilter?.toLowerCase()));
     }
     if (minPrice) {
       results = results.filter(car => car.carPrice >= parseInt(minPrice));
@@ -110,9 +113,6 @@ const SearchPage = () => {
     if (condition) {
       results = results.filter(car => car.carCondition?.toLowerCase().includes(condition?.toLowerCase()));
     }
-
-    console.log(results);
-    
 
     setFilteredCars(results);
     setCurrentPage(1);
@@ -129,6 +129,12 @@ const SearchPage = () => {
   const totalPages = Math.ceil(filteredCars.length / carsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+let navigate = useNavigate()
+  const navigateToPreviewPage = (id) => {
+      localStorage.setItem("cardId" , id);
+      navigate(`/listing/${id}`)
+  }
 
   return (
         <div className="contact w-full h-auto flex flex-col overflow-x-hidden justify-center items-center">
@@ -385,38 +391,43 @@ const SearchPage = () => {
      </div>
 
       {/* Car Cards */}
-      <div className="space-y-4 mx-auto p-2 w-[90%]">
+      <div className="space-y-4 mx-auto p-2 w-[90%] max-lg:w-full">
 
         {currentCars && currentCars.length > 0 ? currentCars?.map((car, index) => (
-          <div key={index} className="bg-white p-4 rounded-xl hover:border border-orange-500  flex justify-between items-end hover:shadow-md transition">
-            <div className="flex items-center gap-4 ">
+          <div key={index} className="bg-white p-4 rounded-xl hover:border cursor-pointer border-orange-500  flex justify-between items-end hover:shadow-md transition max-lg:w-full" 
+          onClick={() => navigateToPreviewPage(car._id)}>
+            <div className="flex items-center gap-4 max-sm:flex-col max-sm:h-auto max-sm:w-full">
               {/* Placeholder for Car Image */}
-              <div className="w-[230px] h-[130px] bg-gray-200 rounded-xl">
-                <img src={`https://jpcorporation-production.up.railway.app/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
+              <div className="w-[230px] h-[130px] max-sm:h-auto max-sm:w-full bg-amber-200 rounded-xl">
+                <img src={`http://localhost:8800/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
               </div>
 
-              <div>
-                <h3 className="font-bold text-2xl uppercase">{car.carTitle}</h3>
+              <div className='max-sm:w-full px-4'>
+                <h3 className="font-bold text-2xl max-md:text-xl uppercase">{car.carTitle}</h3>
                 <p className="text-gray-500 text-md mb-2">{car.carFeatures}</p>
 
-                <div className="flex items-center gap-3 text-sm text-gray-500">
-                  <span className="bg-[#ff4800] text-white px-2 py-1 rounded text-xs">{car.carYear}</span>
+                <div className="flex items-center gap-3 text-xs lg:text-sm max-md:text-[12px] max-sm:text-[16px] text-gray-500">
+                  <span className="bg-[#ff4800] text-white px-2 py-1 rounded text-xs ">{car.carYear}</span>
                   <span>{car.carMileage}</span>
                   <span>•</span>
                   <span>{car.carTransmission}</span>
                   <span>•</span>
                   <span>{car.carFuelType}</span>
-                  <span>•</span>
-                  <span>{car.carDriveType}</span>
+                  <span className='max-md:hidden'>•</span>
+                  <span className='max-md:hidden'>{car.carDriveType}</span>
                 </div>
+
+                <div className="text-[#ff4800] max-lg:text-2xl mt-6 md:hidden block text-[2rem] font-extrabold">
+              ${car.carPrice}
+            </div>
               </div>
             </div>
 
-            <div className="text-[#ff4800]  text-[2rem] font-extrabold">
+            <div className="text-[#ff4800] max-lg:text-2xl max-md:hidden block text-[2rem] font-extrabold">
               ${car.carPrice}
             </div>
           </div>
-        )) : ( <p className='text-5xl font-semibold  mt-5 text-gray-700'> No Record Found!</p> )}
+        )) : ( <p className='text-5xl font-semibold   mt-5 text-gray-700'> No Record Found!</p> )}
       </div>
 
       {/* Pagination */}

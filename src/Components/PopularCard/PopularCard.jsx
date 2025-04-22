@@ -14,7 +14,7 @@ const PopularCard = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("http://localhost:5000/api/dashboard?page=1&limit=2")
+   let res = await axios.get("/api/dashboard?page=1&limit=2")
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
@@ -47,7 +47,7 @@ fetchCarData()
         >
           <div className="carImage relative overflow-hidden w-auto h-auto">
             <img
-              src={`http://localhost:5000/${featuredImage}`}
+              src={`http://localhost:8800/${featuredImage}`}
               className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />

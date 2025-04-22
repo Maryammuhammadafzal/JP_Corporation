@@ -34,7 +34,7 @@ const EditCapLinksForm = () => {
     const fetchCapLink = async () => {
       try {
         const res = await axios.get(
-          `https://jpcorporation-production.up.railway.app/api/capLinks/get/${capLinkEditId}`
+          `/api/capLinks/get/${capLinkEditId}`
         );
         const capLinkData = res.data?.data;
         setCapLink(capLinkData);
@@ -478,7 +478,7 @@ const EditCapLinksForm = () => {
       const token = localStorage.getItem("adminToken");
 
       const response = await axios.put(
-        `https://jpcorporation-production.up.railway.app/api/capLinks/update/${capLinkEditId}`,
+        `/api/capLinks/update/${capLinkEditId}`,
         formData,
         {
           headers: {
@@ -1925,7 +1925,7 @@ const EditCapLinksForm = () => {
                             </div>
                             <img
                               loading="lazy"
-                              src={`https://jpcorporation-production.up.railway.app/${capLink.productFeatureImageRef}`}
+                              src={`/${capLink.productFeatureImageRef}`}
                               alt="Featured"
                               className="w-[160px] h-[160px] object-cover rounded-lg max-sm:w-[130px] max-sm:h-[130px]"
                             />
@@ -1982,7 +1982,7 @@ const EditCapLinksForm = () => {
                                     </div>
                                     <img
                                       loading="lazy"
-                                      src={`https://jpcorporation-production.up.railway.app/${productImage}`}
+                                      src={`/${productImage}`}
                                       alt={`Gallery ${index}`}
                                       className="w-[130px] h-[130px] object-cover rounded-md"
                                     />

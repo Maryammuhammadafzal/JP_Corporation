@@ -8,7 +8,7 @@ const Downloads = () => {
 
   return (
     <div className='w-full bg-gray-100 h-screen flex justify-center items-center p-6'>
-      <img src={`http://localhost:5000/uploads/${filename}`} alt={filePath} className='w-auto h-auto'/>
+      <img src={`/api/uploads/${filename}`} alt={filePath} className='w-auto h-auto'/>
     </div>
   )
 }

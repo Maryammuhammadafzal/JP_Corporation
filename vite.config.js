@@ -6,12 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': {
-        target: 'https://jpcorporation-production.up.railway.app',
-        changeOrigin: true,
-        secure: false
-      }
-    }
+      '/api': 'http://localhost:8800',
+    },
   },
   plugins: [react()  ,tailwindcss(),],
   base : "./"

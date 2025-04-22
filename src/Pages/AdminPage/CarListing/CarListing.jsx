@@ -12,7 +12,7 @@ const CarListings = () => {
 
   const fetchCarData = async () => {
     try {
-      const res = await axios.get("https://jpcorporation-production.up.railway.app/api/dashboard");
+      const res = await axios.get("/api/dashboard");
       const data = await res.data;
       setCarData(data);
     } catch (error) {
@@ -40,7 +40,7 @@ const CarListings = () => {
 
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `https://jpcorporation-production.up.railway.app/api/dashboard/delete/${id}`
+      `/api/dashboard/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);
@@ -282,7 +282,7 @@ export default CarListings;
 //                       </td>
 //                       <td className="p-2 text-center">
 //                         <img
-//                           src={`https://jpcorporation-production.up.railway.app/${car.featuredImage}`}
+//                           src={`/${car.featuredImage}`}
 //                           alt="Car"
 //                           className="w-10 h-10 object-cover"
 //                         />

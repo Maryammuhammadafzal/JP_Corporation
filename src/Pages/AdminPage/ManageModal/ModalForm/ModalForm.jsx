@@ -27,7 +27,7 @@ const ModalForm = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.post(
-          "https://jpcorporation-production.up.railway.app/api/model/add",
+          "/api/model/add",
           payload,
           {
             headers: {

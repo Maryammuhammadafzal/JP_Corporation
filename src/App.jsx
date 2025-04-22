@@ -12,6 +12,7 @@ import AdminDashboard from "./Pages/AdminPage/AdminDashboard/AdminDashboard";
 import SearchPage from "./Pages/SearchPage/SearchPage";
 import Downloads from "./Components/Downloads/Downloads";
 import AddListingForm from "./Pages/AdminPage/CarListing/AddListingForm/AddListingForm";
+import ProductPreview from "./Components/ProductPreview/ProductPreview";
 
 function App() {
   return (

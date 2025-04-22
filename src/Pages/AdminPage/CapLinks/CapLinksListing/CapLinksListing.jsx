@@ -12,7 +12,7 @@ const CapLinksListing = () => {
 
   const fetchCapLinks = async () => {
     try {
-      const res = await axios.get("https://jpcorporation-production.up.railway.app/api/capLinks/");
+      const res = await axios.get("/api/capLinks/");
       const data = await res.data;
       setCapLinksData(data);
     } catch (error) {
@@ -44,7 +44,7 @@ const CapLinksListing = () => {
   // Delete Cap Link
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `http://localhost:5000/api/capLinks/delete/${id}`
+      `/api/capLinks/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);

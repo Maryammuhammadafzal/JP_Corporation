@@ -15,7 +15,7 @@ const Card = () => {
   const navigate = useNavigate();
   
   const fetchCarData = async()=> {
-   let res = await axios.get(`https://jpcorporation-production.up.railway.app/api/dashboard?page=1&limit=4`)
+   let res = await axios.get(`/api/dashboard?page=1&limit=4`)
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
@@ -47,12 +47,12 @@ fetchCarData()
           <div className="carImage inline-block relative overflow-hidden w-auto h-auto">
             <img
               loading="lazy"
-              src={`http://localhost:5000/${featuredImage}`}
+              src={`http://localhost:8800/${featuredImage}`}
               className="cardImage cursor-pointer relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />
             <span className={`absolute top-[10px] -left-[45px] -rotate-45 w-[130px] text-center z-10 ${carAvailability === "Available" ? "bg-green-600": "bg-red-600"} py-[5px] px-[1vw]  text-white text-[12px]`} >
-              {carAvailability}
+              {carAvailability === "Available" ? "Available" : "Sold"}
             </span>
           </div>
           <div className="cardContent w-full h-auto flex flex-col">

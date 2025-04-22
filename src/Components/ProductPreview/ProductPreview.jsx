@@ -23,7 +23,7 @@ const ProductPreview = () => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/dashboard/get/${cardId}`
+          `http://localhost:8800/api/dashboard/get/${cardId}`
         );
         const car = await res.data;
         console.log(car);
@@ -272,10 +272,10 @@ const ProductPreview = () => {
 
       <div className="features w-full  p-3">
         <h2 className="font-bold text-3xl mt-5 p-3 text-gray-900">Features</h2>
-        <ul className="features w-[60%] max-[1200px]:w-full list-disc p-3 marker:text-orange-600 gap-3  flex flex-wrap ">
+        <ul className="features w-[60%] max-[1200px]:w-full list-disc p-3 marker:text-orange-600 gap-3  grid grid-cols-3 space-x-3 max-md:grid-cols-2 max-sm:text-sm max-sm:grid-cols-1">
           {cardData && cardData?.carAllFeatures?.map((feature , index) => (
 
-          <li key={index} className="text-xl max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
+          <li key={index} className="text-md max-[360px]:text-[16px] max-[500px]:text-[18px] w-[200px] mx-5 ">
             {feature}
           </li>
           ))}
@@ -297,7 +297,7 @@ const ProductPreview = () => {
             </>
           ) : (
             <img
-              src={`http://localhost:5000/${cardData.attachmentImage}`}
+              src={`http://localhost:8800/${cardData.attachmentImage}`}
               className="w-[100px]"
               alt="jpg"
             />
