@@ -50,12 +50,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
 
 
-app.use("/api/cards", carRoutes);
-app.use("/api/dashboard" , dashboardRoutes)
-app.use("/api/admin" , adminRoutes)
-app.use("/api/capLinks" , capLinksRoutes)
-app.use("/api/model" , modelRoutes)
-app.use("/api/contact" , contactRoutes)
+
 
 
 // Serve static frontend files
@@ -82,6 +77,14 @@ app.get('/', (req , res) => {
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API route is working' });
 });
+
+
+app.use("/api/cards", carRoutes);
+app.use("/api/dashboard" , dashboardRoutes)
+app.use("/api/admin" , adminRoutes)
+app.use("/api/capLinks" , capLinksRoutes)
+app.use("/api/model" , modelRoutes)
+app.use("/api/contact" , contactRoutes)
 
 // Server Start
 app.listen(PORT, () => {
