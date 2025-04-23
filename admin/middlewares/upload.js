@@ -12,21 +12,21 @@ const storage = multer.diskStorage({
 });
 
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg' , 'image/png' , 'image/jpg'];
-  if(allowedTypes.includes(file.mimietype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only images are allowed') , false);
-  }
+// const fileFilter = (req, file, cb) => {
+//   const allowedTypes = ['image/jpeg' , 'image/png' , 'image/jpg'];
+//   if(allowedTypes.includes(file.mimietype)) {
+//     cb(null, true);
+//   } else {
+//     cb(new Error('Only images are allowed') , false);
+//   }
   // const ext = path.extname(file.originalname).toLowerCase();
   // if (ext === '.jpg' || ext === '.png' || ext === '.jpeg') {
   //   cb(null, true);
   // } else {
   //   cb(new Error('Only images are allowed'));
   // }
-}
+// }
 
-const upload = multer({ storage : fileFilter });
+const upload = multer({ storage : storage });
 
 export default upload;

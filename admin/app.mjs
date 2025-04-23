@@ -60,20 +60,23 @@ app.use("/api/contact" , contactRoutes)
 
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../dist')));
+connectDB();
 
 
 // Serve frontend only for non-API routes
-app.get('*', (req, res, next) => {
-  console.log(`Serving: ${req.path}`);
+// app.get('*', (req, res, next) => {
+//   console.log(`Serving: ${req.path}`);
   
-  if (req.path.startsWith('/api')) {
-    return next(); 
-  }
+//   if (req.path.startsWith('/api')) {
+//     return next(); 
+//   }
 
-  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
-});
+//   res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+// });
 
-connectDB();
+app.get('/', (req , res) => {
+  res.send("Hello");
+})
 
 // Define an API route for testing
 app.get('/api/test', (req, res) => {
