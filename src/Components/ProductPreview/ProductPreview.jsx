@@ -23,7 +23,7 @@ const ProductPreview = () => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8800/api/dashboard/get/${cardId}`
+          `https://jp-corporation-admin.vercel.app/api/dashboard/get/${cardId}`
         );
         const car = await res.data;
         console.log(car);

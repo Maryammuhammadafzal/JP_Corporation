@@ -42,7 +42,7 @@ const GalleryCarousel = ({ galleryImages = [] }) => {
           {galleryImages.map((image, index) => (
             <div key={index} className="relative w-full h-auto">
               <img
-                src={`http://localhost:8800/${image}`}
+                src={`https://jp-corporation-admin.vercel.app/${image}`}
                 alt={image}
                 className="w-full h-[500px] object-cover rounded-lg"
               />

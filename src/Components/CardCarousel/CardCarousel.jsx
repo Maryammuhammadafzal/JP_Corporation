@@ -16,7 +16,7 @@ const CardCarousel = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("/api/dashboard?page=1&limit=10")
+   let res = await axios.get("https://jp-corporation-admin.vercel.app/api/dashboard?page=1&limit=10")
     .then((res) => setCardData(res.data))
     .catch((err) => console.error(err));
   }

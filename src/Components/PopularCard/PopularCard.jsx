@@ -14,7 +14,7 @@ const PopularCard = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("/api/dashboard?page=1&limit=2")
+   let res = await axios.get("https://jp-corporation-admin.vercel.app/api/dashboard?page=1&limit=2")
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
