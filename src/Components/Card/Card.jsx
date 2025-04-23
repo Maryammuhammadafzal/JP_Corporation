@@ -5,7 +5,8 @@ import CardImage3 from "../../assets/Images/card_image3.jpg";
 import CardImage4 from "../../assets/Images/card_image4.jpg";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+// import axios from "../../api/axios";
+// import axios from "axios";
 const apiUrl = import.meta.env.API_URL;
 console.log(apiUrl);
 
@@ -15,7 +16,7 @@ const Card = () => {
   const navigate = useNavigate();
   
   const fetchCarData = async()=> {
-   let res = await axios.get(`/api/dashboard?page=1&limit=4`)
+   let res = await axios.get(`https://jp-corporation-admin.vercel.app/api/dashboard?page=1&limit=4`)
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
