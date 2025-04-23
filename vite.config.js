@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   server: {
     proxy: process.env.NODE_ENV === 'development' ? {
-      '/api': 'http://localhost:5000', // Use local backend during development
+      '/api': 'https://jp-corporation-admin.vercel.app/', // Use local backend during development
     } : {}, 
   },
   plugins: [react()  ,tailwindcss(),],

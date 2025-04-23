@@ -10,33 +10,36 @@ import capLinksRoutes from "./routes/capLinksRoutes.js"
 import contactRoutes from "./routes/contactRoutes.js"
 const PORT = process.env.PORT || 8800;
 import path from 'path';
+import connectDB from "./config/db.js";
 const app = express();
 dotenv.config();
+const __dirname = path.resolve();
 
+// const allowedOrigins = [
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log(`${process.env.MONGO_URI} MongoDB Connected`))
-.catch((err) => console.log(err));
-
-const allowedOrigins = [
-  "https://jpcorporation-production.up.railway.app/",
-  // "http://localhost:5173",
-  // "http://localhost:5174",
-  // "http://localhost:3000",
-  // "http://localhost:5000",
-  // "http://localhost:8000",
-  // "http://localhost:8800",
-  "https://jp-corporation-o2co.vercel.app"
-];
+//   "https://jpcorporation-production.up.railway.app/",
+//   // "http://localhost:5173",
+//   // "http://localhost:5174",
+//   // "http://localhost:3000",
+//   // "http://localhost:5000",
+//   // "http://localhost:8000",
+//   // "http://localhost:8800",
+//   "https://jp-corporation-o2co.vercel.app"
+// ];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,                 
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']
+// }
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: process.env.CLIENT_URL || "*",
   credentials: true,                 
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE']
@@ -44,10 +47,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
 
 
 app.use("/api/cards", carRoutes);
-app.use("/uploads", express.static("uploads"));
 app.use("/api/dashboard" , dashboardRoutes)
 app.use("/api/admin" , adminRoutes)
 app.use("/api/capLinks" , capLinksRoutes)
@@ -55,7 +58,6 @@ app.use("/api/model" , modelRoutes)
 app.use("/api/contact" , contactRoutes)
 
 
-const __dirname = path.resolve();
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../dist')));
 
@@ -70,6 +72,8 @@ app.get('*', (req, res, next) => {
 
   res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
+
+connectDB();
 
 // Define an API route for testing
 app.get('/api/test', (req, res) => {
