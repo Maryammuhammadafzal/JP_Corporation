@@ -39,7 +39,7 @@ const __dirname = path.resolve();
 //   methods: ['GET', 'POST', 'PUT', 'DELETE']
 // }
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "*",
+  origin: "https://jp-corporation-frontend.vercel.app"|| "*",
   credentials: true,                 
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE']
