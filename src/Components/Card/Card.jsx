@@ -6,7 +6,7 @@ import CardImage4 from "../../assets/Images/card_image4.jpg";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 // import axios from "../../api/axios";
-// import axios from "axios";
+import axios from "axios";
 const apiUrl = import.meta.env.API_URL;
 console.log(apiUrl);
 
