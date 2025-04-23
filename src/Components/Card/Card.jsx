@@ -48,7 +48,7 @@ fetchCarData()
           <div className="carImage inline-block relative overflow-hidden w-auto h-auto">
             <img
               loading="lazy"
-              // src={`http://localhost:8800/${featuredImage}`}
+              src={`https://jpcorporation-production.up.railway.app/${featuredImage}`}
               className="cardImage cursor-pointer relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />
