@@ -5,7 +5,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
-const AdminDashboard = () => {
+const AdminLogin = () => {
   let [showPassword, setShowPassword] = useState(false);
 
   //  Handle Showing Password
@@ -141,4 +141,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminLogin;
