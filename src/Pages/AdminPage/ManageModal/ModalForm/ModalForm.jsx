@@ -3,6 +3,7 @@ import Button from "../../../../Components/Button/Button";
 import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const ModalForm = () => {
   let [active, setActive] = useState(false);
@@ -27,7 +28,7 @@ const ModalForm = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.post(
-          "/api/model/add",
+          `${baseURL}/api/model/add`,
           payload,
           {
             headers: {

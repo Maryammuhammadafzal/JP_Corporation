@@ -2,6 +2,7 @@ import React, {useState , useEffect} from 'react'
 import Footer from '../Footer/Footer'
 import Navbar from '../../Components/Navbar/Navbar'
 import { useNavigate } from 'react-router-dom';
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const SearchPage = () => {
   const queryParams = new URLSearchParams(window.location.search);
@@ -31,7 +32,7 @@ const SearchPage = () => {
   // Fetch Api 
   let fetchFromTypeApi = async () => {
     try {
-    const response = await fetch(`/api/cards/get?type=${type}`);
+    const response = await fetch(`${baseURL}/api/cards/get?type=${type}`);
     const data = await response.json();
     setFilteredCars(data);
     console.log(data);
@@ -53,7 +54,7 @@ const SearchPage = () => {
   let fetchFromSearchApi = async () => {
     try {
       
-      const response = await fetch(`/api/cards/get?${queryString}`);
+      const response = await fetch(`${baseURL}/api/cards/get?${queryString}`);
       const data = await response.json();
       setFilteredCars(data);
       console.log(data);
@@ -67,7 +68,7 @@ const SearchPage = () => {
   let fetchApi = async () => {
     try {
       
-      const response = await fetch(`/api/cards/`);
+      const response = await fetch(`${baseURL}/api/cards/`);
       const data = await response.json();
       setFilteredCars(data);
       setAllCars(data)
@@ -399,7 +400,7 @@ let navigate = useNavigate()
             <div className="flex items-center gap-4 max-sm:flex-col max-sm:h-auto max-sm:w-full">
               {/* Placeholder for Car Image */}
               <div className="w-[230px] h-[130px] max-sm:h-auto max-sm:w-full bg-amber-200 rounded-xl">
-                <img src={`http://localhost:8800/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
+                <img src={`${baseURL}/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
               </div>
 
               <div className='max-sm:w-full px-4'>

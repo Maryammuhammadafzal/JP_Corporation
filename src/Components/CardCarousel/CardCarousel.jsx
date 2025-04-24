@@ -6,7 +6,7 @@ import PrevArrow from "../PrevArrow/PrevArrow";
 import NextArrow from "../NextArrow/NextArrow";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
-
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 import axios from "axios";
 
 const CardCarousel = () => {
@@ -16,7 +16,7 @@ const CardCarousel = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("https://jpcorporation-production.up.railway.app/api/dashboard?page=1&limit=10")
+   let res = await axios.get(`${baseURL}/api/dashboard?page=1&limit=10`)
     .then((res) => setCardData(res.data))
     .catch((err) => console.error(err));
   }

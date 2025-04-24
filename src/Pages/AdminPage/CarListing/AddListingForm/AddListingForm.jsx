@@ -4,6 +4,7 @@ import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 import Copyright from "../../../../Components/Copyright/Copyright.jsx";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const AddListingForm = () => {
   let [isActive, setIsActive] = useState(false);
@@ -70,7 +71,7 @@ const AddListingForm = () => {
   // Fetch Modal By Make Api Call
   const fetchModalByMake = async (make) => {
     const response = await axios.get(
-      `/api/model/getModal/${make}`
+      `${baseURL}/api/model/getModal/${make}`
     );
     const data = await response.data;
 

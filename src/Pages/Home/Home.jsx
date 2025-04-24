@@ -13,8 +13,7 @@ const Home = () => {
         <FeaturedSection/>
         <PopularSection/>
         <AboutSection/>
-        <Footer/>
-      
+        <Footer/> 
     </div>
   )
 }

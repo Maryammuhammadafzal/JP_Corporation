@@ -3,6 +3,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useState, useRef } from "react";
 import { NextArrow, PrevArrow } from "../CustomArrow/CustomArrow"; 
+const baseURL = import.meta.env.VITE_BACKEND_URL;
+
 const GalleryCarousel = ({ galleryImages = [] }) => {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
@@ -42,7 +44,7 @@ const GalleryCarousel = ({ galleryImages = [] }) => {
           {galleryImages.map((image, index) => (
             <div key={index} className="relative w-full h-auto">
               <img
-                src={`https://jp-corporation-admin.vercel.app/${image}`}
+                src={`${baseURL}/${image}`}
                 alt={image}
                 className="w-full h-[500px] object-cover rounded-lg"
               />

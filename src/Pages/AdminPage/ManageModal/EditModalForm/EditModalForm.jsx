@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Button from "../../../../Components/Button/Button.jsx";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const EditModalForm = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const EditModalForm = () => {
     const fetchModalById = async () => {
       try {
         const res = await axios.get(
-          `/api/model/get/${id}`
+          `${baseURL}/api/model/get/${id}`
         );
         const modal = await res.data;
         console.log(modal);
@@ -52,7 +53,7 @@ const EditModalForm = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.put(
-          `/api/model/update/${id}`,
+          `${baseURL}/api/model/update/${id}`,
           payload,
           {
             headers: {

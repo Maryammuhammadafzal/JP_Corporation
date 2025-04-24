@@ -6,7 +6,7 @@ import CardImage4 from "../../assets/Images/card_image4.jpg";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const PopularCard = () => {
 
@@ -14,7 +14,7 @@ const PopularCard = () => {
   const navigate = useNavigate();
 
   const fetchCarData = async()=> {
-   let res = await axios.get("https://jp-corporation-admin.vercel.app/api/dashboard?page=1&limit=2")
+   let res = await axios.get(`${baseURL}/api/dashboard?page=1&limit=2`)
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }

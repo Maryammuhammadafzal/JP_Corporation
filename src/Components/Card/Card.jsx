@@ -7,8 +7,7 @@ import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 // import axios from "../../api/axios";
 import axios from "axios";
-const apiUrl = import.meta.env.API_URL;
-console.log(apiUrl);
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 
 const Card = () => {
@@ -16,7 +15,7 @@ const Card = () => {
   const navigate = useNavigate();
   
   const fetchCarData = async()=> {
-   let res = await axios.get(`https://jpcorporation-production.up.railway.app/api/dashboard?page=1&limit=4`)
+   let res = await axios.get(`${baseURL}/api/dashboard?page=1&limit=4`)
     .then((res) => setCards(res.data))
     .catch((err) => console.error(err));
   }
@@ -48,7 +47,7 @@ fetchCarData()
           <div className="carImage inline-block relative overflow-hidden w-auto h-auto">
             <img
               loading="lazy"
-              src={`https://jpcorporation-production.up.railway.app/${featuredImage}`}
+              src={`${baseURL}/${featuredImage}`}
               className="cardImage cursor-pointer relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />

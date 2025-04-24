@@ -3,6 +3,7 @@ import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Copyright from "../../../../Components/Copyright/Copyright";
 import Pagination from "../../../../Components/Pagination/Pagination";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const CapLinksListing = () => {
   const [search, setSearch] = useState("");
@@ -12,7 +13,7 @@ const CapLinksListing = () => {
 
   const fetchCapLinks = async () => {
     try {
-      const res = await axios.get("/api/capLinks/");
+      const res = await axios.get(`${baseURL}/api/capLinks/`);
       const data = await res.data;
       setCapLinksData(data);
     } catch (error) {
@@ -44,7 +45,7 @@ const CapLinksListing = () => {
   // Delete Cap Link
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `/api/capLinks/delete/${id}`
+      `${baseURL}/api/capLinks/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);
@@ -162,7 +163,7 @@ const CapLinksListing = () => {
                         </td>
                         <td className="p-2 ">
                           <img
-                            src={`../../../../../admin/${capLink.productFeatureImageRef}`}
+                            src={`${baseURL}/${capLink.productFeatureImageRef}`}
                             alt="capLinks"
                             className="w-10 h-10 object-cover"
                           />

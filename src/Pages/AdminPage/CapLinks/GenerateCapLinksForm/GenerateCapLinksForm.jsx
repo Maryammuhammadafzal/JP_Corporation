@@ -4,6 +4,7 @@ import axios from "axios";
 import { statusFeatures } from "../../../../Components/statusFeatures.js";
 import  optionFeatures from "../../../../Components/optionFeatures.js";
 import Copyright from "../../../../Components/Copyright/Copyright.jsx";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const GenerateCapLinksForm = () => {
   const [isActive , setIsActive] = useState(false);
@@ -174,8 +175,6 @@ const GenerateCapLinksForm = () => {
   // Radio Button Function
   const handleNameRadioChange = (e) => {
   setSelectedNameOption(e.target.value);
-  
-  
  
   };
   const handleForwarderNameRadioChange = (e) => {
@@ -245,7 +244,7 @@ try {
   }
 
   const response = await axios.post(
-    "/api/capLinks/add",
+    `${baseURL}/api/capLinks/add`,
     formData,
     {
       headers: {

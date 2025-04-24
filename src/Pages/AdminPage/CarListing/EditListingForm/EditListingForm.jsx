@@ -4,6 +4,7 @@ import axios from "axios";
 import AllFeatures from "../../../../Components/AllFeatures.js";
 import { safetyFeatures } from "../../../../Components/safetyFeatures.js";
 import Copyright from "../../../../Components/Copyright/Copyright.jsx";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const EditListingForm = ({ carId }) => {
   let [isActive , setIsActive] = useState(false);
@@ -22,7 +23,7 @@ const EditListingForm = ({ carId }) => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `/api/dashboard/get/${carId}`
+          `${baseURL}/api/dashboard/get/${carId}`
         );
         const car = res.data;
         setCarData(car);
@@ -173,7 +174,7 @@ const EditListingForm = ({ carId }) => {
   // Fetch Modal By Make Api Call
   const fetchModalByMake = async (make) => {
     const response = await axios.get(
-      `/api/model/getModal/${make}`
+      `${baseURL}/api/model/getModal/${make}`
     );
     const data = await response.data;
     setModals(data);
@@ -246,7 +247,7 @@ const EditListingForm = ({ carId }) => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.put(
-        `/api/cards/update/${carId}`,
+        `${baseURL}/api/cards/update/${carId}`,
         formData,
         {
           headers: {
@@ -1215,7 +1216,7 @@ const EditListingForm = ({ carId }) => {
             </div>
             <img
               loading="lazy"
-              src={`/${carData.featuredImage}`}
+              src={`${baseURL}/${carData.featuredImage}`}
               alt="image"
               className="w-[160px] h-[160px] rounded-lg max-[780px]:w-[140px] max-[780px]:h-[140px] object-cover"
             />
@@ -1264,7 +1265,7 @@ const EditListingForm = ({ carId }) => {
                   </div>
                   <img
                     loading="lazy"
-                    src={`/${galleryImage}`}
+                    src={`${baseURL}/${galleryImage}`}
                     alt={`gallery-image-${index}`}
                     className="w-[160px] h-[160px] rounded-lg max-[780px]:w-[140px] max-[780px]:h-[140px] object-cover"
                   />

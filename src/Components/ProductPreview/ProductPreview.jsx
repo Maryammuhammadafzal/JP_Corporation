@@ -11,7 +11,7 @@ import CardCarousel from "../CardCarousel/CardCarousel";
 import { FaEnvelope } from "react-icons/fa";
 import axios from "axios";
 import ImagePreview from "../ImagePreview/ImagePreview";
-
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 import SendButton from "../SendButton/SendButton";
 
 const ProductPreview = () => {
@@ -23,7 +23,7 @@ const ProductPreview = () => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `https://jp-corporation-admin.vercel.app/api/dashboard/get/${cardId}`
+          `${baseURL}/api/dashboard/get/${cardId}`
         );
         const car = await res.data;
         console.log(car);

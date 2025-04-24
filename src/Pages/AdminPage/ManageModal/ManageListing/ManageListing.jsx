@@ -3,6 +3,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import Copyright from "../../../../Components/Copyright/Copyright";
 import Pagination from "../../../../Components/Pagination/Pagination";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const ManageListing = () => {
   const [search, setSearch] = useState("");
@@ -12,7 +13,7 @@ const ManageListing = () => {
 
   const fetchModalData = async () => {
     try {
-      const res = await axios.get("/api/model");
+      const res = await axios.get(`${baseURL}/api/model`);
       const data = await res.data;
       setModalData(data);
     } catch (error) {
@@ -40,7 +41,7 @@ const ManageListing = () => {
 
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `/api/model/delete/${id}`
+      `${baseURL}/api/model/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);

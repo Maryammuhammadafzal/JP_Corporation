@@ -3,6 +3,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import Copyright from "../../../Components/Copyright/Copyright";
 import Pagination from "../../../Components/Pagination/Pagination";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const CarListings = () => {
   const [search, setSearch] = useState("");
@@ -12,7 +13,7 @@ const CarListings = () => {
 
   const fetchCarData = async () => {
     try {
-      const res = await axios.get("/api/dashboard");
+      const res = await axios.get(`${baseURL}/api/dashboard`);
       const data = await res.data;
       setCarData(data);
     } catch (error) {
@@ -153,7 +154,7 @@ const CarListings = () => {
                         </td>
                         <td className="p-2 ">
                           <img
-                            src={`../../../../../admin/${car.featuredImage}`}
+                            src={`${baseURL}/${car.featuredImage}`}
                             alt="cars"
                             className="w-10 h-10 object-cover"
                           />

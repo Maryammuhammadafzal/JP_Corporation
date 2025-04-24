@@ -8,7 +8,7 @@ import { EditFileInput } from "../../../../Components/EditFileInput/EditFileInpu
 import EditSelectFeild from "../../../../Components/EditSelectFeild/EditSelectFeild.jsx";
 import EditInputFeild from "../../../../Components/EditInputFeild/EditInputFeild.jsx";
 import Copyright from "../../../../Components/Copyright/Copyright.jsx";
-
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 let capLinkEditId = localStorage.getItem("EditCapLinksId");
 
 const EditCapLinksForm = () => {
@@ -34,7 +34,7 @@ const EditCapLinksForm = () => {
     const fetchCapLink = async () => {
       try {
         const res = await axios.get(
-          `/api/capLinks/get/${capLinkEditId}`
+          `${baseURL}/api/capLinks/get/${capLinkEditId}`
         );
         const capLinkData = res.data?.data;
         setCapLink(capLinkData);
@@ -478,7 +478,7 @@ const EditCapLinksForm = () => {
       const token = localStorage.getItem("adminToken");
 
       const response = await axios.put(
-        `/api/capLinks/update/${capLinkEditId}`,
+        `${baseURL}/api/capLinks/update/${capLinkEditId}`,
         formData,
         {
           headers: {
@@ -1925,7 +1925,7 @@ const EditCapLinksForm = () => {
                             </div>
                             <img
                               loading="lazy"
-                              src={`/${capLink.productFeatureImageRef}`}
+                              src={`${baseURL}/${capLink.productFeatureImageRef}`}
                               alt="Featured"
                               className="w-[160px] h-[160px] object-cover rounded-lg max-sm:w-[130px] max-sm:h-[130px]"
                             />
@@ -1982,7 +1982,7 @@ const EditCapLinksForm = () => {
                                     </div>
                                     <img
                                       loading="lazy"
-                                      src={`/${productImage}`}
+                                      src={`${baseURL}/${productImage}`}
                                       alt={`Gallery ${index}`}
                                       className="w-[130px] h-[130px] object-cover rounded-md"
                                     />

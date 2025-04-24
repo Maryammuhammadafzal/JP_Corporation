@@ -3,6 +3,7 @@ import Logo from "../../../assets/Images/jplogo.png";
 import Button from "../../../Components/Button/Button";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const AdminDashboard = () => {
   let [showPassword, setShowPassword] = useState(false);
@@ -40,7 +41,7 @@ const AdminDashboard = () => {
     
     try {
       
-      const response = await fetch("/api/admin", {
+      const response = await fetch(`${baseURL}/api/admin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ const ContactForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`https://jp-corporation-admin.vercel.app/api/contact`, {
+      const response = await fetch(`${baseURL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
