@@ -47,7 +47,7 @@ fetchCarData()
         >
           <div className="carImage relative overflow-hidden w-auto h-auto">
             <img
-              src={`http://localhost:8800/${featuredImage}`}
+              src={`${baseURL}/${featuredImage}`}
               className="cardImage relative max-[1160px]:h-[200px] max-[900px]:h-[230px] max-[600px]:h-[280px] w-full h-[200px] rounded-2xl"
               alt="Card image"
             />
