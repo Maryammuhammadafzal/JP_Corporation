@@ -47,7 +47,7 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     alert("admin Logout Successfully");
-    window.location.href = "/admin";
+    window.location.href = "/login";
   };
 
   return (
