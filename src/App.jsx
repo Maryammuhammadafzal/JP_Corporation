@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Home from "./Pages/Home/Home";
 import AboutPage from "./Pages/AboutPage/AboutPage";
-import { Routes, Route, BrowserRouter } from "react-router";
+import { Routes, Route, HashRouter } from "react-router";
 import FAQPage from "./Pages/FAQPage/FAQPage";
 import ContactPage from "./Pages/ContactPage/ContactPage";
 import BankDetailPage from "./Pages/BankDetailPage/BankDetailPage";
@@ -17,7 +17,7 @@ import ProductPreview from "./Components/ProductPreview/ProductPreview";
 function App() {
   return (
     <div className="w-full min-h-screen bg-gray-100 flex">
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route index element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
@@ -38,7 +38,7 @@ function App() {
           <Route path="/cap-links-listing/edit-cap-links-listing/get/:id" element={<AdminDashboard />}/>
           <Route path="downloads/:filepath/uploads/:filename" element={<Downloads />}/>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
