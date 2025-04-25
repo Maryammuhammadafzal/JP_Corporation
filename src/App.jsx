@@ -26,7 +26,7 @@ function App() {
           <Route path="/bank" element={<BankDetailPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/listing/:id" element={<CardPage />} />
-          <Route path="/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/listing/add-listing" element={<AdminDashboard />} />
           <Route path="/listing/edit-listing/get/:id" element={<AdminDashboard />}/>
