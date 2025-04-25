@@ -486,7 +486,7 @@ const EditListingForm = ({ carId }) => {
                   placeholder="Select make"
                   ref={makeRef}
                   value={carData.carMake || ""}
-                  onChange={(e) => handleMake(e)}
+                  onChange={(e) => handleMake(e.target.value)}
                 >
                   <option
                     value=""
