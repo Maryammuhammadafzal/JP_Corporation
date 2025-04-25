@@ -18,12 +18,14 @@ const EditListingForm = ({ carId }) => {
   const [make, setMake] = useState(null);
   const [modals, setModals] = useState("");
 
+  const EditId = localStorage.getItem("EditId")
+
   // Fetch car data on mount
   useEffect(() => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `${baseURL}/api/dashboard/get/${carId}`
+          `${baseURL}/api/cards/get/${EditId}`
         );
         const car = res.data;
         setCarData(car);
@@ -33,7 +35,7 @@ const EditListingForm = ({ carId }) => {
       }
     };
     fetchCar();
-  }, [carId]);
+  }, [EditId]);
 
 
   useEffect(() => {
@@ -1187,7 +1189,7 @@ const EditListingForm = ({ carId }) => {
               {/* Custom Button */}
               <button
                 type="button"
-                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] p-3  max-md:w-[100px] max-sm:w-[80px] max-md:text-[14px] max-sm:text-[12px] p-3 max-sm:p-1 rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
+                className="bg-neutral-300 border border-r-0 hover:bg-neutral-400 w-[120px] max-md:w-[100px] max-sm:w-[80px] max-md:text-[14px] max-sm:text-[12px] p-3 max-sm:p-1 rounded-bl-xl rounded-tl-xl shadow-md transition duration-300"
               >
                 Upload File
               </button>
