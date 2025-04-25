@@ -43,7 +43,7 @@ const CarListings = () => {
   // Delete Cap Listing
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `${baseURL}/api/dashboard/delete/${id}`
+      `https://jpcorporation-production.up.railway.app/api/dashboard/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);
