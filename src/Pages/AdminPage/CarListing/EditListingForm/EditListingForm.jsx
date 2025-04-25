@@ -284,6 +284,9 @@ const EditListingForm = ({ carId }) => {
   }
   };
 
+  console.log(carData.featuredImage);
+  
+
   return (
     <div className="w-full max-h-auto min-h-screen rounded-tr-[50px] flex flex-col items-end overflow-y-auto ">
       <div className="w-full flex flex-col gap-4 p-5 mb-4 max-md:mb-2 max-sm:mb-0 max-sm:p-3 items-end">
