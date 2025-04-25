@@ -251,7 +251,7 @@ const EditListingForm = ({ carId }) => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.put(
-        `${baseURL}/api/cards/update/${carId}`,
+        `${baseURL}/api/cards/update/${EditId}`,
         formData,
         {
           headers: {
