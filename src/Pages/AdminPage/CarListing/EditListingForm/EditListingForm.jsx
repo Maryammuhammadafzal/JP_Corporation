@@ -28,6 +28,8 @@ const EditListingForm = ({ carId }) => {
           `${baseURL}/api/dashboard/get/${EditId}`
         );
         const car = res.data;
+        console.log(car);
+        
         setCarData(car);
         setLoading(false);
       } catch (err) {
