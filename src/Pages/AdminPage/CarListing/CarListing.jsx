@@ -39,6 +39,8 @@ const CarListings = () => {
   const currentCars = allCars.slice(indexOfFirstCar, indexOfLastCar);
   const totalPages = Math.ceil(filteredCars.length / entriesPerPage);
 
+ 
+  // Delete Cap Listing
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
       `${baseURL}/api/dashboard/delete/${id}`
@@ -177,7 +179,7 @@ const CarListings = () => {
                           </button>
                           <button
                             className="text-white p-1 rounded bg-red-500"
-                            onClick={() => handleDelete(car._id, car.carTitle)}
+                            onClick={() => handleDelete(car._id , car.carTitle)}
                           >
                             <FaTrash size={13} />
                           </button>
