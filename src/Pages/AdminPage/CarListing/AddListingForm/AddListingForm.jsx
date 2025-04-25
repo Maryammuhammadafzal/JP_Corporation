@@ -145,7 +145,7 @@ const AddListingForm = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.post(
-          "/api/cards/add",
+          "https://jpcorporation-production.up.railway.app/api/cards/add",
           formData,
           {
             headers: {
