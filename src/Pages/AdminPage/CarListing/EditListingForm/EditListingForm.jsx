@@ -25,7 +25,7 @@ const EditListingForm = ({ carId }) => {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `${baseURL}/api/cards/get/${EditId}`
+          `${baseURL}/api/dashboard/get/${EditId}`
         );
         const car = res.data;
         setCarData(car);
