@@ -20,7 +20,3 @@ router.put('/update/:id', upload.fields([
   { name: 'attachmentImage', maxCount : 1}
 ]), updateCar);
 export default router;
-
-
-// { name: "attachmentImage", maxCount: 1 },
-// { name: "featuredImage", maxCount: 1 },

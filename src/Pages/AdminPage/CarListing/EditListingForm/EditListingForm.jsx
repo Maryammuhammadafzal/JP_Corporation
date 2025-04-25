@@ -286,7 +286,6 @@ const EditListingForm = ({ carId }) => {
   }
   };
 
-  console.log(`${baseURL}/${carData.featuredImage}`);
   
 
   return (

@@ -82,7 +82,7 @@ export const postCar = async (req, res) => {
           
         
 let featuredImage = JSON.stringify(req.files['featuredImage'][0].path.replace(/\\/g, '/'));
-let parsedFeaturedImage = featuredImage.split('"')[1]
+let parsedFeaturedImage = featuredImage.split('"')[1];
 let parsedgalleryImages = req.files['galleryImages'].map((image) => image.path.replace(/\\/g, '/'));
 let attachmentImage = req.files['attachmentImage'] ? req.files['attachmentImage'][0].path.replace(/\\/g, '/'): null;
     let parsedAttachmentImage = attachmentImage ? JSON.stringify(attachmentImage).split('"')[1] : null;
