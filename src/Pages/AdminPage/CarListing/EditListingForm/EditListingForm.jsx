@@ -183,8 +183,10 @@ const EditListingForm = ({ carId }) => {
     const data = await response.data;
     setModals(data);
   };
+
   const handleMake = (e) => {
     setMake(e.target.value);
+    localStorage.setItem("carMake" , e.target.value);
     fetchModalByMake(e.target.value);
   };
 
@@ -486,7 +488,7 @@ const EditListingForm = ({ carId }) => {
                   placeholder="Select make"
                   ref={makeRef}
                   value={carData.carMake || ""}
-                  onChange={(e) => handleMake(e.target.value)}
+                  onChange={(e) => handleMake(e)}
                 >
                   <option
                     value=""
