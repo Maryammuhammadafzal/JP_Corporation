@@ -1327,7 +1327,7 @@ const EditListingForm = ({ carId }) => {
                 </div>
                 <img
                   loading="lazy"
-                  src={`/${carData.attachmentImage}`}
+                  src={`${baseURL}/${carData.attachmentImage}`}
                   alt="image"
                   className="w-[160px] h-[160px] rounded-lg"
                 />
