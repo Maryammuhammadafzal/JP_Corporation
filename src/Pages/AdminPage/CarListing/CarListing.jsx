@@ -41,7 +41,7 @@ const CarListings = () => {
 
   const handleDelete = async (id, title) => {
     const response = await axios.delete(
-      `/api/dashboard/delete/${id}`
+      `${baseURL}/api/dashboard/delete/${id}`
     );
     if (response.status === 200) {
       alert(`${title} deleted`);
