@@ -1223,7 +1223,7 @@ const EditListingForm = ({ carId }) => {
             </div>
             <img
               loading="lazy"
-              src={carData.featuredImage}
+              src={`https://jpcorporation-production.up.railway.app${carData.featuredImage}`}
               alt="image"
               className="w-[160px] h-[160px] rounded-lg max-[780px]:w-[140px] max-[780px]:h-[140px] object-cover"
             />
