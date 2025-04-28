@@ -14,7 +14,6 @@ import GenerateCapLinksForm from "../CapLinks/GenerateCapLinksForm/GenerateCapLi
 import EditCapLinksForm from "../CapLinks/EditCapLinksForm/EditCapLinksForm";
 import ModalForm from "../ManageModal/ModalForm/ModalForm";
 import EditModalForm from "../ManageModal/EditModalForm/EditModalForm";
-const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const AdminDashboard = () => {
   const {id} = useParams()

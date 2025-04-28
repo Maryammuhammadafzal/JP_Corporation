@@ -1094,7 +1094,7 @@ try {
                     >
                       <p>Other Information</p>
                       <input
-                        type="number"
+                        type="text"
                         id="documentCenterOtherInformation"
                         ref={refs.documentCenter.documentCenterOtherInformationRef}
                         className=" border-neutral-500 border w-full rounded-md p-3 max-sm:p-2"
@@ -1262,7 +1262,7 @@ try {
                   >
                     <p>Cell Phone Number/Email</p>
                     <input
-                      type="number"
+                      type="text"
                       id="consigneeCellPhoneNumber/Email"
                       ref={refs.consignee.consigneeCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3 max-sm:p-2"
@@ -1417,7 +1417,7 @@ try {
                   >
                     <p>Cell Phone Number/Email</p>
                     <input
-                      type="number"
+                      type="text"
                       id="notifyPartyCellPhoneNumber/Email"
                       ref={refs.notifyParty.notifyPartyCellPhoneNumberOREmailRef}
                       className=" border-neutral-500 border w-full rounded-md p-3 max-sm:p-2"
@@ -1463,7 +1463,7 @@ try {
                   >
                     <p>Reference No</p>
                     <input
-                      type="text"
+                      type="number"
                       id="notifyPartyReferenceNo"
                       ref={refs.notifyParty.notifyPartyReferenceNoRef}
                       className=" border-neutral-500 border w-full rounded-md p-3 max-sm:p-2"
@@ -1531,7 +1531,7 @@ try {
                   >
                     <p>Manufacture Year/Month</p>
                     <input
-                      type="number"
+                      type="text"
                       id="manufactureYear/Month"
                       ref={refs.notifyParty.manufactureYearORMonthRef}
                       className={`border-neutral-500 border w-full rounded-md p-3 max-sm:p-2 ${isActive && "border-orange-400"}`}
@@ -1593,20 +1593,63 @@ try {
               {/* Sixth Content */}
               <div className="w-full h-auto justify-start items-center grid grid-cols-2 gap-5 max-md:grid-cols-1">
                 <div className="flex flex-col w-full gap-2 h-auto">
-                  <label
-                    htmlFor="notifyPartyDrive"
-                    className="w-full gap-3 flex flex-col justify-center items-start max-sm:text-xs "
-                  >
-                    <p>Drive</p>
-                    <input
-                      type="text"
-                      id="notifyPartyDrive"
-                      ref={refs.notifyParty.notifyPartyDriveRef}
-                      className=" border-neutral-500 border w-full rounded-md p-3 max-sm:p-2"
-                      placeholder=" Drive"
-                    />
-                  </label>
+                <label htmlFor="notifyPartyDrive" className="w-full gap-3 flex flex-col justify-center items-start max-sm:text-xs">
+                      <p>Drive Type</p>
+                      <select
+                        id="notifyPartyDrive"
+                        className="appearance-none mt-2 w-full border rounded-md p-2 outline-0 text-gray-700 "
+                        placeholder="Select drive Type"
+                        ref={refs.notifyParty.notifyPartyDriveRef}
+                      >
+                        <option
+                          value=""
+                          selected
+                          disabled
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 p-2"
+                        >
+                          Select Drive Type
+                        </option>
+                        <option
+                          value="2WD"
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500  focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                        >
+                          2WD
+                        </option>
+                        <option
+                          value="4WD"
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                        >
+                          4WD
+                        </option>
+                        <option
+                          value="AW TS PW TV Airbag Navigation"
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                        >
+                          AW TS PW TV Airbag Navigation
+                        </option>
+                        <option
+                          value="AWD/4WD"
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                        >
+                          AWD/4WD
+                        </option>
+                        <option
+                          value="FRONT WHEEL DRIVE"
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                        >
+                          FRONT WHEEL DRIVE
+                        </option>
+                        <option
+                          value="REAR WHEEL DRIVE"
+                          className="appearance-none active:bg-neutral-400 active:text-neutral-500 hover:bg-neutral-400 hover:text-neutral-500 focus:bg-neutral-400 focus:text-neutral-500 text-neutral-800 bg-white p-2"
+                        >
+                          REAR WHEEL DRIVE
+                        </option>
+                      </select>
+                    </label>
                 </div>
+               
+
                 <div className="flex flex-col w-full gap-2 h-auto">
                   <label
                     htmlFor="notifyPartyExtColor"
@@ -1614,7 +1657,7 @@ try {
                   >
                     <p>Ext. Color</p>
                     <input
-                      type="number"
+                      type="text"
                       id="notifyPartyExtColor"
                       ref={refs.notifyParty.notifyPartyExtColorRef}
                       className=" border-neutral-500 border w-full rounded-md p-3 max-sm:p-2"

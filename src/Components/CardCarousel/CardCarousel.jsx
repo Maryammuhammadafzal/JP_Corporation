@@ -46,12 +46,12 @@ fetchCarData()
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 4, // how many cards to show at once
+    slidesToShow: 4, 
     slidesToScroll: 1,
     
     responsive: [
         {
-                breakpoint: 1180, // Screen width at 1200px or below
+                breakpoint: 1180, 
                 settings: {
                   slidesToShow: 3,
                   slidesToScroll: 1,
@@ -92,7 +92,7 @@ fetchCarData()
                 <div className="relative">
                   <img
                     loading="lazy"
-                    src={`http://localhost:8800/${featuredImage}`}
+                    src={`${baseURL}/${featuredImage}`}
                     alt={carTitle}
                     className="cardImage w-full h-[180px] object-cover"
                   />

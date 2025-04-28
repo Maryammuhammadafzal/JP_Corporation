@@ -26,7 +26,7 @@ const CounterItem = ({ target }) => {
 
   const animateCounter = () => {
     let current = 0;
-    const increment = target / (1000 / 20); // 1000ms duration
+    const increment = target / (1000 / 20); 
 
     const update = () => {
       if (current < target) {
@@ -59,6 +59,4 @@ const CounterItem = ({ target }) => {
 
 export default CounterItem;
 
-//     <div ref={ref} className="text-5xl font-bold text-center">
-//       {count}
-//     </div>
+

@@ -1,9 +1,4 @@
 import React , {useState , useEffect} from "react";
-import CardImage1 from "../../assets/Images/card_image1.jpeg";
-import CardImage2 from "../../assets/Images/card_image2.jpeg";
-import CardImage3 from "../../assets/Images/card_image3.jpg";
-import CardImage4 from "../../assets/Images/card_image4.jpg";
-import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const baseURL = import.meta.env.VITE_BACKEND_URL;
@@ -21,8 +16,7 @@ const PopularCard = () => {
   useEffect( () => {
 fetchCarData()
   }, []);
-  
-  console.log(cards);
+ 
   // Function to truncate text
   const truncateText = (text, maxLength) => {
     if (text?.length > maxLength) {
@@ -52,7 +46,7 @@ fetchCarData()
               alt="Card image"
             />
             <span className="absolute top-[15px] -left-[30px] -rotate-45 w-[130px] text-center z-10 bg-green-600 py-[1vh] px-[1vw] text-white text-[12px]" >
-              {carAvailability}
+            {carAvailability === "Available" ? "Available" : "Sold"}
             </span>
           </div>
           <div className="cardContent w-full h-auto flex flex-col">

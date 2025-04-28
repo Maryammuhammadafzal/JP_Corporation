@@ -1,6 +1,5 @@
 import React, { useState , useEffect} from "react";
 import Logo from "../../../assets/Images/jplogo.png";
-import Button from "../../../Components/Button/Button";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 const baseURL = import.meta.env.VITE_BACKEND_URL;
@@ -88,7 +87,7 @@ const AdminLogin = () => {
                 Sign in to your Account
               </h3>
             </div>
-            <form action="" className="w-[90%] p-3" onSubmit={handleForm}>
+            <form className="w-[90%] p-3" onSubmit={handleForm}>
               <label
                 htmlFor="name"
                 className="w-full p-1 text-gray-600 font-semibold"

@@ -178,7 +178,7 @@ const EditListingForm = ({ carId }) => {
   // Fetch Modal By Make Api Call
   const fetchModalByMake = async (make) => {
     const response = await axios.get(
-      `${baseURL}/api/model/getModal/${make}`
+      `https://jpcorporation-production.up.railway.app/api/model/getModal/${make}`
     );
     const data = await response.data;
     setModals(data);
@@ -626,8 +626,9 @@ const EditListingForm = ({ carId }) => {
                   className="appearance-none mt-2 w-full border rounded-md p-2 max-sm:text-[12px] outline-0 text-gray-700 "
                   placeholder="Select Model"
                   ref={modelRef}
+                  value={carData.carModel || ""}
                 >
-                  {makeRef.current === null ? (
+                  { makeRef.current === null ? (
                     <option
                       value=""
                       selected

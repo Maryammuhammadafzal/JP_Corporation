@@ -59,7 +59,7 @@ const GalleryCarousel = ({ galleryImages = [] }) => {
           {galleryImages.map((image, index) => (
             <div key={index} className="px-1">
               <img
-                src={`http://localhost:8800/${image}`}
+                src={`${baseURL}/${image}`}
                 alt={`Thumb ${index}`}
                 className="w-full opacity-50 hover:opacity-100 h-[150px] object-cover rounded-lg border-2 active:border-orange-600 border-gray-300 hover:border-orange-600 transition"
               />

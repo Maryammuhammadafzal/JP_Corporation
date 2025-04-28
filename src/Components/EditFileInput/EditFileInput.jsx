@@ -27,7 +27,7 @@ export const EditFileInput = ({ label, id, fileRef, onChange, existingFile, name
         />
       </label>
     </div>
-    {existingFile && (
+    {existingFile !== undefined && existingFile !== null && (
       <div className="existingFile w-full max-sm:text-xs h-auto p-2 text-sm">
         <p>
           Existing {label} File:{" "}

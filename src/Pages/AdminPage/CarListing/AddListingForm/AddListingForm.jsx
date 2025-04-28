@@ -71,12 +71,13 @@ const AddListingForm = () => {
   // Fetch Modal By Make Api Call
   const fetchModalByMake = async (make) => {
     const response = await axios.get(
-      `${baseURL}/api/model/getModal/${make}`
+      `https://jpcorporation-production.up.railway.app/api/model/getModal/${make}`
     );
     const data = await response.data;
 
     setModals(data);
   };
+
   const handleMake = (e) => {
     setMake(e.target.value);
     fetchModalByMake(e.target.value);

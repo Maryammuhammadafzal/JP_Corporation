@@ -89,8 +89,7 @@ const SideMenu = ({state}) => {
           </ul>
         </div>
       </div>
-
-      {/* BACKDROP OVERLAY (optional) */}
+  
       {isOpen && (
         <div
           className="fixed inset-0 bg-black opacity-40 z-40"

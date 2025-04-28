@@ -399,7 +399,7 @@ let navigate = useNavigate()
           onClick={() => navigateToPreviewPage(car._id)}>
             <div className="flex items-center gap-4 max-sm:flex-col max-sm:h-auto max-sm:w-full">
               {/* Placeholder for Car Image */}
-              <div className="w-[230px] h-[130px] max-sm:h-auto max-sm:w-full bg-amber-200 rounded-xl">
+              <div className="w-[230px] h-[130px] max-sm:h-auto max-sm:w-full bg-neutral-200 rounded-xl">
                 <img src={`${baseURL}/${car.featuredImage}`} alt="Car image" className='w-full h-full rounded-xl' />
               </div>
 

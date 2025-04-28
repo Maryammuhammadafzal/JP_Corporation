@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import SideCarImage from "../../assets/Images/side_car_image.png";
 import Carfax_logo from "../../assets/Images/carfax_logo.png";
 import Paypal_logo from "../../assets/Images/paypal_logo.png";
 import Jpg from "../../assets/Images/jpg.svg";
-import Button from "../../Components/Button/Button";
 import CardCarousel from "../CardCarousel/CardCarousel";
 import { FaEnvelope } from "react-icons/fa";
 import axios from "axios";
@@ -34,8 +32,7 @@ const ProductPreview = () => {
     };
     fetchCar();
   }, [cardId]);
-
-  console.log(cardData);;
+ 
 
 
   return (
